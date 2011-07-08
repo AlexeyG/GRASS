@@ -15,6 +15,7 @@ using namespace std;
 Configuration configuration;
 vector<FastASequence> contigs;
 vector<ContigInformation> infos;
+vector<int> originalLength;
 
 void printHelpMessage(void)
 {
@@ -216,6 +217,12 @@ bool readContigs(const string &inputFile, vector<FastASequence> &contigs, vector
 	
 	int read = reader.Read(contigs);
 	infos.resize(read);
+	originalLength.resize(read);
+	for (int i = 0; i < read; i++)
+	{
+		infos[i].SourceContig = i;
+		originalLength[i] = contigs[i].Nucleotides.length();
+	}
 	reader.Close();
 	return read != 0;
 }
@@ -281,7 +288,7 @@ pair<FastASequence, FastASequence> cutContig(const FastASequence &contig, int ga
 pair<ContigInformation, ContigInformation> cutContigInformation(const ContigInformation &info, int gap, int coord)
 {
 	ContigInformation a = info;
-	ContigInformation b(a.Position + coord + gap, a.ReverseOrientation);
+	ContigInformation b(a.Position + coord + gap, a.ReverseOrientation, a.SourceContig);
 	return pair<ContigInformation, ContigInformation>(a, b);
 }
 
@@ -320,6 +327,7 @@ void flipOrientation(vector<FastASequence> &contigs, vector<ContigInformation> &
 		{
 			contigs[i].ReverseCompelement();
 			infos[i].ReverseOrientation = !infos[i].ReverseOrientation;
+			infos[i].Position = originalLength[i] - infos[i].Position;
 		}
 }
 

@@ -1,4 +1,5 @@
 #include "Helpers.h"
+#include "Globals.h"
 #include <string>
 #include <cstdlib>
 #include <cmath>
@@ -6,6 +7,8 @@
 #include <ctype.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+
+#include<iostream>
 
 using namespace std;
 
@@ -47,6 +50,13 @@ bool Helpers::IsNumber(char *str)
 	return true;
 }
 
+string Helpers::ItoStr(int a)
+{
+	char buf[MaxLine];
+	sprintf(buf, "%i", a);
+	return string(buf);
+}
+
 int Helpers::ParseInt(char *str, bool &success)
 {
 	int len = strlen(str);
@@ -74,7 +84,7 @@ int Helpers::ParseInt(char *str, bool &success)
 	return sgn * num;
 }
 
-string Helpers::RandomString(int len, char *alpha)
+string Helpers::RandomString(int len, const char *alpha)
 {
 	int n = strlen(alpha);
 	string res;
@@ -82,7 +92,7 @@ string Helpers::RandomString(int len, char *alpha)
 	while (len > 0)
 	{
 		len--;
-		res += alpha[rand() % n];
+		res[len] = alpha[rand() % n];
 	}
 	return res;
 }
@@ -102,5 +112,16 @@ string Helpers::TempFile(string path)
 bool Helpers::FileExists(const string &fileName)
 {
 	struct stat s;
+	//cout << "Checking " << fileName << " : " << stat(fileName.c_str(), &s) << endl;
 	return stat(fileName.c_str(), &s) == 0;
+}
+
+bool Helpers::RemoveFile(const string &fileName)
+{
+	return remove(fileName.c_str()) == 0;
+}
+
+bool Helpers::Execute(const string &cmd)
+{
+	return system(cmd.c_str()) == 0;
 }

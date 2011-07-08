@@ -7,7 +7,7 @@ using namespace std;
 class ContigInformation
 {
 public:
-	ContigInformation(int position = 0, bool reverseOrientation = false) : Position(position), ReverseOrientation(reverseOrientation) {};
+	ContigInformation(int position = 0, bool reverseOrientation = false, int sourceContig = 0) : Position(position), ReverseOrientation(reverseOrientation), SourceContig(sourceContig) {};
 
 public:
 	string FormatName() const;
@@ -15,5 +15,6 @@ public:
 public:
 	int Position;
 	bool ReverseOrientation;
+	int SourceContig;
 };
 #endif
