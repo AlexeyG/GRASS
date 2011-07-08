@@ -88,3 +88,8 @@ double IterativeSolver::GetHeuristicObjective() const
 {
 	return solver.GetObjective();
 }
+
+const DataStore &IterativeSolver::GetStore() const
+{
+	return store;
+}

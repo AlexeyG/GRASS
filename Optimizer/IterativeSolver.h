@@ -21,6 +21,7 @@ public:
 	double GetOrderSlack(int i) const;
 	int GetSlackCount() const;
 	double GetHeuristicObjective() const;
+	const DataStore &GetStore() const;
 
 public:
 	vector<bool> U,T;

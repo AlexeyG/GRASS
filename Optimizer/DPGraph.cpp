@@ -7,37 +7,52 @@ DPGraph::DPGraph()
 DPGraph::DPGraph(const DataStore &store)
 {
 	NVertices = store.ContigCount;
-	for (int i = 0; i < NVertices; i++)
-		for (int j = 0; j < NVertices; j++)
+	matrix.assign(NVertices, vector<int>(NVertices, 0));
+	list.assign(NVertices, set<int>());
+	for (DataStore::LinkMap::const_iterator it = store.Begin(); it != store.End(); it++)
+	{
+		int i = it->first.first, j = it->first.second;
+		matrix[i][j]++, matrix[j][i]++;
+		list[i].insert(j), list[j].insert(i);
+	}
+}
+
+DPGraph::DPGraph(const DataStore &store, const vector<bool> &t)
+{
+	NVertices = store.ContigCount;
+	matrix.assign(NVertices, vector<int>(NVertices, 0));
+	list.assign(NVertices, set<int>());
+	for (DataStore::LinkMap::const_iterator it = store.Begin(); it != store.End(); it++)
+	{
+		int i = it->first.first, j = it->first.second;
+		if (t[i] ^ t[j] == it->second.EqualOrientation)
+			continue;
+		matrix[i][j]++, matrix[j][i]++;
+		list[i].insert(j), list[j].insert(i);
+	}
+}
+
+DPGraph::DPGraph(const DataStore &store, const vector<bool> &t, const vector<bool> &l)
+{
+	NVertices = store.ContigCount;
+	matrix.assign(NVertices, vector<int>(NVertices, 0));
+	list.assign(NVertices, set<int>());
+	int num = 0;
+	for (DataStore::LinkMap::const_iterator it = store.Begin(); it != store.End(); it++)
+	{
+		int i = it->first.first, j = it->first.second;
+		if (t[i] ^ t[j] == it->second.EqualOrientation)
+			continue;
+		if (l[num++])
 		{
-			DataStore::LinkRange range = store(i, j);
-			for (DataStore::LinkMap::const_iterator it = range.first; it != range.second; it++)
-				this->Update(i, j, (*this)(i, j) + 1);
+			matrix[i][j]++, matrix[j][i]++;
+			list[i].insert(j), list[j].insert(i);
 		}
+	}
 }
 
 DPGraph::~DPGraph()
 {
-}
-
-int DPGraph::operator() (int i, int j)
-{
-	pair<int, int> q(i, j);
-	Matrix::iterator found = data.find(q);
-	if (found != data.end())
-		return found->second;
-	else
-		return 0;
-}
-
-int DPGraph::Update(int i, int j, int newValue)
-{
-	pair<int, int> q(i, j);
-	if (newValue == 0)
-		data.erase(q);
-	else
-		data[q] = newValue;
-	return newValue;
 }
 
 int DPGraph::FindConnectedComponents(vector< vector<int> > &c)
@@ -67,10 +82,10 @@ int DPGraph::FindBridges(vector< pair<int,int> > &b)
 
 int DPGraph::RemoveBridge(int a, int b, vector< vector<int> > &c)
 {
-	int ab = (*this)(a, b), ba = (*this)(b, a);
-	Update(a, b, 0); Update(b, a, 0);
+	int ab = matrix[a][b];
+	matrix[a][b] = matrix[b][a] = 0;
 	int res = FindConnectedComponents(c);
-	Update(a, b, ab); Update(b, a, ba);
+	matrix[a][b] = matrix[b][a] = ab;
 	return res;
 }
 
@@ -78,28 +93,28 @@ void DPGraph::bidirectedConnectedComponentsDFS(int v, vector<int> &colors, int c
 {
 	component.push_back(v);
 	colors[v] = color;
-	for (int i = 0; i < NVertices; i++)
-		if (((*this)(v, i) > 0 || (*this)(i, v) > 0) && colors[i] < 0)
-			bidirectedConnectedComponentsDFS(i, colors, color, component);
+	for (set<int>::const_iterator i = list[v].begin(); i != list[v].end(); i++)
+		if (matrix[v][*i] > 0 && colors[*i] < 0)
+			bidirectedConnectedComponentsDFS(*i, colors, color, component);
 }
 
 void DPGraph::bidirectedBridgeDFS(int v, int p, vector<bool> &used, vector<int> &tIn, vector<int> &tUp, int &time, vector< pair<int,int> > &b)
 {
 	used[v] = true;
 	tIn[v] = tUp[v] = time++;
-	for (int i = 0; i < NVertices; i++)
+	for (set<int>::const_iterator i = list[v].begin(); i != list[v].end(); i++)
 	{
-		if (i == p) continue;
-		if ((*this)(v, i) > 0 || (*this)(i, v) > 0)
+		if (*i == p) continue;
+		if (matrix[v][*i] > 0)
 		{
-			if (used[i])
-				tUp[v] = min(tUp[v], tIn[i]);
+			if (used[*i])
+				tUp[v] = min(tUp[v], tIn[*i]);
 			else
 			{
-				bidirectedBridgeDFS(i, v, used, tIn, tUp, time, b);
-				tUp[v] = min(tUp[v], tUp[i]);
-				if (tUp[i] > tIn[v])
-					b.push_back(pair<int,int>(v, i));
+				bidirectedBridgeDFS(*i, v, used, tIn, tUp, time, b);
+				tUp[v] = min(tUp[v], tUp[*i]);
+				if (tUp[*i] > tIn[v])
+					b.push_back(pair<int,int>(v, *i));
 			}
 		}
 	}

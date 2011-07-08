@@ -99,6 +99,7 @@ double FixedMIQPSolver::GetDistanceSlack(int i) const
 
 double FixedMIQPSolver::GetOrderSlack(int i) const
 {
+	return 0;
 	if (status == Success)
 		return cplex.getValue(delta[i]);
 	return -Helpers::Inf;
@@ -161,12 +162,12 @@ bool FixedMIQPSolver::addLink(int a, int b, const ContigLink &link)
 	appendOrientationObjective(a, b, e, w);
 	if (!addDistanceConstraint(a, b, e, r, sigma, mu, xi_l))
 		return false;
-	if (!addOrderConstraint(a, b, e, r, delta_l))
-		return false;
+	//if (!addOrderConstraint(a, b, e, r, delta_l))
+	//	return false;
 	if (!appendDistanceObjective(a, b, e, w, xi_l))
 		return false;
-	if (!appendOrderObjective(a, b, e, w, delta_l))
-		return false;
+	//if (!appendOrderObjective(a, b, e, w, delta_l))
+	//	return false;
 	return true;
 }
 

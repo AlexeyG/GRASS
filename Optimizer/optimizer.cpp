@@ -11,6 +11,8 @@
 #include "GASolver.h"
 #include "MinMax.h"
 
+#include "ScaffoldExtractor.h"
+
 Configuration config;
 DataStore store;
 //DPSolver solver;
@@ -40,7 +42,7 @@ void printSolution(const Solver &solver)
 
 bool getOrientation(const string &name)
 {
-	return name[0] == '+';
+	return name[0] != '+';
 }
 
 void testFormulation()
@@ -75,6 +77,18 @@ void getFixed(const vector<bool> &sT, const vector<bool> &bT)
 	s1.Solve(), s2.Solve();
 	printf("Found fixed: %.6lf\n", s1.GetObjective());
 	printf("Suggested fixed: %.6lf\n", s2.GetObjective());
+
+	vector<Scaffold> i1s = ScaffoldExtractor::Extract(store, s1);
+	printf("Found fixed scaffolds: %i\n", (int)i1s.size());
+	for (int i = 0; i < i1s[0].ContigCount(); i++)
+		printf("%c%i (%i) ", (i1s[0][i].T ? '+' : '-'), i1s[0][i].Id, (int)i1s[0][i].X);
+	printf("\n");
+
+	vector<Scaffold> i2s = ScaffoldExtractor::Extract(store, s2);
+	printf("Suggested fixed scaffolds: %i\n", (int)i2s.size());
+	for (int i = 0; i < i2s[0].ContigCount(); i++)
+		printf("%c%i (%i) ", (i2s[0][i].T ? '+' : '-'), i2s[0][i].Id, (int)i2s[0][i].X);
+	printf("\n");
 }
 
 void getIterative(const vector<bool> &sT, const vector<bool> &bT)
@@ -86,14 +100,18 @@ void getIterative(const vector<bool> &sT, const vector<bool> &bT)
 	i1.Solve(), i2.Solve();
 	printf("Found iterative: %.6lf\n", i1.GetObjective());
 	printf("Suggested iterative: %.6lf\n", i2.GetObjective());
-}
 
-void scaffolAnalyze(vector<bool> t1, vector<bool> t2)
-{
-	vector< vector<int> > cc;
-	DPGraph graph(store);
-	graph.FindConnectedComponents(cc);
-	printf("Input scaffolds: %i\n", (int)cc.size());
+	vector<Scaffold> i1s = ScaffoldExtractor::Extract(i1);
+	printf("Found iterative scaffolds: %i\n", (int)i1s.size());
+	for (int i = 0; i < i1s[0].ContigCount(); i++)
+		printf("%c%i (%i) ", (i1s[0][i].T ? '+' : '-'), i1s[0][i].Id, (int)i1s[0][i].X);
+	printf("\n");
+
+	vector<Scaffold> i2s = ScaffoldExtractor::Extract(i2);
+	printf("Suggested iterative scaffolds: %i\n", (int)i2s.size());
+	for (int i = 0; i < i2s[0].ContigCount(); i++)
+		printf("%c%i (%i) ", (i2s[0][i].T ? '+' : '-'), i2s[0][i].Id, (int)i2s[0][i].X);
+	printf("\n");
 }
 
 void testGA(const GASolver &solver, const string &fileName)
@@ -110,12 +128,16 @@ void testGA(const GASolver &solver, const string &fileName)
 	}
 	int mismatch = min(forwardMismatch, reverseMismatch);
 	GAIndividual ind(tBest, solver.matrix);
-	scaffolAnalyze(solver.T, tBest);
 	printf("Found: %.6lf\n", solver.GetObjective());
 	printf("Suggested: %.6lf\n", ind.GetObjective());
 	printf("Mismatch: %i (%i %i)\n", mismatch, forwardMismatch, reverseMismatch);
 	getFixed(solver.T, tBest);
-	getIterative(solver.T, tBest);
+	//getIterative(solver.T, tBest);
+	vector<Scaffold> single = ScaffoldExtractor::Extract(store);
+	printf("Suggested scaffolds: %i\n", (int)single.size());
+	for (int i = 0; i < single[0].ContigCount(); i++)
+		printf("%c%i (%i) ", (single[0][i].T ? '-' : '+'), single[0][i].Id, (int)single[0][i].X);
+	printf("\n");
 }
 
 int countLinks(const DataStore &store)
@@ -177,7 +199,7 @@ int main(int argc, char *argv[])
 			cerr << "[-] Unable to solve the optimization problem." << endl;
 			return -3;
 		}
-		printSolution(solver);
+		//printSolution(solver);
 		testGA(solver, config.OutputFileName);
 		return 0;
 	}

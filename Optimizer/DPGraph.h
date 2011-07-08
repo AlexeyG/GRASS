@@ -2,8 +2,8 @@
 #define _DPGRAPH_H
 
 #include "DataStore.h"
-#include <map>
 #include <vector>
+#include <set>
 
 using namespace std;
 
@@ -12,11 +12,11 @@ class DPGraph
 public:
 	DPGraph();
 	DPGraph(const DataStore &store);
+	DPGraph(const DataStore &store, const vector<bool> &t);
+	DPGraph(const DataStore &store, const vector<bool> &t, const vector<bool> &l);
 	virtual ~DPGraph();
 
 public:
-	int operator() (int i, int j);
-	int Update(int i, int j, int newValue);
 	int FindConnectedComponents(vector< vector<int> > &c);
 	int FindBridges(vector< pair<int,int> > &b);
 	int RemoveBridge(int a, int b, vector< vector<int> > &c);
@@ -29,9 +29,7 @@ private:
 	void bidirectedBridgeDFS(int v, int p, vector<bool> &used, vector<int> &tIn, vector<int> &tUp, int &time, vector< pair<int,int> > &b);
 
 private:
-	typedef map<pair<int, int>, int> Matrix;
-
-private:
-	map<pair<int, int>, int> data;
+	vector< vector<int> > matrix;
+	vector< set<int> > list;
 };
 #endif
