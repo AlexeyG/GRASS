@@ -327,7 +327,7 @@ void flipOrientation(vector<FastASequence> &contigs, vector<ContigInformation> &
 		{
 			contigs[i].ReverseCompelement();
 			infos[i].ReverseOrientation = !infos[i].ReverseOrientation;
-			infos[i].Position = originalLength[i] - infos[i].Position;
+			infos[i].Position = infos[i].Position + contigs[i].Nucleotides.length();
 		}
 }
 
