@@ -8,7 +8,7 @@ using namespace std;
 class PairedInput
 {
 public:
-	PairedInput(const string &leftFileName, const string &rightFileName, double mean, double std, bool isIllumina, double weight = 1) : LeftFileName(leftFileName), RightFileName(rightFileName), Mean(mean), Std(std), IsIllumina(isIllumina), Weight(weight) {};
+	PairedInput(const string &leftFileName, const string &rightFileName, double mean, double std, bool isIllumina, double weight = 1, int mapQ = 0, int minReadLength = 0) : LeftFileName(leftFileName), RightFileName(rightFileName), Mean(mean), Std(std), IsIllumina(isIllumina), Weight(weight), MapQ(mapQ), MinReadLength(minReadLength) {};
 
 public:
 	string LeftFileName;
@@ -17,6 +17,8 @@ public:
 	double Std;
 	bool IsIllumina;
 	double Weight;
+	int MapQ;
+	int MinReadLength;
 };
 
 class BWAConfiguration

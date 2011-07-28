@@ -20,19 +20,28 @@ RelaxedFixedMIQPSolver::~RelaxedFixedMIQPSolver()
 	environment.end();
 }
 
+bool RelaxedFixedMIQPSolver::Formulate(const DataStore &store, const vector<double> &coord)
+{
+	if (status != Clean)
+		return false;
+	if (!formulate(store) || !addCoordinateConstraints(coord) || !createModel())
+	{
+		status = Fail;
+		return false;
+	}
+	status = Formulated;
+	return true;
+}
+
 bool RelaxedFixedMIQPSolver::Formulate(const DataStore &store)
 {
 	if (status != Clean)
 		return false;
-	if (store.ContigCount != ContigCount)
+	if (!formulate(store) || !createModel())
+	{
+		status = Fail;
 		return false;
-	if (!addContigs(store))
-		return false;
-	if (!addLinks(store))
-		return false;
-	appendSizeObjective();
-	if (!createModel())
-		return false;
+	}
 	status = Formulated;
 	return true;
 }
@@ -56,7 +65,10 @@ bool RelaxedFixedMIQPSolver::Solve()
 		cplex.setParam(cplex.NumericalEmphasis, 1);
 		if (Options.TimeLimit > 0)
 			cplex.setParam(cplex.TiLim, Options.TimeLimit);
-		if (!cplex.solve())
+		for (int att = 0; att < Options.LPAttempts; att++)
+			if (cplex.solve())
+				break;
+		if (cplex.getStatus() != IloAlgorithm::Optimal)
 			return false;
 		saveSolution();
 	}
@@ -108,6 +120,18 @@ double RelaxedFixedMIQPSolver::GetOrderSlack(int i) const
 int RelaxedFixedMIQPSolver::GetSlackCount() const
 {
 	return xi.getSize();
+}
+
+bool RelaxedFixedMIQPSolver::formulate(const DataStore &store)
+{
+	if (store.ContigCount != ContigCount)
+		return false;
+	if (!addContigs(store))
+		return false;
+	if (!addLinks(store))
+		return false;
+	appendSizeObjective();
+	return false;
 }
 
 bool RelaxedFixedMIQPSolver::addContigs(const DataStore &store)
@@ -262,30 +286,38 @@ bool RelaxedFixedMIQPSolver::addOrderConstraint(int a, int b, bool e, bool r)
 		if (!e && !r)
 		{
 			if (!T[a])
-				constraints.add(x[a] - x[b] + delta_l * len[b] >= -len[b]);
+				//constraints.add(x[a] - x[b] + delta_l * len[b] >= -len[b]);
+				constraints.add(x[a] - x[b] + delta_l * len[b] >= 0);
 			else
-				constraints.add(x[b] - x[a] + delta_l * len[a] >= -len[a]);
+				//constraints.add(x[b] - x[a] + delta_l * len[a] >= -len[a]);
+				constraints.add(x[b] - x[a] + delta_l * len[a] >= 0);
 		}
 		else if (!e && r)
 		{
 			if (!T[a])
-				constraints.add(x[b] - x[a] + delta_l * len[a] >= len[b]);
+				//constraints.add(x[b] - x[a] + delta_l * len[a] >= len[b]);
+				constraints.add(x[b] - len[b] - x[a] - len[a] + delta_l * len[a] >= 0);
 			else
-				constraints.add(x[a] - x[b] + delta_l * len[b] >= len[a]);
+				//constraints.add(x[a] - x[b] + delta_l * len[b] >= len[a]);
+				constraints.add(x[a] - len[a] - x[b] - len[b] + delta_l * len[b] >= 0);
 		}
 		else if (e && !r)
 		{
 			if (!T[a])
-				constraints.add(x[a] - x[b] + delta_l * len[b] >= 0);
+				//constraints.add(x[a] - x[b] + delta_l * len[b] >= 0);
+				constraints.add(x[a] - x[b] - len[b] + delta_l * len[b] >= 0);
 			else
-				constraints.add(x[b] - x[a] + delta_l * len[a] >= len[b] - len[a]);
+				//constraints.add(x[b] - x[a] + delta_l * len[a] >= len[b] - len[a]);
+				constraints.add(x[b] - len[b] - x[a] + delta_l * len[a] >= 0);
 		}
 		else if (e && r)
 		{
 			if (!T[a])
-				constraints.add(x[b] - x[a] + delta_l * len[a] >= 0);
+				//constraints.add(x[b] - x[a] + delta_l * len[a] >= 0);
+				constraints.add(x[b] - x[a] - len[a] + delta_l * len[a] >= 0);
 			else
-				constraints.add(x[a] - x[b] + delta_l * len[b] >= len[a] - len[b]);
+				//constraints.add(x[a] - x[b] + delta_l * len[b] >= len[a] - len[b]);
+				constraints.add(x[a] - len[a] - x[b] + delta_l * len[b] >= 0);
 		}
 	}
 	catch (...)
@@ -318,6 +350,22 @@ bool RelaxedFixedMIQPSolver::appendOrderObjective(int a, int b, bool e, double w
 	try
 	{
 		p = p + (1 - beta[num] + delta_beta[num] / DesiredOrderSlackMax) * w * WeightMultiplier;
+	}
+	catch (...)
+	{
+		return false;
+	}
+	return true;
+}
+
+bool RelaxedFixedMIQPSolver::addCoordinateConstraints(const vector<double> &coord)
+{
+	if ((int)coord.size() != ContigCount)
+		return false;
+	try
+	{
+		for (int i = 0; i < ContigCount; i++)
+			constraints.add(x[i] == coord[i]);
 	}
 	catch (...)
 	{

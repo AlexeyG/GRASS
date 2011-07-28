@@ -8,12 +8,13 @@ public:
 	bool UseOpportunisticSearch;
 	bool UseObjectiveHeuristic;
 	bool SuppressOutput;
-	bool VerboseOutput;
+	int VerboseOutput;
 	int TimeLimit;
 	int Threads;
 	int LPThreads;
 	int LPTimeLimit;
 	int LPAttempts;
+	int GATimeLimit;
 	int GARestarts;
 };
 #endif

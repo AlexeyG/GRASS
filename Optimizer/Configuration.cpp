@@ -1,5 +1,5 @@
 #include "Configuration.h"
-#include "Globals.h"
+#include "Defines.h"
 #include "Helpers.h"
 #include <iostream>
 #include <cstring>
@@ -12,6 +12,7 @@ using namespace std;
 Configuration::Configuration()
 {
 	Success = false;
+	RemoveAmbiguous = true;
 	Sort = true;
 	Bundle = true;
 	BundlePerGroup = false;
@@ -43,6 +44,28 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
 				printHelpMessage(serr);
 				this->Success = false;
 				break;
+			}
+			else if (!strcmp("-ambiguous", argv[i]))
+			{
+				if (argc - i - 1 < 1)
+				{
+					cerr << "[-] Parsing error in -ambiguous: must have an argument." << endl;
+					this->Success = false;
+					break;
+				}
+				i++;
+				bool sw = false;
+				if (!strcasecmp(argv[i], "yes"))
+					sw = true;
+				else if (!strcasecmp(argv[i], "no"))
+					sw = false;
+				else
+				{
+					cerr << "[-] Parsing error in -ambiguous: argument must be yes/no." << endl;
+					this->Success = false;
+					break;
+				}
+				RemoveAmbiguous = !sw;
 			}
 			else if (!strcmp("-sort", argv[i]))
 			{
@@ -345,6 +368,25 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
 				}
 				Options.LPAttempts = attempts;
 			}
+			else if (!strcmp("-ga-limit", argv[i]))
+			{
+				if (argc - i - 1 < 1)
+				{
+					cerr << "[-] Parsing error in -ga-limit: must have an argument." << endl;
+					this->Success = false;
+					break;
+				}
+				i++;
+				bool timeLimitSuccess;
+				int timeLimit = Helpers::ParseInt(argv[i], timeLimitSuccess);
+				if (!timeLimitSuccess || timeLimit < 0)
+				{
+					cerr << "[-] Parsing error in -ga-limit: time must be a positive number." << endl;
+					this->Success = false;
+					break;
+				}
+				Options.GATimeLimit = timeLimit;
+			}
 			else if (!strcmp("-ga-restarts", argv[i]))
 			{
 				if (argc - i - 1 < 1)
@@ -373,14 +415,16 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
 					break;
 				}
 				i++;
-				bool sw = false;
+				int sw = 0;
 				if (!strcasecmp(argv[i], "yes"))
-					sw = true;
+					sw = 1;
 				else if (!strcasecmp(argv[i], "no"))
-					sw = false;
+					sw = 0;
+				else if (!strcasecmp(argv[i], "more"))
+					sw = 2;
 				else
 				{
-					cerr << "[-] Parsing error in -verbose: argument must be yes/no." << endl;
+					cerr << "[-] Parsing error in -verbose: argument must be yes/no/more." << endl;
 					this->Success = false;
 					break;
 				}
@@ -413,6 +457,7 @@ void Configuration::printHelpMessage(stringstream &serr)
 	serr << "[i] By " << AUTHOR << endl;
 	serr << "[i] Usage: scaffoldOptimizer [arguments] <scaffold.opt>" << endl;
 	serr << "[i] -help                                               Print this message and exit." << endl;
+	serr << "[i] -ambiguous <yes/no>                                 Use ambiguous contig links in optimization formulation. [no]" << endl;
 	serr << "[i] -sort <yes/no>                                      Sort contig links in order to reduce non-zero elements in the optimization matrix. [yes]" << endl;
 	serr << "[i] -bundle <yes/no>                                    Bundle contig links together? [yes]" << endl;
 	serr << "[i] -bundle-groups <yes/no>                             Bundle contig links from different link groups? [yes]" << endl;
@@ -426,7 +471,8 @@ void Configuration::printHelpMessage(stringstream &serr)
 	serr << "[i] -lp-limit <seconds>                                 Time in secconds for solving a single fixed optimization problem. [30]" << endl;
 	serr << "[i] -lp-threads <seconds>                               Number of threads used for solving a single fixed optimization problem. [automatic]" << endl;
 	serr << "[i] -lp-attempts <number>                               Number of attempts to solve a single fixed optimization problem. [3]" << endl;
+	serr << "[i] -ga-limit <seconds>                                 Time in seconds for solving a single GA optimization problem. [unlimited]" << endl;
 	serr << "[i] -ga-restarts <number>                               Number of restarts before exiting GA optimization. [unlimited]" << endl;
-	serr << "[i] -verbose <yes/no>                                   Verbose output of solvers? [no] [3]" << endl;
+	serr << "[i] -verbose <yes/no/more>                              Verbose output of solvers? [no]" << endl;
 	serr << "[i] -output [output filename]                           Output filename for optimzation information. [scaffold.fasta]" << endl;
 }

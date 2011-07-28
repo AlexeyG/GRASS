@@ -16,6 +16,7 @@ public:
 	virtual ~MIQPSolver();
 
 public:
+	bool Formulate(const DataStore &store, const vector<double> &coord);
 	virtual bool Formulate(const DataStore &store);
 	virtual bool Solve();
 	virtual SolverStatus GetStatus() const;
@@ -25,6 +26,7 @@ public:
 	IloAlgorithm::Status GetCplexStatus() const;
 
 private:
+	bool formulate(const DataStore &store);
 	bool addContigs(const DataStore &store);
 	bool addContig(const Contig &contig);
 	bool addLinks(const DataStore &store);
@@ -35,11 +37,12 @@ private:
 	bool appendDistanceObjective(int a, int b, bool e, double w, const IloNumVar &xi_f_l, const IloNumVar &xi_r_l);
 	bool appendOrderObjective(int a, int b, bool e, double w, const IloNumVar &delta_f_l, const IloNumVar &delta_r_l);
 	bool appendSizeObjective();
+	bool addCoordinateConstraints(const vector<double> &coord);
 	bool createModel();
 	void saveSolution();
 
 public:
-	static const double SlackMax = 1e7;
+	static const double SlackMax = 5e7;
 	static const double CoordMax = 1e10;
 	static const double DistanceStdDev = 1.0;
 

@@ -1,6 +1,7 @@
 #include "GASolver.h"
 #include "Helpers.h"
 #include "RandomizedGreedyInitializer.h"
+#include "ExtendedFixedMIQPSolver.h"
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
@@ -24,14 +25,21 @@ GASolver::~GASolver()
 
 bool GASolver::Formulate(const DataStore &store)
 {
+	return Formulate(store, vector<double>(), vector<double>());
+}
+
+bool GASolver::Formulate(const DataStore &store, const vector<double> &distanceSlack, const vector<double> &orderSlack)
+{
 	if (status != Clean)
 		return false;
 	ContigCount = store.ContigCount;
 	U.assign(ContigCount, true);
 	T.resize(ContigCount);
 	X.resize(ContigCount); // compability
-	formulateMatrix(store);
+	formulateMatrix(store, distanceSlack, orderSlack);
 	Options.SuppressOutput = true;
+	bestObjective = -Helpers::Inf;
+	populationSize = 0;
 	status = Formulated;
 	return true;
 }
@@ -41,8 +49,6 @@ bool GASolver::Solve()
 	if (status < Formulated)
 		return false;
 
-	bestObjective = -Helpers::Inf;
-	populationSize = 0;
 	timerId = Helpers::ElapsedTimers.AddTimer();
 	iteration = 0;
 	restartCount = 0;
@@ -50,28 +56,28 @@ bool GASolver::Solve()
 	double lastTime = 0;
 	
 	omp_set_num_threads(Options.Threads);
-	localSearch(generatePopulation());
-	if (Options.VerboseOutput)
-		printf("[i] Generated population: %.2lf ms\n", getTime(lastTime));
+	localSearch(generatePopulation(populationSize));
+	if (Options.VerboseOutput > 1)
+		printf("        [i] Generated population: %.2lf ms\n", getTime(lastTime));
 	selectInitialSolution();
 	while (!shouldTerminate())
 	{
 		localSearch(crossover());
 		select();
-		if (Options.VerboseOutput)
-			printf("[i] Iteration %i: %.2lf ms\n", iteration + 1, getTime(lastTime));
+		if (Options.VerboseOutput > 1)
+			printf("        [i] Iteration %i: %.2lf ms\n", iteration + 1, getTime(lastTime));
 		if (iteration - lastSuccess >= RestartGenerations)
 		{
 			restartCount++;
 			lastSuccess = iteration;
 			localSearch(restart(1));
 			localSearch(generatePopulation(populationSize));
-			if (Options.VerboseOutput)
+			if (Options.VerboseOutput > 1)
 			{
 				if (Options.GARestarts > 0)
-					printf("   [i] Restarted: attempt %i out of %i\n", restartCount, Options.GARestarts);
+					printf("            [i] Restarted: attempt %i out of %i\n", restartCount, Options.GARestarts);
 				else
-					printf("   [i] Restarted: attempt %i\n", restartCount);
+					printf("            [i] Restarted: attempt %i\n", restartCount);
 			}
 		}
 		iteration++;
@@ -94,9 +100,17 @@ double GASolver::GetObjective() const
 	return -Helpers::Inf;
 }
 
+void GASolver::AddIndividual(const vector<bool> &t)
+{
+	if ((int)population.size() < populationSize + 1)
+		population.resize(populationSize + 1);
+	population[populationSize++] = GAIndividual(t, matrix);
+	updateSolution(population[populationSize - 1]);
+}
+
 bool GASolver::shouldTerminate()
 {
-	if (Options.TimeLimit > 0 && Helpers::ElapsedTimers.Elapsed(timerId) > (double)Options.TimeLimit * 1000)
+	if (Options.GATimeLimit > 0 && Helpers::ElapsedTimers.Elapsed(timerId) > (double)Options.GATimeLimit * 1000)
 		return true;
 	if (Options.GARestarts > 0 && restartCount >= Options.GARestarts)
 		return true;
@@ -177,13 +191,21 @@ int GASolver::restart(int from)
 	return from;
 }
 
-void GASolver::formulateMatrix(const DataStore &store)
+void GASolver::formulateMatrix(const DataStore &store, const vector<double> &distanceSlack, const vector<double> &orderSlack)
 {
 	matrix = GAMatrix(ContigCount + 1);
-	for (DataStore::LinkMap::const_iterator it = store.Begin(); it != store.End(); it++)
+	matrix[ContigCount][ContigCount] = 1;
+	int num = 0;
+	int distanceCount = distanceSlack.size(), orderCount = orderSlack.size();
+	for (DataStore::LinkMap::const_iterator it = store.Begin(); it != store.End(); it++, num++)
 	{
 		int i = it->first.first, j = it->first.second;
+		double xi = (num < distanceCount ? distanceSlack[num] : 0);
+		double delta = (num < orderCount ? orderSlack[num] : 0);
 		double w = it->second.Weight;
+		double xiP = (xi >= ExtendedFixedMIQPSolver::DesiredDistanceSlackMax ? 1 : xi / ExtendedFixedMIQPSolver::DesiredDistanceSlackMax);
+		double deltaP = (delta >= ExtendedFixedMIQPSolver::DesiredOrderSlackMax ? 1 : delta / ExtendedFixedMIQPSolver::DesiredOrderSlackMax);
+		w -= (xiP + deltaP) * w / 2;
 		if (it->second.EqualOrientation)
 		{
 			matrix[i][i] -= w;
@@ -222,8 +244,8 @@ void GASolver::updateSolution(const GAIndividual &ind)
 	double objective = ind.GetObjective();
 	if (objective > bestObjective + Helpers::Eps)
 	{
-		if (Options.VerboseOutput)
-			cout << "   [+] Best found: " << objective << endl;
+		if (Options.VerboseOutput > 1)
+			cout << "            [+] Best found: " << objective << endl;
 		bestObjective = objective;
 		for (int i = 0; i < ContigCount; i++)
 			T[i] = ind.X[i];

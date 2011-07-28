@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <cstring>
 #include "Globals.h"
+#include "Defines.h"
 #include "Configuration.h"
 #include "Sequence.h"
 #include "ContigInformation.h"

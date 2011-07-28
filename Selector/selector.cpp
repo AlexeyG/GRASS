@@ -10,202 +10,23 @@
 #include <ctime>
 #include <cstdlib>
 #include <cstring>
-#include "globals.h"
-#include "configuration.h"
-#include "helpers.h"
-#include "reader.h"
-#include "sequence.h"
-#include "writer.h"
+#include "Globals.h"
+#include "Defines.h"
+#include "Configuration.h"
+#include "Reader.h"
+#include "Sequence.h"
+#include "Writer.h"
 #include "XATag.h"
+#include "Helpers.h"
 #include "api/BamReader.h"
 
 using namespace std;
 using namespace BamTools;
 
-#define VERSION "0.002"
-#define AUTHOR "Alexey Gritsenko"
-#define DATE "17.03.2011"
-
 Configuration config;
 vector<FastASequence> contigs;
 set<Segment> segments;
 vector<FastASequence> segmentSequence;
-
-void printHelpMessage(void)
-{
-	cerr << "[i] Data selector version " << VERSION << " (" << DATE << ")" << endl;
-	cerr << "[i] By " << AUTHOR << endl;
-	cerr << "[i] Usage: dataSelector [arguments] <sequence.fasta>" << endl;
-	cerr << "[i] -help                                               Print this message and exit." << endl;
-	cerr << "[i] -chromosomes                                        Print chromosome numbers and exit." << endl;
-	cerr << "[i] -segment <start> <length> [chromosome #]            Selects segment [start; start + length) from given chromosome. [1]" << endl;
-	cerr << "                                                        Indices are 1-based." << endl;
-	cerr << "[i] -select <length> <chromosome #> [count]             Randomly selects [count] regions of given length in the given chromosome." << endl;
-	cerr << "[i] -selectall <length> [count]                         Randomly selects [count] regions of given length in every chromosome." << endl;
-	cerr << "[i] -paired <input1.bam> <input2.bam> <output prefix>   Processes paired end BAM alignments and outputs two read files with given prefix." << endl;
-	cerr << "[i] -output [sequence.fasta]                            Output filename for the selected sequences. [out.fasta]" << endl;
-}
-
-bool processCommandLine(int argc, char *argv[])
-{
-	if (argc == 1)
-	{
-		cerr << "[-] Not enough arguments. Consult -help." << endl;
-		return false;
-	}
-
-	config.OutputFastaFileName = "out.fasta";
-
-	int i = 1;
-	while (i < argc)
-	{
-		if (!strcmp("-help", argv[i]) || !strcmp("-h", argv[i]))
-		{
-			printHelpMessage();
-			return false;
-		}
-		else if (!strcmp("-chromosomes", argv[i]))
-			config.PrintChromosomeInfo = true;
-		else if (!strcmp("-segment", argv[i]))
-		{
-			if (argc - i - 1 < 2)
-			{
-				cerr << "[-] Parsing error in -segment: must have at least two arguments." << endl;
-				return false;
-			}
-			i++;
-			int start = atoi(argv[i]);
-			if (start <= 0)
-			{
-				cerr << "[-] Parsing error in -segment: start must be a positive number." << endl;
-				return false;
-			}
-			i++;
-			int length = atoi(argv[i]); 
-			if (length <= 0)
-			{
-				cerr << "[-] Parsing error in -segment: length must be a positive number." << endl;
-				return false;
-			}
-			int chromosome = 1;
-			if (i + 1 < argc && Helpers::IsNumber(argv[i + 1]))
-			{
-				i++;
-				chromosome = atoi(argv[i]);
-			}
-			if (chromosome <= 0)
-			{
-				cerr << "[-] Parsing error in -segment: chromosome must be a positive number." << endl;
-				return false;
-			}
-			start--;
-			config.Segments.push_back(Segment(start, start + length - 1, chromosome));
-		}
-		else if (!strcmp("-select", argv[i]))
-		{
-			if (argc - i - 1 < 2)
-			{
-				cerr << "[-] Parsing error in -select: must have at least two argument." << endl;
-				return false;
-			}
-			i++;
-			int selectCount = 1;
-			int selectChromosome = atoi(argv[i + 1]);
-			int selectLength = atoi(argv[i]);
-			if (selectLength <= 0)
-			{
-				cerr << "[-] Parsing error in -select: length must be a positive number." << endl;
-				return false;
-			}
-			if (selectChromosome <= 0)
-			{
-				cerr << "[-] Parsing error in -select: chromosome # must be a positive number." << endl;
-				return false;
-			}
-			i++;
-			if (i + 1 < argc && Helpers::IsNumber(argv[i + 1]))
-			{
-				i++;
-				selectCount = atoi(argv[i]);
-			}
-			if (selectCount <= 0)
-			{
-				cerr << "[-] Parsing error in -select: count must be a positive number." << endl;
-				return false;
-			}
-			config.Select.push_back(ConfigSelect(selectLength, selectChromosome, selectCount));
-		}
-		else if (!strcmp("-selectall", argv[i]))
-		{
-			if (argc - i - 1 < 1)
-			{
-				cerr << "[-] Parsing error in -selectall: must have at least one argument." << endl;
-				return false;
-			}
-			i++;
-			int selectCount = 1;
-			int selectChromosome = -1;
-			int selectLength = atoi(argv[i]);
-			if (selectLength <= 0)
-			{
-				cerr << "[-] Parsing error in -selectall: length must be a positive number." << endl;
-				return false;
-			}
-			if (i + 1 < argc && Helpers::IsNumber(argv[i + 1]))
-			{
-				i++;
-				selectCount = atoi(argv[i]);
-			}
-			if (selectCount <= 0)
-			{
-				cerr << "[-] Parsing error in -selectall: count must be a positive number." << endl;
-				return false;
-			}
-			config.Select.push_back(ConfigSelect(selectLength, selectChromosome, selectCount));
-		}
-		else if (!strcmp("-output", argv[i]))
-		{
-			if (argc - i - 1 < 1)
-			{
-				cerr << "[-] Parsing error in -output: must have an argument." << endl;
-				return false;
-			}
-			i++;
-			config.OutputFastaFileName = argv[i];
-		}
-		else if (!strcmp("-paired", argv[i]))
-		{
-			if (argc - i - 1 < 3)
-			{
-				cerr << "[-] Parsing error in -paired: must have three arguments." << endl;
-				return false;
-			}
-			i++;
-			string inputBam1 = argv[i];
-			i++;
-			string inputBam2 = argv[i];
-			i++;
-			string outputPrefix = argv[i];
-			config.PairedAlignment.push_back(PairedBam(inputBam1, inputBam2, outputPrefix));
-		}
-		else if (i == argc - 1)
-			config.InputFastaFileName = argv[argc - 1];
-		else
-		{
-			cerr << "[i] Unknown argument: " << argv[i] << endl;
-			return false;
-		}
-		i++;
-	}
-
-	if (config.InputFastaFileName == "")
-	{
-		cerr << "[-] No sequence file given." << endl;
-		return false;
-	}
-
-	return true;
-}
 
 bool readContigs(void)
 {
@@ -582,10 +403,82 @@ bool processPairedAlignments()
 	return true;
 }
 
+bool generatePairedReads(const PairedSimulation &simulation, int &counter)
+{
+	FastQWriter w1, w2;
+	bool success = w1.Open(simulation.OutputPrefix + "_1.fastq") && w2.Open(simulation.OutputPrefix + "_2.fastq");
+	if (success)
+	{
+		for (int i = 0; i < (int)segmentSequence.size(); i++)
+		{
+			int length = segmentSequence[i].Nucleotides.length();
+			int readCount = (length * simulation.Depth) / (2 * simulation.ReadLengthMean);
+			//printf("Mean %.2lf, Std %.2lf\n", simulation.ReadLengthMean, simulation.ReadLengthStd);
+			while (readCount-- > 0)
+			{
+				int len1, len2, insert;
+				len1 = len2 = insert = 0;
+				while (len1 <= 0)
+					len1 = Helpers::RandomNormal(simulation.ReadLengthMean, simulation.ReadLengthStd);
+				while (len2 <= 0)
+					len2 = Helpers::RandomNormal(simulation.ReadLengthMean, simulation.ReadLengthStd);
+				while (insert <= 0)
+					insert = Helpers::RandomNormal(simulation.InsertSizeMean, simulation.InsertSizeStd);
+				if (insert < len1 + len2)
+					insert = len1 + len2;
+				int pos1 = rand() % length;
+				///printf("%i : %i-%i %i %i-%i\n", length, pos1, len1, insert, pos1 + len1 + insert, len2);
+				//printf("Length: %i --- %i\n", len1, len2);
+				if (pos1 + insert < length)
+				{
+					FastQSequence l,r;
+					string seq1 = segmentSequence[i].Nucleotides.substr(pos1, len1);
+					string seq2 = segmentSequence[i].Nucleotides.substr(pos1 + insert - len2, len2);
+					string qual1(len1, '~'), qual2(len2, '~');
+					if (simulation.IsIllumina)
+					{
+						l = FastQSequence(seq1, Helpers::ItoStr(counter) + ".1|" + Helpers::ItoStr(pos1), qual1), r = FastQSequence(seq2, Helpers::ItoStr(counter) + ".2|" + Helpers::ItoStr(pos1 + insert - len2), qual2);
+						r.ReverseCompelement();
+					}
+					else
+						l = FastQSequence(seq2, Helpers::ItoStr(counter) + ".1|" + Helpers::ItoStr(pos1), qual2), r = FastQSequence(seq1, Helpers::ItoStr(counter) + ".2|" + Helpers::ItoStr(pos1 + insert - len2), qual1);
+					/*if (rand() < RAND_MAX / 2)
+					{
+						FastQSequence t(l);
+						l = r;
+						r = t;
+						l.ReverseCompelement(), r.ReverseCompelement();
+					}*/
+					w1.Write(l), w2.Write(r);
+					counter++;
+				}
+			}
+		}
+	}
+	w1.Close();
+	w2.Close();
+	return success;
+}
+
+bool generatePairedReads()
+{
+	int n = config.PairedReadSimulation.size();
+	int counter = 0;
+	for (int i = 0; i < n; i++)
+		if (!generatePairedReads(config.PairedReadSimulation[i], counter))
+		{
+			cerr << "   [-] Unable to generate paired reads with prefix " << config.PairedReadSimulation[i].OutputPrefix << endl;
+			return false;
+		}
+		else
+			cerr << "   [+] Generated paired reads with prefix " << config.PairedReadSimulation[i].OutputPrefix << endl;
+	return true;
+}
+
 int main(int argc, char *argv[])
 {
 	srand((unsigned int)time(NULL));
-	if (processCommandLine(argc, argv))
+	if (config.ProcessCommandLine(argc, argv))
 	{
 		if (!readContigs())
 		{
@@ -611,7 +504,11 @@ int main(int argc, char *argv[])
 		cerr << "[i] Processing paired alignments." << endl;
 		if (!processPairedAlignments())
 			return -5;
+		cerr << "[i] Generating simulated paired reads." << endl;
+		if (!generatePairedReads())
+			return -6;
 		return 0;
 	}
+	cerr << config.LastError;
 	return -1;
 }

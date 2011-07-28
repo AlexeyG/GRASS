@@ -39,7 +39,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;C:\Users\AlexeyG\Documents\Univ\Thesis project\Apps\pezmaster31-bamtools-577b603\src</IncludePath>
+    <IncludePath>C:\Users\AlexeyG\Documents\Univ\Thesis project\Tools\Common;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;C:\Users\AlexeyG\Documents\Univ\Thesis project\Apps\pezmaster31-bamtools-577b603\src</IncludePath>
+    <SourcePath>C:\Users\AlexeyG\Documents\Univ\Thesis project\Tools\Common;$(VCInstallDir)atlmfc\src\mfc;$(VCInstallDir)atlmfc\src\mfcm;$(VCInstallDir)atlmfc\src\atl;$(VCInstallDir)crt\src;</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -75,23 +76,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="configuration.cpp" />
-    <ClCompile Include="helpers.cpp" />
-    <ClCompile Include="reader.cpp" />
+    <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="selector.cpp" />
-    <ClCompile Include="sequence.cpp" />
-    <ClCompile Include="writer.cpp" />
-    <ClCompile Include="XATag.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="configuration.h" />
-    <ClInclude Include="globals.h" />
-    <ClInclude Include="helpers.h" />
-    <ClInclude Include="minmax.h" />
-    <ClInclude Include="reader.h" />
-    <ClInclude Include="sequence.h" />
-    <ClInclude Include="writer.h" />
-    <ClInclude Include="XATag.h" />
+    <ClInclude Include="Configuration.h" />
+    <ClInclude Include="Defines.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

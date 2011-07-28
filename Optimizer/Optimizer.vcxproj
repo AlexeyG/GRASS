@@ -39,8 +39,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\AlexeyG\Documents\Univ\Thesis project\Apps\pezmaster31-bamtools-577b603\src;C:\ILOG\CPLEX_Studio_AcademicResearch122\concert\include\;C:\ILOG\CPLEX_Studio_AcademicResearch122\cplex\include\;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\ILOG\CPLEX_Studio_AcademicResearch122\concert\lib\x64_windows_vs2008\stat_mda;C:\ILOG\CPLEX_Studio_AcademicResearch122\cplex\lib\x64_windows_vs2008\stat_mda;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\AlexeyG\Documents\Univ\Thesis project\Tools\Common;C:\Users\AlexeyG\Documents\Univ\Thesis project\Apps\pezmaster31-bamtools-577b603\src;C:\ILOG\CPLEX_Studio_AcademicResearch122\concert\include\;C:\ILOG\CPLEX_Studio_AcademicResearch122\cplex\include\;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\AlexeyG\Documents\Univ\Thesis project\Tools\Common;C:\ILOG\CPLEX_Studio_AcademicResearch122\concert\lib\x64_windows_vs2008\stat_mda;C:\ILOG\CPLEX_Studio_AcademicResearch122\cplex\lib\x64_windows_vs2008\stat_mda;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -78,53 +78,46 @@
   <ItemGroup>
     <ClCompile Include="BranchAndBound.cpp" />
     <ClCompile Include="Configuration.cpp" />
+    <ClCompile Include="EMSolver.cpp" />
     <ClCompile Include="ExtendedFixedMIQPSolver.cpp" />
     <ClCompile Include="GAMatrix.cpp" />
+    <ClCompile Include="GraphViz.cpp" />
     <ClCompile Include="IterativeSolver.cpp" />
     <ClCompile Include="RandomizedGreedyInitializer.cpp" />
     <ClCompile Include="RelaxedFixedMIQPSolver.cpp" />
+    <ClCompile Include="ScaffoldComparer.cpp" />
     <ClCompile Include="ScaffoldExtractor.cpp" />
     <ClCompile Include="SolverConfiguration.cpp" />
-    <ClCompile Include="DataStore.cpp" />
-    <ClCompile Include="DataStoreReader.cpp" />
     <ClCompile Include="DPGraph.cpp" />
     <ClCompile Include="DPSolver.cpp" />
     <ClCompile Include="FixedMIQPSolver.cpp" />
     <ClCompile Include="GAIndividual.cpp" />
     <ClCompile Include="GASolver.cpp" />
-    <ClCompile Include="Helpers.cpp" />
     <ClCompile Include="MIQPSolver.cpp" />
     <ClCompile Include="optimizer.cpp" />
-    <ClCompile Include="Reader.cpp" />
-    <ClCompile Include="Sequence.cpp" />
     <ClCompile Include="Solver.cpp" />
-    <ClCompile Include="Timers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BranchAndBound.h" />
     <ClInclude Include="Configuration.h" />
+    <ClInclude Include="EMSolver.h" />
     <ClInclude Include="ExtendedFixedMIQPSolver.h" />
     <ClInclude Include="GAMatrix.h" />
+    <ClInclude Include="GraphViz.h" />
     <ClInclude Include="IterativeSolver.h" />
     <ClInclude Include="RandomizedGreedyInitializer.h" />
     <ClInclude Include="RelaxedFixedMIQPSolver.h" />
+    <ClInclude Include="ScaffoldComparer.h" />
     <ClInclude Include="ScaffoldExtractor.h" />
     <ClInclude Include="SolverConfiguration.h" />
-    <ClInclude Include="DataStore.h" />
-    <ClInclude Include="DataStoreReader.h" />
     <ClInclude Include="DPGraph.h" />
     <ClInclude Include="DPSolver.h" />
     <ClInclude Include="FixedMIQPSolver.h" />
     <ClInclude Include="GAIndividual.h" />
     <ClInclude Include="GASolver.h" />
-    <ClInclude Include="Globals.h" />
-    <ClInclude Include="Helpers.h" />
-    <ClInclude Include="MinMax.h" />
+    <ClInclude Include="Defines.h" />
     <ClInclude Include="MIQPSolver.h" />
-    <ClInclude Include="Reader.h" />
-    <ClInclude Include="Sequence.h" />
     <ClInclude Include="Solver.h" />
-    <ClInclude Include="Timers.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

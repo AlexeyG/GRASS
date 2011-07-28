@@ -14,6 +14,7 @@ public:
 	virtual ~RelaxedFixedMIQPSolver();
 
 public:
+	bool Formulate(const DataStore &store, const vector<double> &coord);
 	virtual bool Formulate(const DataStore &store);
 	virtual bool Solve();
 	virtual SolverStatus GetStatus() const;
@@ -26,6 +27,7 @@ public:
 	int GetSlackCount() const;
 
 private:
+	bool formulate(const DataStore &store);
 	bool addContigs(const DataStore &store);
 	bool addContig(const Contig &contig);
 	bool addLinks(const DataStore &store);
@@ -36,6 +38,7 @@ private:
 	bool appendDistanceObjective(int a, int b, bool e, double w, int num);
 	bool appendOrderObjective(int a, int b, bool e, double w, int num);
 	void appendSizeObjective();
+	bool addCoordinateConstraints(const vector<double> &coord);
 	bool createModel();
 	void saveSolution();
 
@@ -43,11 +46,11 @@ public:
 	SolverConfiguration CPLEXOptions;
 
 public:
-	static const double SlackMax = 5e5;
+	static const double SlackMax = 5e7;
 	static const double CoordMax = 1e10;
 	static const double WeightMultiplier = 1e7;
 	static const double DesiredDistanceSlackMax = 6;
-	static const double DesiredOrderSlackMax = 6;
+	static const double DesiredOrderSlackMax = 1;
 
 public:
 	vector<bool> Incumbent;

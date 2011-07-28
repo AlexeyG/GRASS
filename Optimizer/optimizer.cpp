@@ -10,14 +10,23 @@
 #include "IterativeSolver.h"
 #include "GASolver.h"
 #include "MinMax.h"
+#include "BranchAndBound.h"
 
 #include "ScaffoldExtractor.h"
+#include "ScaffoldComparer.h"
+
+#include "GraphViz.h"
+
+#include "EMSolver.h"
+
+using namespace std;
 
 Configuration config;
 DataStore store;
-//DPSolver solver;
-//MIQPSolver solver;
-GASolver solver;
+DPSolver solver;
+//EMSolver solver;
+
+FILE *out;
 
 bool readStore(const string &fileName, DataStore &store)
 {
@@ -45,11 +54,21 @@ bool getOrientation(const string &name)
 	return name[0] != '+';
 }
 
+int getDistance(const ScaffoldContig &a, const ScaffoldContig &b)
+{
+	int len = b.X - a.X;
+	if (!a.T)
+		len -= a.Length;
+	if (b.T)
+		len -= b.Length;
+	return len;
+}
+
 void testFormulation()
 {
 	vector<bool> uBest(store.ContigCount, 1), tBest(store.ContigCount);
 	for (int i = 0; i < store.ContigCount; i++)
-		tBest[i] = !getOrientation(store[i].Sequence.Name());
+		tBest[i] = getOrientation(store[i].Sequence.Name());
 	IterativeSolver solver(uBest, tBest, store.ContigCount);
 	solver.Options = config.Options;
 	if (!solver.Formulate(store))
@@ -80,18 +99,34 @@ void getFixed(const vector<bool> &sT, const vector<bool> &bT)
 
 	vector<Scaffold> i1s = ScaffoldExtractor::Extract(store, s1);
 	printf("Found fixed scaffolds: %i\n", (int)i1s.size());
-	for (int i = 0; i < i1s[0].ContigCount(); i++)
-		printf("%c%i (%i) ", (i1s[0][i].T ? '+' : '-'), i1s[0][i].Id, (int)i1s[0][i].X);
-	printf("\n");
+	for (int j = 0; j < (int)i1s.size(); j++)
+	{
+		printf("Scaffold %i:\n", j);
+		for (int i = 0; i < i1s[j].ContigCount(); i++)
+			printf("%c%i ", (i1s[j][i].T ? '-' : '+'), i1s[j][i].Id);
+		printf("\n");
+		for (int i = 1; i < i1s[j].ContigCount(); i++)
+			printf("%i ", getDistance(i1s[j][i - 1], i1s[j][i]));
+		printf("\n");
+	}
 
 	vector<Scaffold> i2s = ScaffoldExtractor::Extract(store, s2);
 	printf("Suggested fixed scaffolds: %i\n", (int)i2s.size());
-	for (int i = 0; i < i2s[0].ContigCount(); i++)
-		printf("%c%i (%i) ", (i2s[0][i].T ? '+' : '-'), i2s[0][i].Id, (int)i2s[0][i].X);
-	printf("\n");
+	for (int j = 0; j < (int)i2s.size(); j++)
+	{
+		printf("Scaffold %i:\n", j);
+		for (int i = 0; i < i2s[j].ContigCount(); i++)
+			printf("%c%i ", (i2s[j][i].T ? '-' : '+'), i2s[j][i].Id);
+		printf("\n");
+		for (int i = 1; i < i2s[j].ContigCount(); i++)
+			printf("%i ", getDistance(i2s[j][i - 1], i2s[j][i]));
+		printf("\n");
+	}
+	for (int i = 0; i < s2.GetSlackCount(); i++)
+		printf("xi = %.3lf delta = %.3lf\n", s2.GetDistanceSlack(i), s2.GetOrderSlack(i));
 }
 
-void getIterative(const vector<bool> &sT, const vector<bool> &bT)
+void getIterative(const vector<bool> &sT, const vector<bool> &bT, const vector<Scaffold> &truth)
 {
 	vector<bool> u(store.ContigCount, true);
 	IterativeSolver i1(u, sT, u.size()), i2(u, bT, u.size());
@@ -101,17 +136,25 @@ void getIterative(const vector<bool> &sT, const vector<bool> &bT)
 	printf("Found iterative: %.6lf\n", i1.GetObjective());
 	printf("Suggested iterative: %.6lf\n", i2.GetObjective());
 
-	vector<Scaffold> i1s = ScaffoldExtractor::Extract(i1);
-	printf("Found iterative scaffolds: %i\n", (int)i1s.size());
+	vector<Scaffold> i1s = ScaffoldExtractor::Extract(i1), i2s = ScaffoldExtractor::Extract(i2);
+
+	printf("Found iterative scaffolds: %i, mismatch %i\n", (int)i1s.size(), ScaffoldComparer::Compare(i1s, truth));
 	for (int i = 0; i < i1s[0].ContigCount(); i++)
-		printf("%c%i (%i) ", (i1s[0][i].T ? '+' : '-'), i1s[0][i].Id, (int)i1s[0][i].X);
+		printf("%c%i ", (i1s[0][i].T ? '-' : '+'), i1s[0][i].Id);
+	printf("\n");
+	for (int i = 1; i < i1s[0].ContigCount(); i++)
+		printf("%i ", getDistance(i1s[0][i - 1], i1s[0][i]));
 	printf("\n");
 
-	vector<Scaffold> i2s = ScaffoldExtractor::Extract(i2);
-	printf("Suggested iterative scaffolds: %i\n", (int)i2s.size());
+	printf("Suggested iterative scaffolds: %i, mismatch %i\n", (int)i2s.size(), ScaffoldComparer::Compare(i2s, truth));
 	for (int i = 0; i < i2s[0].ContigCount(); i++)
-		printf("%c%i (%i) ", (i2s[0][i].T ? '+' : '-'), i2s[0][i].Id, (int)i2s[0][i].X);
+		printf("%c%i ", (i2s[0][i].T ? '-' : '+'), i2s[0][i].Id);
 	printf("\n");
+	for (int i = 1; i < i2s[0].ContigCount(); i++)
+		printf("%i ", getDistance(i2s[0][i - 1], i2s[0][i]));
+	printf("\n");
+	//for (int i = 0; i < i2.GetSlackCount(); i++)
+	//	printf("xi = %.3lf delta = %.3lf\n", i2.GetDistanceSlack(i), i2.GetOrderSlack(i));
 }
 
 void testGA(const GASolver &solver, const string &fileName)
@@ -120,7 +163,7 @@ void testGA(const GASolver &solver, const string &fileName)
 	vector<bool> tBest(store.ContigCount);
 	for (int i = 0; i < store.ContigCount; i++)
 	{
-		tBest[i] = !getOrientation(store[i].Sequence.Name());
+		tBest[i] = getOrientation(store[i].Sequence.Name());
 		if (tBest[i] != solver.T[i])
 			forwardMismatch++;
 		if (tBest[i] != !solver.T[i])
@@ -131,12 +174,17 @@ void testGA(const GASolver &solver, const string &fileName)
 	printf("Found: %.6lf\n", solver.GetObjective());
 	printf("Suggested: %.6lf\n", ind.GetObjective());
 	printf("Mismatch: %i (%i %i)\n", mismatch, forwardMismatch, reverseMismatch);
-	getFixed(solver.T, tBest);
-	//getIterative(solver.T, tBest);
+	//getFixed(solver.T, tBest);
 	vector<Scaffold> single = ScaffoldExtractor::Extract(store);
+	for (int i = 0; i < (int)single.size(); i++)
+		single[i].NormalizeCoordindates();
+	getIterative(solver.T, tBest, single);
 	printf("Suggested scaffolds: %i\n", (int)single.size());
 	for (int i = 0; i < single[0].ContigCount(); i++)
-		printf("%c%i (%i) ", (single[0][i].T ? '-' : '+'), single[0][i].Id, (int)single[0][i].X);
+		printf("%c%i ", (single[0][i].T ? '-' : '+'), single[0][i].Id);
+	printf("\n");
+	for (int i = 1; i < single[0].ContigCount(); i++)
+		printf("%i ", getDistance(single[0][i - 1], single[0][i]));
 	printf("\n");
 }
 
@@ -155,6 +203,159 @@ void writeLog(const string &fileName, int success, double time, int linksBefore,
 	fclose(out);
 }
 
+void testBnB()
+{
+	vector<bool> tBest(store.ContigCount);
+	for (int i = 0; i < store.ContigCount; i++)
+		tBest[i] = getOrientation(store[i].Sequence.Name());
+	BranchAndBound bnb(vector<bool>(store.ContigCount, true), tBest, store.ContigCount);
+	IterativeSolver it(vector<bool>(store.ContigCount, true), tBest, store.ContigCount);
+	it.Options = bnb.Options = config.Options;
+	if (!bnb.Formulate(store) || !bnb.Solve())
+	{
+		printf("Unable to formulate or solve bnb\n");
+		return;
+	}
+	if (!it.Formulate(store) || !it.Solve())
+	{
+		printf("Unable to formulate or solve itratative\n");
+		return;
+	}
+	vector<Scaffold> bnbScaffold = ScaffoldExtractor::Extract(store, bnb);
+	vector<Scaffold> itScaffold = ScaffoldExtractor::Extract(it);
+	vector<Scaffold> truth = ScaffoldExtractor::Extract(store);
+	for (int i = 0; i < (int)truth.size(); i++)
+		truth[i].NormalizeCoordindates();
+	fprintf(out, "Greedy: %.6lf\n", it.GetObjective());
+	fprintf(out, "BnB: %.6lf\n", bnb.GetObjective());
+	fprintf(out, "Simulation scaffolds: %i\n", (int)truth.size());
+	for (int i = 0; i < truth[0].ContigCount(); i++)
+		fprintf(out, "%c%i ", (truth[0][i].T ? '-' : '+'), truth[0][i].Id);
+	fprintf(out, "\n");
+	for (int i = 1; i < truth[0].ContigCount(); i++)
+		fprintf(out, "%i ", getDistance(truth[0][i - 1], truth[0][i]));
+	fprintf(out, "\n");
+
+	fprintf(out, "Greedy scaffolds: %i, mismatch %i\n", (int)itScaffold.size(), ScaffoldComparer::Compare(itScaffold, truth));
+	for (int i = 0; i < itScaffold[0].ContigCount(); i++)
+		fprintf(out, "%c%i ", (itScaffold[0][i].T ? '-' : '+'), itScaffold[0][i].Id);
+	fprintf(out, "\n");
+	for (int i = 1; i < itScaffold[0].ContigCount(); i++)
+		fprintf(out, "%i ", getDistance(itScaffold[0][i - 1], itScaffold[0][i]));
+	fprintf(out, "\n");
+
+	fprintf(out, "BnB scaffolds: %i, mismatch %i\n", (int)bnbScaffold.size(), ScaffoldComparer::Compare(bnbScaffold, truth));
+	for (int i = 0; i < bnbScaffold[0].ContigCount(); i++)
+		fprintf(out, "%c%i ", (bnbScaffold[0][i].T ? '-' : '+'), bnbScaffold[0][i].Id);
+	fprintf(out, "\n");
+	for (int i = 1; i < bnbScaffold[0].ContigCount(); i++)
+		fprintf(out, "%i ", getDistance(bnbScaffold[0][i - 1], bnbScaffold[0][i]));
+	fprintf(out, "\n");
+
+	fprintf(out, "Distance between scaffolds: %i %i\n", ScaffoldComparer::Compare(itScaffold, bnbScaffold), ScaffoldComparer::Compare(bnbScaffold, itScaffold));
+}
+
+double getRealDistance(const ScaffoldContig &a, const ScaffoldContig &b)
+{
+	double len = 0;
+	if (a.X < b.X)
+	{
+		len += b.X - a.X;
+		if (a.T)
+			len += a.Length;
+		if (!b.T)
+			len += b.Length;
+	}
+	else
+	{
+		len += a.X - b.X;
+		if (b.T)
+			len += b.Length;
+		if (!a.T)
+			len += a.Length;
+	}
+	return len;
+}
+
+ScaffoldContig getWithId(const vector<Scaffold> &s, int id)
+{
+	int n = s.size();
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < s[i].ContigCount(); j++)
+			if (s[i][j].Id == id)
+				return s[i][j];
+	return ScaffoldContig(-1, false, 0, 0);
+}
+
+void testGround(const DPSolver &found)
+{
+	vector<Scaffold> truth = ScaffoldExtractor::Extract(store);
+	for (int i = 0; i < (int)truth.size(); i++)
+		truth[i].NormalizeCoordindates();
+	vector<double> coordBest(store.ContigCount);
+	vector<bool> tBest(store.ContigCount);
+	for (int i = 0; i < (int)truth.size(); i++)
+		for (int j = 0; j < truth[i].ContigCount(); j++)
+			coordBest[truth[i][j].Id] = truth[i][j].X, tBest[truth[i][j].Id] = truth[i][j].T;
+	IterativeSolver want(vector<bool>(tBest.size(), true), tBest, tBest.size());
+	want.Options = config.Options;
+	if (!want.Formulate(store, coordBest) || !want.Solve())
+	{
+		fprintf(out, "Unable to formulate or solve WANT\n");
+		return;
+	}
+	vector<Scaffold> foundScaffold = ScaffoldExtractor::Extract(found);
+	vector<Scaffold> wantScaffold = ScaffoldExtractor::Extract(want);
+	
+	fprintf(out, "Found scaffolds: %i\n", (int)foundScaffold.size());
+	for (int j = 0; j < (int)foundScaffold.size(); j++)
+	{
+		for (int i = 0; i < foundScaffold[j].ContigCount(); i++)
+			fprintf(out, "%c%i ", (foundScaffold[j][i].T ? '-' : '+'), foundScaffold[j][i].Id);
+		fprintf(out, "\n");
+		for (int i = 1; i < foundScaffold[j].ContigCount(); i++)
+			fprintf(out, "%i ", getDistance(foundScaffold[j][i - 1], foundScaffold[j][i]));
+		fprintf(out, "\n");
+	}
+
+	fprintf(out, "Want scaffolds: %i\n", (int)wantScaffold.size());
+	for (int j = 0; j < (int)wantScaffold.size(); j++)
+	{
+		for (int i = 0; i < wantScaffold[j].ContigCount(); i++)
+			fprintf(out, "%c%i ", (wantScaffold[j][i].T ? '-' : '+'), wantScaffold[j][i].Id);
+		fprintf(out, "\n");
+		for (int i = 1; i < wantScaffold[j].ContigCount(); i++)
+			fprintf(out, "%i ", getDistance(wantScaffold[j][i - 1], wantScaffold[j][i]));
+		fprintf(out, "\n");
+	}
+	fprintf(out, "Found: %.5lf Want: %.5lf\n", found.GetObjective(), want.GetObjective());
+	fprintf(out, "Orientation mismatch: %i\n", ScaffoldComparer::OrientationDistance(foundScaffold, wantScaffold));
+	fprintf(out, "Found distance: %i\n", ScaffoldComparer::Compare(foundScaffold, truth));
+	fprintf(out, "Want distance: %i\n", ScaffoldComparer::Compare(wantScaffold, truth));
+	
+	/*int id = 0;
+    int pos = 0;
+    for (DataStore::LinkMap::iterator it = store.Begin(); it != store.End(); it++, pos++)
+    {
+		int a = it->first.first, b = it->first.second;
+		if ((tBest[a] ^ tBest[b]) != it->second.EqualOrientation)
+		{
+			fprintf(stderr, "%i - Linked: d(%i,%i) = %8.2f +/- %8.2f; orientation: %8s; order: %7s with weight %.5lf.\n", pos, it->second.First, it->second.Second, it->second.Mean, it->second.Std, (it->second.EqualOrientation ? "equal" : "opposite"), (it->second.ForwardOrder ? "forward" : "reverse"), it->second.Weight);
+			fprintf(stderr, "Distance: %8.2f - %8.2f\n", getRealDistance(getWithId(foundScaffold, a), getWithId(foundScaffold, b)), getRealDistance(getWithId(wantScaffold, a), getWithId(wantScaffold, b)));
+			printf("xi = %.3lf delta = %.3lf | xi = %.3lf delta = %.3lf\n", found.GetDistanceSlack(id), found.GetOrderSlack(id), want.GetDistanceSlack(id), want.GetOrderSlack(id));
+			printf("\n");
+			id++;
+		}
+	}*/
+
+	/*GraphViz graphWant(wantScaffold, store, want), graphFound(foundScaffold, store, found);
+	FILE *wantFile = fopen((config.OutputFileName + "_want.gv").c_str(), "w"), *foundFile = fopen((config.OutputFileName + "_found.gv").c_str(), "w");
+	fprintf(wantFile, "%s\n", graphWant.GetString().c_str());
+	fprintf(foundFile, "%s\n", graphFound.GetString().c_str());
+	fclose(wantFile);
+	fclose(foundFile);*/
+}
+
 int main(int argc, char *argv[])
 {
 	Helpers::ElapsedTimers.AddTimer();
@@ -168,6 +369,13 @@ int main(int argc, char *argv[])
 			return -1;
 		}
 		cerr << "[+] Read optimization problem (" << config.InputFileName << ")." << endl;
+		//for (DataStore::LinkMap::iterator it = store.Begin(); it != store.End(); it++)
+		//	fprintf(stderr, "Group %i - Linked: d(%i,%i) = %8.2f +/- %8.2f; orientation: %8s; order: %7s with weight %.5lf.\n", it->second.GetGroupID(), it->second.First, it->second.Second, it->second.Mean, it->second.Std, (it->second.EqualOrientation ? "equal" : "opposite"), (it->second.ForwardOrder ? "forward" : "reverse"), it->second.Weight);
+		if (config.RemoveAmbiguous)
+		{
+			store.RemoveAmbiguous();
+			cerr << "[+] Removed ambiguous links." << endl;
+		}
 		if (config.PrintMatrix)
 		{
 			cerr << "[i] Original matrix:" << endl;
@@ -188,6 +396,7 @@ int main(int argc, char *argv[])
 			cerr << "[i] Optimized matrix:" << endl;
 			Helpers::PrintDataStore(store);
 		}
+		//testBnB();
 		if (!solver.Formulate(store))
 		{
 			cerr << "[-] Unable to formulate the optimization problem." << endl;
@@ -199,8 +408,11 @@ int main(int argc, char *argv[])
 			cerr << "[-] Unable to solve the optimization problem." << endl;
 			return -3;
 		}
+		cerr << "[+] Solved the optimization problem." << endl;
 		//printSolution(solver);
-		testGA(solver, config.OutputFileName);
+		out = fopen(config.OutputFileName.c_str(), "w");
+		testGround(solver);
+		fclose(out);
 		return 0;
 	}
 	cerr << config.LastError;

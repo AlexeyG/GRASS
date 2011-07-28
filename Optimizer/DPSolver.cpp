@@ -1,5 +1,5 @@
 #include "DPSolver.h"
-#include "MIQPSolver.h"
+#include "EMSolver.h"
 #include "Helpers.h"
 #include "MinMax.h"
 
@@ -35,12 +35,11 @@ bool DPSolver::Solve()
 	bool result;
 	if (status < Formulated)
 		return false;
+	fprintf(stderr, "[i] Have %i connected components.\n", nComponents);
 	if (nComponents == 0)
 		result = true;
-	else if (nComponents > 1)
-		result = processComponents();
 	else
-		result = processSingleProblem();
+		result = processComponents();
 	status = (result ? Success : Fail);
 	return result;
 }
@@ -57,63 +56,61 @@ double DPSolver::GetObjective() const
 	return -Helpers::Inf;
 }
 
-bool DPSolver::processSingleProblem()
-{
-	MIQPSolver solver;
-	solver.Options = Options;
-	int nContigs = store.ContigCount;
-	bool form = solver.Formulate(store);
-	bool solve = form && solver.Solve();
-	if (form && solve)
-	{
-		for (int i = 0; i < nContigs; i++)
-			U[i] = solver.U[i], T[i] = solver.T[i], X[i] = solver.X[i];
-		objectiveValue = solver.GetObjective();
-		return true;
-	}
-	return false;
-}
-
 bool DPSolver::processComponents()
 {
 	bool result = true;
 	vector<double> minX(nComponents);
 	vector<double> maxX(nComponents);
+	vector< vector<int> > backTransform(nComponents);
+	vector<Scaffold> scaffolds;
 	for (int i = 0; i < nComponents; i++)
 	{
+		int nContigsComponent = connectedComponents[i].size();
+		fprintf(stderr, "    [i] Processing component %i of size %i.\n", i + 1, nContigsComponent);
 		DataStore compStore;
-		MIQPSolver solver;
-		solver.Options = Options;
-		compStore.Extract(connectedComponents[i], compStore);
-		if (!solver.Formulate(compStore) || !solver.Solve())
+		EMSolver *solver = new EMSolver();
+		solver->Options = Options;
+		store.Extract(connectedComponents[i], compStore, backTransform[i]);
+		if (!solver->Formulate(compStore) || !solver->Solve())
 		{
+			fprintf(stderr, "        [-] Unable to solve or formulate.\n");
 			result = false;
+			delete solver;
 			break;
 		}
-		objectiveValue += solver.GetObjective();
+		else
+			fprintf(stderr, "        [+] Formulated and solved subproblem.\n");
+		scaffolds = ScaffoldExtractor::Extract(*solver);
+		for (vector<Scaffold>::iterator it = scaffolds.begin(); it != scaffolds.end(); it++)
+			it->ApplyTransform(backTransform[i]);
+		Scaffolds.insert(Scaffolds.end(), scaffolds.begin(), scaffolds.end());
+		objectiveValue += solver->GetObjective();
 		minX[i] =   Helpers::Inf;
 		maxX[i] = - Helpers::Inf;
-		int nContigsComponent = connectedComponents[i].size();
 		for (int j = 0; j < nContigsComponent; j++)
 		{
-			U[connectedComponents[i][j]] = solver.U[j];
-			T[connectedComponents[i][j]] = solver.T[j];
-			X[connectedComponents[i][j]] = solver.X[j];
-			if (solver.U[j])
+			int id = backTransform[i][j];
+			U[id] = solver->U[j];
+			T[id] = solver->T[j];
+			X[id] = solver->X[j];
+			if (solver->U[j])
 			{
-				minX[i] = min(minX[i], (T[i] == 1 ? solver.X[j] - compStore[j].Sequence.Nucleotides.length() + 1 : solver.X[j]));
-				maxX[i] = max(maxX[i], (T[i] == 0 ? solver.X[j] + compStore[j].Sequence.Nucleotides.length() - 1 : solver.X[j]));
+				int contigLen = compStore[j].Sequence.Nucleotides.length();
+				minX[i] = min(minX[i], (T[i] == 1 ? solver->X[j] - contigLen + 1 : solver->X[j]));
+				maxX[i] = max(maxX[i], (T[i] == 0 ? solver->X[j] + contigLen - 1 : solver->X[j]));
 			}
 		}
+		delete solver;
 	}
+	fprintf(stderr, "    [i] Adjusting subscaffold positions\n");
 	for (int i = 0; i < nComponents; i++)
 	{
 		int shift = minX[i];
 		int offset = (i > 0 ? maxX[i - 1] + ScaffoldSeprator : 0);
 		int nContigsComponent = connectedComponents[i].size();
 		for (int j = 0; j < nContigsComponent; j++)
-			if (U[connectedComponents[i][j]])
-				X[connectedComponents[i][j]] -= shift - offset;
+			if (U[backTransform[i][j]])
+				X[backTransform[i][j]] -= shift - offset;
 	}
 	return result;
 }

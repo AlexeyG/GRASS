@@ -2,7 +2,6 @@
 #include <ctime>
 #include <cstdlib>
 #include <vector>
-#include "Globals.h"
 #include "Configuration.h"
 #include "DataStore.h"
 #include "PairedReadConverter.h"
@@ -56,7 +55,7 @@ bool writeStore(const DataStore &store, const string &fileName)
 
 int main(int argc, char *argv[])
 {
-	//srand((unsigned int)time(NULL));
+	srand((unsigned int)time(NULL));
 	if (config.ProcessCommandLine(argc, argv))
 	{
 		if (!store.ReadContigs(config.InputFileName))

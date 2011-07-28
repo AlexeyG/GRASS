@@ -3,6 +3,11 @@
 #include "Solver.h"
 #include "DPGraph.h"
 #include "SolverConfiguration.h"
+#include "ScaffoldExtractor.h"
+
+#include <vector>
+
+using namespace std;
 
 class DPSolver : public Solver
 {
@@ -17,11 +22,13 @@ public:
 	virtual double GetObjective() const;
 
 public:
+	vector<Scaffold> Scaffolds;
+
+public:
 	const static int ScaffoldSeprator = 10;
 
 private:
 	bool processComponents();
-	bool processSingleProblem();
 
 private:
 	DataStore store;

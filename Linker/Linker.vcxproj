@@ -39,7 +39,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\AlexeyG\Documents\Univ\Thesis project\Apps\pezmaster31-bamtools-577b603\src;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\AlexeyG\Documents\Univ\Thesis project\Apps\pezmaster31-bamtools-577b603\src;C:\Users\AlexeyG\Documents\Univ\Thesis project\Tools\Common\;$(IncludePath)</IncludePath>
+    <SourcePath>C:\Users\AlexeyG\Documents\Univ\Thesis project\Tools\Common\;$(VCInstallDir)atlmfc\src\mfc;$(VCInstallDir)atlmfc\src\mfcm;$(VCInstallDir)atlmfc\src\atl;$(VCInstallDir)crt\src;</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -76,29 +77,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Aligner.cpp" />
-    <ClCompile Include="AlignmentReader.cpp" />
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="Converter.cpp" />
-    <ClCompile Include="DataStore.cpp" />
-    <ClCompile Include="Helpers.cpp" />
     <ClCompile Include="linker.cpp" />
     <ClCompile Include="PairedReadConverter.cpp" />
-    <ClCompile Include="Reader.cpp" />
-    <ClCompile Include="Sequence.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Aligner.h" />
-    <ClInclude Include="AlignmentReader.h" />
     <ClInclude Include="Configuration.h" />
     <ClInclude Include="Converter.h" />
-    <ClInclude Include="DataStore.h" />
-    <ClInclude Include="Globals.h" />
-    <ClInclude Include="Helpers.h" />
-    <ClInclude Include="MinMax.h" />
+    <ClInclude Include="Defines.h" />
     <ClInclude Include="PairedReadConverter.h" />
-    <ClInclude Include="Reader.h" />
-    <ClInclude Include="Sequence.h" />
-    <ClInclude Include="XATag.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -19,8 +19,14 @@ private:
 	PairedReadConverterResult alignAndConvert(const Configuration &config, const PairedInput &input);
 	PairedReadConverterResult createLinksFromAlignment(int groupId, int maxHits, const PairedInput &input);
 	void createLinksForPair(int groupId, const BamAlignment &leftAlg, const vector<XATag> &leftTags, const BamAlignment &rightAlg, const vector<XATag> &rightTags, const PairedInput &input, int maxHits);
-	void addLinkForTagPair(int groupId, const XATag &l, int lLen, const XATag &r, int rLen, const PairedInput &input, int factor = 1);
+	void addLinkForTagPair(int groupId, const XATag &l, const BamAlignment &leftAlg, const XATag &r, const BamAlignment &rightAlg, const PairedInput &input, int factor = 1);
 	void removeBamFiles();
+
+private:
+	bool inList(const string &name);
+	int getStart(const string &name, int len);
+	int getEnd(const string &name, int len);
+	int getReadPosition(const BamAlignment &alg);
 
 private:
 	DataStore &dataStore;

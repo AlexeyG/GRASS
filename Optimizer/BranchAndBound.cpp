@@ -21,21 +21,28 @@ BranchAndBound::~BranchAndBound()
 	environment.end();
 }
 
+bool BranchAndBound::Formulate(const DataStore &store, const vector<double> &coord)
+{
+	if (status != Clean)
+		return false;
+	if (!formulate(store) || !addCoordinateConstraints(coord) || !createModel())
+	{
+		status = Fail;
+		return false;
+	}
+	status = Formulated;
+	return true;
+}
+
 bool BranchAndBound::Formulate(const DataStore &store)
 {
 	if (status != Clean)
 		return false;
-	if (store.ContigCount != ContigCount)
+	if (!formulate(store) || !createModel())
+	{
+		status = Fail;
 		return false;
-	if (!addContigs(store))
-		return false;
-	if (!addLinks(store))
-		return false;
-	appendSizeObjective();
-	if (!createModel())
-		return false;
-	if (!assignPriorities(store))
-		return false;
+	}
 	status = Formulated;
 	return true;
 }
@@ -111,6 +118,20 @@ double BranchAndBound::GetOrderSlack(int i) const
 int BranchAndBound::GetSlackCount() const
 {
 	return xi.getSize();
+}
+
+bool BranchAndBound::formulate(const DataStore &store)
+{
+	if (store.ContigCount != ContigCount)
+		return false;
+	if (!addContigs(store))
+		return false;
+	if (!addLinks(store))
+		return false;
+	appendSizeObjective();
+	if (!assignPriorities(store))
+		return false;
+	return true;
 }
 
 bool BranchAndBound::addContigs(const DataStore &store)
@@ -265,30 +286,38 @@ bool BranchAndBound::addOrderConstraint(int a, int b, bool e, bool r)
 		if (!e && !r)
 		{
 			if (!T[a])
-				constraints.add(x[a] - x[b] + delta_l * len[b] >= -len[b]);
+				//constraints.add(x[a] - x[b] + delta_l * len[b] >= -len[b]);
+				constraints.add(x[a] - x[b] + delta_l * len[b] >= 0);
 			else
-				constraints.add(x[b] - x[a] + delta_l * len[a] >= -len[a]);
+				//constraints.add(x[b] - x[a] + delta_l * len[a] >= -len[a]);
+				constraints.add(x[b] - x[a] + delta_l * len[a] >= 0);
 		}
 		else if (!e && r)
 		{
 			if (!T[a])
-				constraints.add(x[b] - x[a] + delta_l * len[a] >= len[b]);
+				//constraints.add(x[b] - x[a] + delta_l * len[a] >= len[b]);
+				constraints.add(x[b] - len[b] - x[a] - len[a] + delta_l * len[a] >= 0);
 			else
-				constraints.add(x[a] - x[b] + delta_l * len[b] >= len[a]);
+				//constraints.add(x[a] - x[b] + delta_l * len[b] >= len[a]);
+				constraints.add(x[a] - len[a] - x[b] - len[b] + delta_l * len[b] >= 0);
 		}
 		else if (e && !r)
 		{
 			if (!T[a])
-				constraints.add(x[a] - x[b] + delta_l * len[b] >= 0);
+				//constraints.add(x[a] - x[b] + delta_l * len[b] >= 0);
+				constraints.add(x[a] - x[b] - len[b] + delta_l * len[b] >= 0);
 			else
-				constraints.add(x[b] - x[a] + delta_l * len[a] >= len[b] - len[a]);
+				//constraints.add(x[b] - x[a] + delta_l * len[a] >= len[b] - len[a]);
+				constraints.add(x[b] - len[b] - x[a] + delta_l * len[a] >= 0);
 		}
 		else if (e && r)
 		{
 			if (!T[a])
-				constraints.add(x[b] - x[a] + delta_l * len[a] >= 0);
+				//constraints.add(x[b] - x[a] + delta_l * len[a] >= 0);
+				constraints.add(x[b] - x[a] - len[a] + delta_l * len[a] >= 0);
 			else
-				constraints.add(x[a] - x[b] + delta_l * len[b] >= len[a] - len[b]);
+				//constraints.add(x[a] - x[b] + delta_l * len[b] >= len[a] - len[b]);
+				constraints.add(x[a] - len[a] - x[b] + delta_l * len[b] >= 0);
 		}
 	}
 	catch (...)
@@ -321,6 +350,22 @@ bool BranchAndBound::appendOrderObjective(int a, int b, bool e, double w, int nu
 	try
 	{
 		p = p + (1 - beta[num] + delta_beta[num] / DesiredOrderSlackMax) * w;
+	}
+	catch (...)
+	{
+		return false;
+	}
+	return true;
+}
+
+bool BranchAndBound::addCoordinateConstraints(const vector<double> &coord)
+{
+	if ((int)coord.size() != ContigCount)
+		return false;
+	try
+	{
+		for (int i = 0; i < ContigCount; i++)
+			constraints.add(x[i] == coord[i]);
 	}
 	catch (...)
 	{

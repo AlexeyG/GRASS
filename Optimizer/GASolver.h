@@ -15,9 +15,13 @@ public:
 
 public:
 	virtual bool Formulate(const DataStore &store);
+	bool Formulate(const DataStore &store, const vector<double> &distanceSlack, const vector<double> &orderSlack);
 	virtual bool Solve();
 	virtual SolverStatus GetStatus() const;
 	virtual double GetObjective() const;
+
+public:
+	void AddIndividual(const vector<bool> &t);
 
 private:
 	bool shouldTerminate();
@@ -26,7 +30,7 @@ private:
 	int crossover();
 	void select();
 	int restart(int from = 0);
-	void formulateMatrix(const DataStore &store);
+	void formulateMatrix(const DataStore &store, const vector<double> &distanceSlack, const vector<double> &orderSlack);
 	void selectInitialSolution();
 	void updateSolution(const GAIndividual &ind);
 	double getTime(double &lastIteration) const;

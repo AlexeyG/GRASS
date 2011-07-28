@@ -9,6 +9,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Linker", "Linker\Linker.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Optimizer", "Optimizer\Optimizer.vcxproj", "{4D4CE0A3-B5EE-44B3-A768-24633729207B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Filter", "dataFilter\dataFilter.vcxproj", "{A5F0C478-B045-40DF-BA87-70CA8CE97B2B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kmer", "kmer\kmer.vcxproj", "{CF45B4BE-6B84-42C8-9E8E-D6C59167CC16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -31,6 +35,14 @@ Global
 		{4D4CE0A3-B5EE-44B3-A768-24633729207B}.Debug|Win32.Build.0 = Debug|Win32
 		{4D4CE0A3-B5EE-44B3-A768-24633729207B}.Release|Win32.ActiveCfg = Release|Win32
 		{4D4CE0A3-B5EE-44B3-A768-24633729207B}.Release|Win32.Build.0 = Release|Win32
+		{A5F0C478-B045-40DF-BA87-70CA8CE97B2B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A5F0C478-B045-40DF-BA87-70CA8CE97B2B}.Debug|Win32.Build.0 = Debug|Win32
+		{A5F0C478-B045-40DF-BA87-70CA8CE97B2B}.Release|Win32.ActiveCfg = Release|Win32
+		{A5F0C478-B045-40DF-BA87-70CA8CE97B2B}.Release|Win32.Build.0 = Release|Win32
+		{CF45B4BE-6B84-42C8-9E8E-D6C59167CC16}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CF45B4BE-6B84-42C8-9E8E-D6C59167CC16}.Debug|Win32.Build.0 = Debug|Win32
+		{CF45B4BE-6B84-42C8-9E8E-D6C59167CC16}.Release|Win32.ActiveCfg = Release|Win32
+		{CF45B4BE-6B84-42C8-9E8E-D6C59167CC16}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,6 +10,9 @@ class IterativeSolver : public Solver
 public:
 	IterativeSolver(const vector<bool> &u, const vector<bool> &t, int length);
 	virtual ~IterativeSolver();
+
+public:
+	bool Formulate(const DataStore &store, const vector<double> &coord);
 	virtual bool Formulate(const DataStore &store);
 	virtual bool Solve();
 	virtual SolverStatus GetStatus() const;
@@ -24,7 +27,6 @@ public:
 	const DataStore &GetStore() const;
 
 public:
-	vector<bool> U,T;
 	int Disabled;
 
 protected:
@@ -34,5 +36,6 @@ private:
 	ExtendedFixedMIQPSolver solver;
 	ExtendedFixedMIQPSolver extension;
 	DataStore store;
+	bool coordinatesFormulation;
 };
 #endif

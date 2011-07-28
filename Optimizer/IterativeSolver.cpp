@@ -2,9 +2,11 @@
 #include "Helpers.h"
 
 IterativeSolver::IterativeSolver(const vector<bool> &u, const vector<bool> &t, int length)
-	: U(u), T(t), solver(u, t, length), extension(u, t, length)
+	: solver(u, t, length), extension(u, t, length)
 {
 	status = Clean;
+	U = u;
+	T = t;
 	Disabled = 0;
 	ContigCount = length;
 	X.resize(ContigCount);
@@ -14,15 +16,35 @@ IterativeSolver::~IterativeSolver()
 {
 }
 
+bool IterativeSolver::Formulate(const DataStore &store, const vector<double> &coord)
+{
+	if (status != Clean)
+		return false;
+	if (!solver.Formulate(store, vector<bool>(), vector<bool>(), coord))
+	{
+		status = Fail;
+		return false;
+	}
+	this->store = store;
+	solver.Options = extension.Options = Options;
+	status = Formulated;
+	coordinatesFormulation = true;
+	return true;
+}
+
 bool IterativeSolver::Formulate(const DataStore &store)
 {
 	if (status != Clean)
 		return false;
 	if (!solver.Formulate(store))
+	{
+		status = Fail;
 		return false;
+	}
 	this->store = store;
 	solver.Options = extension.Options = Options;
 	status = Formulated;
+	coordinatesFormulation = false;
 	return true;
 }
 
@@ -39,12 +61,12 @@ bool IterativeSolver::Solve()
 	vector<bool> distance(size, true), order(size, true);
 	for (int i = 0; i < size; i++)
 	{
-		if (solver.GetDistanceSlack(i) > FixedMIQPSolver::DesiredDistanceSlackMax + Helpers::Eps)
+		if (solver.GetDistanceSlack(i) > ExtendedFixedMIQPSolver::DesiredDistanceSlackMax + Helpers::Eps)
 			distance[i] = false, Disabled++;
-		if (solver.GetOrderSlack(i) > FixedMIQPSolver::DesiredOrderSlackMax + Helpers::Eps)
+		if (solver.GetOrderSlack(i) > ExtendedFixedMIQPSolver::DesiredOrderSlackMax + Helpers::Eps)
 			order[i] = false, Disabled++;
 	}
-	if (!extension.Formulate(store, distance, order) || !extension.Solve())
+	if (((!coordinatesFormulation && !extension.Formulate(store, distance, order)) || (coordinatesFormulation && !extension.Formulate(store, distance, order, solver.X))) || !extension.Solve())
 	{
 		status = Fail;
 		return false;

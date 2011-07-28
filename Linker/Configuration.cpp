@@ -1,5 +1,5 @@
 #include "Configuration.h"
-#include "Globals.h"
+#include "Defines.h"
 #include "Helpers.h"
 #include <iostream>
 #include <cstring>
@@ -24,6 +24,8 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
 	stringstream serr;
 
 	double weight = 1;
+	int mapQ = 0;
+	int minReadLength = 0;
 
 	if (argc == 1)
 	{
@@ -58,6 +60,44 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
 					break;
 				}
 				weight = newWeight;
+			}
+			else if (!strcmp("-mapq", argv[i]))
+			{
+				if (argc - i - 1 < 1)
+				{
+					serr << "[-] Parsing error in -mapq: must have an argument." << endl;
+					this->Success = false;
+					break;
+				}
+				i++;
+				bool newMapQSuccess;
+				int newMapQ = Helpers::ParseInt(argv[i], newMapQSuccess);
+				if (!newMapQSuccess)
+				{
+					serr << "[-] Parsing error in -mapq: weight must be a non-negative number." << endl;
+					this->Success = false;
+					break;
+				}
+				mapQ = newMapQ;
+			}
+			else if (!strcmp("-minlength", argv[i]))
+			{
+				if (argc - i - 1 < 1)
+				{
+					serr << "[-] Parsing error in -minlength: must have an argument." << endl;
+					this->Success = false;
+					break;
+				}
+				i++;
+				bool newMinReadLengthSuccess;
+				int newMinReadlength = Helpers::ParseInt(argv[i], newMinReadLengthSuccess);
+				if (!newMinReadLengthSuccess)
+				{
+					serr << "[-] Parsing error in -minlength: weight must be a non-negative number." << endl;
+					this->Success = false;
+					break;
+				}
+				minReadLength = newMinReadlength;
 			}
 			else if (!strcmp("-maxhits", argv[i]))
 			{
@@ -105,7 +145,7 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
 					this->Success = false;
 					break;
 				}
-				this->PairedReadInputs.push_back(PairedInput(leftFileName, rightFileName, mu, sigma, false, weight));
+				this->PairedReadInputs.push_back(PairedInput(leftFileName, rightFileName, mu, sigma, false, weight, mapQ, minReadLength));
 			}
 			else if (!strcmp("-illumina", argv[i]))
 			{
@@ -135,7 +175,7 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
 					this->Success = false;
 					break;
 				}
-				this->PairedReadInputs.push_back(PairedInput(leftFileName, rightFileName, mu, sigma, true, weight));
+				this->PairedReadInputs.push_back(PairedInput(leftFileName, rightFileName, mu, sigma, true, weight, mapQ, minReadLength));
 			}
 			else if (!strcmp("-output", argv[i]))
 			{
@@ -223,6 +263,8 @@ void Configuration::printHelpMessage(stringstream &serr)
 	serr << "[i] Usage: dataLinker [arguments] <sequence.fasta>" << endl;
 	serr << "[i] -help                                               Print this message and exit." << endl;
 	serr << "[i] -weight <weight>                                    Set weight for information sources coming after the switch. [1]" << endl;
+	serr << "[i] -mapq <score>                                       Set MapQ cutoff for information sources coming after the switch. [0]" << endl;
+	serr << "[i] -minlength <length>                                 Set minimum length cutoff for information sources coming after the switch. [0]" << endl;
 	serr << "[i] -maxhits <num>                                      Maximum number of allowed link hits. If a link has more hits, it is disregarded. [5]" << endl;
 	serr << "[i] -454 <left.fq> <right.fq> <mu> <sigma>              Process 454 paired reads with insert size <mu>+/-<sigma> into linking information." << endl;
 	serr << "[i] -illumina <left.fq> <right.fq> <mu> <sigma>         Process Illumina paired reads with insert size <mu>+/-<sigma> into linking information." << endl;

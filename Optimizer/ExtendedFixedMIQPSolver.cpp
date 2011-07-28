@@ -26,19 +26,30 @@ bool ExtendedFixedMIQPSolver::Formulate(const DataStore &store)
 	return Formulate(store, vector<bool>(), vector<bool>());
 }
 
+bool ExtendedFixedMIQPSolver::Formulate(const DataStore &store, const vector<bool> &enabledDistance, const vector<bool> &enabledOrder, const vector<double> &coord)
+{
+	if (status != Clean)
+		return false;
+	this->coord = coord;
+	if (!formulate(store, enabledDistance, enabledOrder) || !addCoordinateConstraints(coord) || !createModel())
+	{
+		status = Fail;
+		return false;
+	}
+	status = Formulated;
+	return true;
+}
+
 bool ExtendedFixedMIQPSolver::Formulate(const DataStore &store, const vector<bool> &enabledDistance, const vector<bool> &enabledOrder)
 {
 	if (status != Clean)
 		return false;
-	if (store.ContigCount != ContigCount)
+	coord.assign(store.ContigCount, 0);
+	if (!formulate(store, enabledDistance, enabledOrder) || !createModel())
+	{
+		status = Fail;
 		return false;
-	if (!addContigs(store))
-		return false;
-	if (!addLinks(store, enabledDistance, enabledOrder))
-		return false;
-	appendSizeObjective();
-	if (!createModel())
-		return false;
+	}
 	status = Formulated;
 	return true;
 }
@@ -58,9 +69,11 @@ bool ExtendedFixedMIQPSolver::Solve()
 			cplex.setError(environment.getNullStream());
 			cplex.setWarning(environment.getNullStream());
 		}
-		//cplex.setParam(cplex.ClockType, 1); // CPU Time
 		if (Options.LPTimeLimit > 0)
 			cplex.setParam(cplex.TiLim, Options.LPTimeLimit);
+		//cplex.setParam(cplex.RootAlg, IloCplex::Primal);
+		//cplex.setParam(cplex.PreInd, 0);
+		//cplex.setParam(cplex.EpGap, 1e-8);
 		cplex.setParam(cplex.NumericalEmphasis, 1);
 		for (int att = 0; att < Options.LPAttempts; att++)
 			if (cplex.solve())
@@ -69,6 +82,12 @@ bool ExtendedFixedMIQPSolver::Solve()
 			return false;
 		saveSolution();
 	}
+	/*catch (IloException ex)
+	{
+		cout << "status: " << cplex.getStatus() << endl;
+		ex.print(cout);
+		return false;
+	}*/
 	catch (...)
 	{
 		status = Fail;
@@ -114,6 +133,18 @@ double ExtendedFixedMIQPSolver::GetOrderSlack(int i) const
 	return -Helpers::Inf;
 }
 
+bool ExtendedFixedMIQPSolver::formulate(const DataStore &store, const vector<bool> &enabledDistance, const vector<bool> &enabledOrder)
+{
+	if (store.ContigCount != ContigCount)
+		return false;
+	if (!addContigs(store))
+		return false;
+	if (!addLinks(store, enabledDistance, enabledOrder))
+		return false;
+	appendSizeObjective();
+	return true;
+}
+
 bool ExtendedFixedMIQPSolver::addContigs(const DataStore &store)
 {
 	for (int i = 0; i < ContigCount; i++)
@@ -129,6 +160,10 @@ bool ExtendedFixedMIQPSolver::addContig(const Contig &contig)
 	{
 		len[id] = contig.Sequence.Nucleotides.length();
 		x.add(IloNumVar(environment, 0, CoordMax));
+	}
+	catch (IloException ex)
+	{
+		ex.print(cout);
 	}
 	catch (...)
 	{
@@ -173,6 +208,7 @@ bool ExtendedFixedMIQPSolver::addLink(int a, int b, const ContigLink &link, int 
 		return false;
 	if (!appendOrderObjective(a, b, e, w, delta_l, enabledOrder))
 		return false;
+
 	num++;
 	return true;
 }
@@ -249,33 +285,44 @@ bool ExtendedFixedMIQPSolver::addOrderConstraint(int a, int b, bool e, bool r, I
 	{
 		delta_l = IloNumVar(environment, 0, SlackMax);
 		delta.add(delta_l);
+		//printf("e = %i r = %i t[a] = %i\n", (int)e, (int)r, (T[a] ? 1 : 0));
 		if (!e && !r)
 		{
 			if (!T[a])
-				constraints.add(x[a] - x[b] + delta_l * len[b] >= -len[b]);
+				//constraints.add(x[a] - x[b] + delta_l * len[b] >= -len[b]);
+				constraints.add(x[a] - x[b] + delta_l * len[b] >= 0);
 			else
-				constraints.add(x[b] - x[a] + delta_l * len[a] >= -len[a]);
+				//constraints.add(x[b] - x[a] + delta_l * len[a] >= -len[a]);
+				constraints.add(x[b] - x[a] + delta_l * len[a] >= 0);
 		}
 		else if (!e && r)
 		{
 			if (!T[a])
-				constraints.add(x[b] - x[a] + delta_l * len[a] >= len[b]);
+				//constraints.add(x[b] - x[a] + delta_l * len[a] >= len[b]);
+				constraints.add(x[b] - len[b] - x[a] - len[a] + delta_l * len[a] >= 0);
 			else
-				constraints.add(x[a] - x[b] + delta_l * len[b] >= len[a]);
+				//constraints.add(x[a] - x[b] + delta_l * len[b] >= len[a]);
+				constraints.add(x[a] - len[a] - x[b] - len[b] + delta_l * len[b] >= 0);
 		}
 		else if (e && !r)
 		{
 			if (!T[a])
-				constraints.add(x[a] - x[b] + delta_l * len[b] >= 0);
+				//constraints.add(x[a] - x[b] + delta_l * len[b] >= 0);
+				constraints.add(x[a] - x[b] - len[b] + delta_l * len[b] >= 0);
+				//printf("%.2lf - %.2lf - %i + delta * %i >= 0\n", coord[a], coord[b], len[b], len[b]);
 			else
-				constraints.add(x[b] - x[a] + delta_l * len[a] >= len[b] - len[a]);
+				//constraints.add(x[b] - x[a] + delta_l * len[a] >= len[b] - len[a]);
+				constraints.add(x[b] - len[b] - x[a] + delta_l * len[a] >= 0);
+				//printf("%.2lf - %i - %.2lf + delta * %i >= 0\n", coord[b], len[b], coord[a], len[a]);
 		}
 		else if (e && r)
 		{
 			if (!T[a])
-				constraints.add(x[b] - x[a] + delta_l * len[a] >= 0);
+				//constraints.add(x[b] - x[a] + delta_l * len[a] >= 0);
+				constraints.add(x[b] - x[a] - len[a] + delta_l * len[a] >= 0);
 			else
-				constraints.add(x[a] - x[b] + delta_l * len[b] >= len[a] - len[b]);
+				//constraints.add(x[a] - x[b] + delta_l * len[b] >= len[a] - len[b]);
+				constraints.add(x[a] - len[a] - x[b] + delta_l * len[b] >= 0);
 		}
 	}
 	catch (...)
@@ -314,6 +361,22 @@ bool ExtendedFixedMIQPSolver::appendOrderObjective(int a, int b, bool e, double 
 			p = p + (delta_l / DesiredOrderSlackMax) * w;
 		else
 			p = p + w;
+	}
+	catch (...)
+	{
+		return false;
+	}
+	return true;
+}
+
+bool ExtendedFixedMIQPSolver::addCoordinateConstraints(const vector<double> &coord)
+{
+	if ((int)coord.size() != ContigCount)
+		return false;
+	try
+	{
+		for (int i = 0; i < ContigCount; i++)
+			constraints.add(x[i] == coord[i]);
 	}
 	catch (...)
 	{

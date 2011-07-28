@@ -15,6 +15,7 @@ public:
 
 public:
 	bool Formulate(const DataStore &store, const vector<bool> &enabledDistance, const vector<bool> &enabledOrder);
+	bool Formulate(const DataStore &store, const vector<bool> &enabledDistance, const vector<bool> &enabledOrder, const vector<double> &coord);
 	virtual bool Formulate(const DataStore &store);
 	virtual bool Solve();
 	virtual SolverStatus GetStatus() const;
@@ -27,6 +28,7 @@ public:
 	int GetSlackCount() const;
 
 private:
+	bool formulate(const DataStore &store, const vector<bool> &enabledDistance, const vector<bool> &enabledOrder);
 	bool addContigs(const DataStore &store);
 	bool addContig(const Contig &contig);
 	bool addLinks(const DataStore &store, const vector<bool> &enabledDistance, const vector<bool> &enabledOrder);
@@ -37,6 +39,7 @@ private:
 	bool appendDistanceObjective(int a, int b, bool e, double w, const IloNumVar &xi_l, bool enabled);
 	bool appendOrderObjective(int a, int b, bool e, double w, const IloNumVar &delta_l, bool enabled);
 	void appendSizeObjective();
+	bool addCoordinateConstraints(const vector<double> &coord);
 	bool createModel();
 	void saveSolution();
 
@@ -44,10 +47,10 @@ public:
 	SolverConfiguration CPLEXOptions;
 
 public:
-	static const double SlackMax = 5e5;
+	static const double SlackMax = 5e7;
 	static const double CoordMax = 1e10;
 	static const double DesiredDistanceSlackMax = 6;
-	static const double DesiredOrderSlackMax = 6;
+	static const double DesiredOrderSlackMax = 1;
 
 private:
 	IloEnv environment;
@@ -61,6 +64,9 @@ private:
 	double bestObjective;
 	vector<int> len;
 	vector<bool> optimized;
+	
+	
+	vector<double> coord;
 };
 
 #endif

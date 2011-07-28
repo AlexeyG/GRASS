@@ -18,6 +18,7 @@ public:
 public:
 	bool Success;
 	string LastError;
+	bool RemoveAmbiguous;
 	bool Sort;
 	bool Bundle;
 	bool BundlePerGroup;

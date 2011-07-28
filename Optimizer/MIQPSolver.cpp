@@ -30,18 +30,27 @@ MIQPSolver::~MIQPSolver()
 	environment.end();
 }
 
+bool MIQPSolver::Formulate(const DataStore &store, const vector<double> &coord)
+{
+	if (status != Clean)
+		return false;
+	if (!formulate(store) || !addCoordinateConstraints(coord) || !createModel())
+	{
+		status = Fail;
+		return false;
+	}
+	return true;
+}
+
 bool MIQPSolver::Formulate(const DataStore &store)
 {
 	if (status != Clean)
 		return false;
-	if (!addContigs(store))
+	if (!formulate(store) || !createModel())
+	{
+		status = Fail;
 		return false;
-	if (!addLinks(store))
-		return false;
-	if (!appendSizeObjective())
-		return false;
-	if (!createModel())
-		return false;
+	}
 	status = Formulated;
 	return true;
 }
@@ -107,6 +116,17 @@ double MIQPSolver::GetObjective() const
 IloAlgorithm::Status MIQPSolver::GetCplexStatus() const
 {
 	return cplex.getStatus();
+}
+
+bool MIQPSolver::formulate(const DataStore &store)
+{
+	if (!addContigs(store))
+		return false;
+	if (!addLinks(store))
+		return false;
+	if (!appendSizeObjective())
+		return false;
+	return true;
 }
 
 bool MIQPSolver::addContigs(const DataStore &store)
@@ -391,6 +411,22 @@ bool MIQPSolver::appendOrderObjective(int a, int b, bool e, double w, const IloN
 			p = p + w * (delta_f_ut_l - delta_f_tt_l + delta_r_tu_l - delta_r_tt_l);
 		else
 			p = p - w * (delta_f_ut_l - delta_f_tt_l - delta_r_tt_l) + w * (delta_f_uu_l - delta_f_tu_l);
+	}
+	catch (...)
+	{
+		return false;
+	}
+	return true;
+}
+
+bool MIQPSolver::addCoordinateConstraints(const vector<double> &coord)
+{
+	if ((int)coord.size() != ContigCount)
+		return false;
+	try
+	{
+		for (int i = 0; i < ContigCount; i++)
+			constraints.add(x[i] == coord[i]);
 	}
 	catch (...)
 	{

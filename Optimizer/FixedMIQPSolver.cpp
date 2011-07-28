@@ -21,19 +21,29 @@ FixedMIQPSolver::~FixedMIQPSolver()
 	environment.end();
 }
 
-bool FixedMIQPSolver::Formulate(const DataStore &store)
+bool FixedMIQPSolver::Formulate(const DataStore &store, const vector<double> &coord)
 {
 	if (status != Clean)
 		return false;
-	if (store.ContigCount != ContigCount)
+	if (!formulate(store) || !addCoordinateConstraints(coord) || !createModel())
+	{
+		status = Fail;
 		return false;
-	if (!addContigs(store))
+	}
+	status = Formulated;
+	return true;
+}
+
+bool FixedMIQPSolver::Formulate(const DataStore &store)
+{
+	
+	if (status != Clean)
 		return false;
-	if (!addLinks(store))
+	if (!formulate(store) || !createModel())
+	{
+		status = Fail;
 		return false;
-	appendSizeObjective();
-	if (!createModel())
-		return false;
+	}
 	status = Formulated;
 	return true;
 }
@@ -110,6 +120,18 @@ int FixedMIQPSolver::GetSlackCount() const
 	return xi.getSize();
 }
 
+bool FixedMIQPSolver::formulate(const DataStore &store)
+{
+	if (store.ContigCount != ContigCount)
+		return false;
+	if (!addContigs(store))
+		return false;
+	if (!addLinks(store))
+		return false;
+	appendSizeObjective();
+	return false;
+}
+
 bool FixedMIQPSolver::addContigs(const DataStore &store)
 {
 	for (int i = 0; i < ContigCount; i++)
@@ -162,12 +184,12 @@ bool FixedMIQPSolver::addLink(int a, int b, const ContigLink &link)
 	appendOrientationObjective(a, b, e, w);
 	if (!addDistanceConstraint(a, b, e, r, sigma, mu, xi_l))
 		return false;
-	//if (!addOrderConstraint(a, b, e, r, delta_l))
-	//	return false;
+	if (!addOrderConstraint(a, b, e, r, delta_l))
+		return false;
 	if (!appendDistanceObjective(a, b, e, w, xi_l))
 		return false;
-	//if (!appendOrderObjective(a, b, e, w, delta_l))
-	//	return false;
+	if (!appendOrderObjective(a, b, e, w, delta_l))
+		return false;
 	return true;
 }
 
@@ -246,30 +268,38 @@ bool FixedMIQPSolver::addOrderConstraint(int a, int b, bool e, bool r, IloNumVar
 		if (!e && !r)
 		{
 			if (!T[a])
-				constraints.add(x[a] - x[b] + delta_l * len[b] >= -len[b]);
+				//constraints.add(x[a] - x[b] + delta_l * len[b] >= -len[b]);
+				constraints.add(x[a] - x[b] + delta_l * len[b] >= 0);
 			else
-				constraints.add(x[b] - x[a] + delta_l * len[a] >= -len[a]);
+				//constraints.add(x[b] - x[a] + delta_l * len[a] >= -len[a]);
+				constraints.add(x[b] - x[a] + delta_l * len[a] >= 0);
 		}
 		else if (!e && r)
 		{
 			if (!T[a])
-				constraints.add(x[b] - x[a] + delta_l * len[a] >= len[b]);
+				//constraints.add(x[b] - x[a] + delta_l * len[a] >= len[b]);
+				constraints.add(x[b] - len[b] - x[a] - len[a] + delta_l * len[a] >= 0);
 			else
-				constraints.add(x[a] - x[b] + delta_l * len[b] >= len[a]);
+				//constraints.add(x[a] - x[b] + delta_l * len[b] >= len[a]);
+				constraints.add(x[a] - len[a] - x[b] - len[b] + delta_l * len[b] >= 0);
 		}
 		else if (e && !r)
 		{
 			if (!T[a])
-				constraints.add(x[a] - x[b] + delta_l * len[b] >= 0);
+				//constraints.add(x[a] - x[b] + delta_l * len[b] >= 0);
+				constraints.add(x[a] - x[b] - len[b] + delta_l * len[b] >= 0);
 			else
-				constraints.add(x[b] - x[a] + delta_l * len[a] >= len[b] - len[a]);
+				//constraints.add(x[b] - x[a] + delta_l * len[a] >= len[b] - len[a]);
+				constraints.add(x[b] - len[b] - x[a] + delta_l * len[a] >= 0);
 		}
 		else if (e && r)
 		{
 			if (!T[a])
-				constraints.add(x[b] - x[a] + delta_l * len[a] >= 0);
+				//constraints.add(x[b] - x[a] + delta_l * len[a] >= 0);
+				constraints.add(x[b] - x[a] - len[a] + delta_l * len[a] >= 0);
 			else
-				constraints.add(x[a] - x[b] + delta_l * len[b] >= len[a] - len[b]);
+				//constraints.add(x[a] - x[b] + delta_l * len[b] >= len[a] - len[b]);
+				constraints.add(x[a] - len[a] - x[b] + delta_l * len[b] >= 0);
 		}
 	}
 	catch (...)
@@ -302,6 +332,22 @@ bool FixedMIQPSolver::appendOrderObjective(int a, int b, bool e, double w, const
 	try
 	{
 		p = p + (delta_l / DesiredOrderSlackMax) * w;
+	}
+	catch (...)
+	{
+		return false;
+	}
+	return true;
+}
+
+bool FixedMIQPSolver::addCoordinateConstraints(const vector<double> &coord)
+{
+	if ((int)coord.size() != ContigCount)
+		return false;
+	try
+	{
+		for (int i = 0; i < ContigCount; i++)
+			constraints.add(x[i] == coord[i]);
 	}
 	catch (...)
 	{
