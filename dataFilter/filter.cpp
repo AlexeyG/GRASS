@@ -85,17 +85,7 @@ bool processPairedReads(const PairedInput &input, const vector<ContigInfo> &cont
 		FastQSequence leftSeq, rightSeq;
 		bool leftRead = left.Read(leftSeq), rightRead = right.Read(rightSeq);
 		while (leftRead && rightRead)
-		{	
-			//if (inList(leftSeq.Comment) || inList(rightSeq.Comment))
-			//	cout << "Left:" << endl;
-			//bool leftC = containedInContig(leftSeq, contigs);
-			//if (inList(leftSeq.Comment) || inList(rightSeq.Comment))
-			//	cout << (leftC ? "in" : "out") << endl;
-			//if (inList(leftSeq.Comment) || inList(rightSeq.Comment))
-			//	cout << "Right:" << endl;
-			//bool rightC = containedInContig(rightSeq, contigs);
-			//if (inList(leftSeq.Comment) || inList(rightSeq.Comment))
-			//	cout << (rightC ? "in" : "out") << endl;
+		{
 			if (containedInContig(leftSeq, contigs) && containedInContig(rightSeq, contigs))
 				leftOut.Write(leftSeq), rightOut.Write(rightSeq);
 			leftRead = left.Read(leftSeq), rightRead = right.Read(rightSeq);

@@ -78,10 +78,9 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
 
 void Configuration::printHelpMessage(stringstream &serr)
 {
-	serr << "[i] Scaffold optimizer version " << VERSION << " (" << DATE << ")" << endl;
+	serr << "[i] Data filter version " << VERSION << " (" << DATE << ")" << endl;
 	serr << "[i] By " << AUTHOR << endl;
-	serr << "[i] Usage: scaffoldOptimizer [arguments] <scaffold.opt>" << endl;
+	serr << "[i] Usage: dataFilter [arguments] <ñontigs.fasta>" << endl;
 	serr << "[i] -help                                               Print this message and exit." << endl;
 	serr << "[i] -paired <left-file> <right-file> <output-prefix>    Filter paired reads and output them with given prefix." << endl;
-	serr << "[i] -output [output filename]                           Output filename for optimzation information. [scaffold.fasta]" << endl;
 }
