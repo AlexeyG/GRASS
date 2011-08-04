@@ -1,8 +1,8 @@
 #include "BranchAndBound.h"
 #include "Globals.h"
 #include "Helpers.h"
-#include "FixedMIQPSolver.h"
 #include "ExtendedFixedMIQPSolver.h"
+#include "FixedMIQPSolver.h"
 
 BranchAndBound::BranchAndBound(const vector<bool> &u, const vector<bool> &t, int length)
 	: model(environment), x(environment), xi(environment), delta(environment), alpha(environment), beta(environment), xi_alpha(environment), delta_beta(environment), constraints(environment), h(environment), p(environment)
@@ -65,6 +65,8 @@ bool BranchAndBound::Solve()
 		}
 		//cplex.setParam(cplex.ClockType, 1); // CPU Time
 		cplex.setParam(cplex.NumericalEmphasis, 1);
+		//cplex.setParam(cplex.MIPEmphasis, 2);
+		cplex.setParam(cplex.MIPOrdInd, 1);
 		if (Options.TimeLimit > 0)
 			cplex.setParam(cplex.TiLim, Options.TimeLimit);
 		if (!cplex.solve())

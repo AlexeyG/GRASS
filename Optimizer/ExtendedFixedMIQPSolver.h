@@ -64,9 +64,6 @@ private:
 	double bestObjective;
 	vector<int> len;
 	vector<bool> optimized;
-	
-	
-	vector<double> coord;
 };
 
 #endif
