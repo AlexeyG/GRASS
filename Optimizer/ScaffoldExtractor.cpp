@@ -157,7 +157,7 @@ vector<Scaffold> ScaffoldExtractor::Extract(const DataStore &store, const Branch
 	vector< vector<int> > components;
 	vector<bool> slacks(m, true);
 	for (int i = 0; i < m; i++)
-		if (solver.GetDistanceSlack(i) >= BranchAndBound::DesiredDistanceSlackMax || solver.GetOrderSlack(i) >= BranchAndBound::DesiredOrderSlackMax)
+		if (solver.GetDistanceSlack(i) >= ExtendedFixedMIQPSolver::DesiredDistanceSlackMax || solver.GetOrderSlack(i) >= ExtendedFixedMIQPSolver::DesiredOrderSlackMax)
 			slacks[i] = false;
 	DPGraph graph(store, solver.T, slacks);
 	graph.FindConnectedComponents(components);
