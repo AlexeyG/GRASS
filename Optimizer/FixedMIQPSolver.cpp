@@ -129,7 +129,7 @@ bool FixedMIQPSolver::formulate(const DataStore &store)
 	if (!addLinks(store))
 		return false;
 	appendSizeObjective();
-	return false;
+	return true;
 }
 
 bool FixedMIQPSolver::addContigs(const DataStore &store)

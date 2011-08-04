@@ -26,7 +26,7 @@ bool BranchAndBound::Formulate(const DataStore &store, const vector<double> &coo
 {
 	if (status != Clean)
 		return false;
-	if (!formulate(store) || !addCoordinateConstraints(coord) || !createModel())
+	if (!formulate(store) || !addCoordinateConstraints(coord) || !createModel() || !assignPriorities(store))
 	{
 		status = Fail;
 		return false;
@@ -39,7 +39,7 @@ bool BranchAndBound::Formulate(const DataStore &store)
 {
 	if (status != Clean)
 		return false;
-	if (!formulate(store) || !createModel())
+	if (!formulate(store) || !createModel() || !assignPriorities(store))
 	{
 		status = Fail;
 		return false;
@@ -130,8 +130,6 @@ bool BranchAndBound::formulate(const DataStore &store)
 	if (!addLinks(store))
 		return false;
 	appendSizeObjective();
-	if (!assignPriorities(store))
-		return false;
 	return true;
 }
 
