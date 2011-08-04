@@ -109,7 +109,6 @@ double FixedMIQPSolver::GetDistanceSlack(int i) const
 
 double FixedMIQPSolver::GetOrderSlack(int i) const
 {
-	return 0;
 	if (status == Success)
 		return cplex.getValue(delta[i]);
 	return -Helpers::Inf;
@@ -158,8 +157,8 @@ bool FixedMIQPSolver::addContig(const Contig &contig)
 bool FixedMIQPSolver::addLinks(const DataStore &store)
 {
 	for (DataStore::LinkMap::const_iterator it = store.Begin(); it != store.End(); it++)
-			if (!addLink(it->first.first, it->first.second, it->second))
-				return false;
+		if (!addLink(it->first.first, it->first.second, it->second))
+			return false;
 	return true;
 }
 
@@ -268,37 +267,29 @@ bool FixedMIQPSolver::addOrderConstraint(int a, int b, bool e, bool r, IloNumVar
 		if (!e && !r)
 		{
 			if (!T[a])
-				//constraints.add(x[a] - x[b] + delta_l * len[b] >= -len[b]);
 				constraints.add(x[a] - x[b] + delta_l * len[b] >= 0);
 			else
-				//constraints.add(x[b] - x[a] + delta_l * len[a] >= -len[a]);
 				constraints.add(x[b] - x[a] + delta_l * len[a] >= 0);
 		}
 		else if (!e && r)
 		{
 			if (!T[a])
-				//constraints.add(x[b] - x[a] + delta_l * len[a] >= len[b]);
 				constraints.add(x[b] - len[b] - x[a] - len[a] + delta_l * len[a] >= 0);
 			else
-				//constraints.add(x[a] - x[b] + delta_l * len[b] >= len[a]);
 				constraints.add(x[a] - len[a] - x[b] - len[b] + delta_l * len[b] >= 0);
 		}
 		else if (e && !r)
 		{
 			if (!T[a])
-				//constraints.add(x[a] - x[b] + delta_l * len[b] >= 0);
 				constraints.add(x[a] - x[b] - len[b] + delta_l * len[b] >= 0);
 			else
-				//constraints.add(x[b] - x[a] + delta_l * len[a] >= len[b] - len[a]);
 				constraints.add(x[b] - len[b] - x[a] + delta_l * len[a] >= 0);
 		}
 		else if (e && r)
 		{
 			if (!T[a])
-				//constraints.add(x[b] - x[a] + delta_l * len[a] >= 0);
 				constraints.add(x[b] - x[a] - len[a] + delta_l * len[a] >= 0);
 			else
-				//constraints.add(x[a] - x[b] + delta_l * len[b] >= len[a] - len[b]);
 				constraints.add(x[a] - len[a] - x[b] + delta_l * len[b] >= 0);
 		}
 	}
