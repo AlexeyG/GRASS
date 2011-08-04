@@ -2,6 +2,7 @@
 #include "Globals.h"
 #include "Helpers.h"
 #include "FixedMIQPSolver.h"
+#include "ExtendedFixedMIQPSolver.h"
 
 BranchAndBound::BranchAndBound(const vector<bool> &u, const vector<bool> &t, int length)
 	: model(environment), x(environment), xi(environment), delta(environment), alpha(environment), beta(environment), xi_alpha(environment), delta_beta(environment), constraints(environment), h(environment), p(environment)
@@ -336,7 +337,7 @@ bool BranchAndBound::appendDistanceObjective(int a, int b, bool e, double w, int
 {
 	try
 	{
-		h = h + (1 - alpha[num] + xi_alpha[num] / DesiredDistanceSlackMax) * w;
+		h = h + (1 - alpha[num] + xi_alpha[num] / ExtendedFixedMIQPSolver::DesiredDistanceSlackMax) * w;
 	}
 	catch (...)
 	{
@@ -349,7 +350,7 @@ bool BranchAndBound::appendOrderObjective(int a, int b, bool e, double w, int nu
 {
 	try
 	{
-		p = p + (1 - beta[num] + delta_beta[num] / DesiredOrderSlackMax) * w;
+		p = p + (1 - beta[num] + delta_beta[num] / ExtendedFixedMIQPSolver::DesiredOrderSlackMax) * w;
 	}
 	catch (...)
 	{
@@ -412,7 +413,7 @@ bool BranchAndBound::assignPriorities(const DataStore &store)
 			double slack = solver.GetDistanceSlack(i);
 			cplex.setPriority(alpha[i], slack);
 			Slack.push_back(slack);
-			if (slack > DesiredDistanceSlackMax)
+			if (slack > ExtendedFixedMIQPSolver::DesiredDistanceSlackMax)
 				start.add(0), Incumbent.push_back(false);
 			else
 				start.add(1), Incumbent.push_back(true);
@@ -423,7 +424,7 @@ bool BranchAndBound::assignPriorities(const DataStore &store)
 			double slack = solver.GetOrderSlack(i);
 			cplex.setPriority(beta[i], slack);
 			Slack.push_back(slack);
-			if (slack > DesiredOrderSlackMax)
+			if (slack > ExtendedFixedMIQPSolver::DesiredOrderSlackMax)
 				start.add(0), Incumbent.push_back(false);
 			else
 				start.add(1), Incumbent.push_back(true);

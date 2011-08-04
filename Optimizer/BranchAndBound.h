@@ -49,10 +49,6 @@ public:
 public:
 	static const double SlackMax = 5e7;
 	static const double CoordMax = 1e10;
-	//static const double DesiredDistanceSlackMax = 6;
-	//static const double DesiredOrderSlackMax = 1000;
-	static const double DesiredDistanceSlackMax = 6;
-	static const double DesiredOrderSlackMax = 1;
 
 public:
 	vector<bool> Incumbent;
