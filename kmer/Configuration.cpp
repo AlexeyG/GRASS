@@ -108,5 +108,5 @@ void Configuration::printHelpMessage(stringstream &serr)
 	serr << "[i] Usage: scaffoldOptimizer [arguments] <scaffold.opt>" << endl;
 	serr << "[i] -help                                               Print this message and exit." << endl;
 	serr << "[i] -kmer <length>                                      K-mer length for the statistics. [36]" << endl;
-	serr << "[i] -verboe <yes/no>                                    Verbose statistics output. [no]" << endl;
+	serr << "[i] -verbose <yes/no>                                   Verbose statistics output. [no]" << endl;
 }
