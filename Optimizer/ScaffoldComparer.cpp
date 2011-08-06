@@ -8,10 +8,6 @@ int ScaffoldComparer::Compare(const Scaffold &a, const Scaffold &b)
 {
 	Scaffold c(b);
 	c.Reverse();
-	//int p = compareOriented(a, b);
-	//cout << "reverse" << endl;
-	//int q = compareOriented(a, c);
-	//return min(p, q);
 	return min(compareOriented(a, b), compareOriented(a, c));
 }
 
@@ -21,14 +17,9 @@ int ScaffoldComparer::Compare(const vector<Scaffold> &a, const vector<Scaffold> 
 	int mismatch = 0;
 	for (int i = 0; i < aSize; i++)
 	{
-		int minScore = INT_MAX;
+		int minScore = numeric_limits<int>::max();
 		for (int j = 0; j < bSize; j++)
-		{
-			//int t = Compare(a[i], b[j]);
-			//minScore = min(minScore, t);
 			minScore = min(minScore, Compare(a[i], b[j]));
-			//cout << "Distance between " << i << " and " << j << ": " << t << endl;
-		}
 		mismatch += minScore;
 	}
 	return mismatch;
@@ -46,19 +37,16 @@ int ScaffoldComparer::compareOriented(const Scaffold &a, const Scaffold &b)
 		if (pos.find(p.Id) == pos.end() || pos.find(q.Id) == pos.end())
 		{
 			mismatch++;
-			//cout << "at " << i << ": " << p.Id << " " << q.Id << endl;
 			continue;
 		}
 		if (pos[p.Id] > pos[q.Id])
 		{
 			mismatch++;
-			//cout << "+at " << i << ": " << p.Id << " " << q.Id << endl;
 			continue;
 		}
 		if ((b[pos[p.Id]].T ^ b[pos[q.Id]].T) != (p.T ^ q.T))
 		{
 			mismatch++;
-			//cout << "-at " << i << ": " << p.Id << " " << q.Id << endl;
 			continue;
 		}
 	}
@@ -90,7 +78,7 @@ int ScaffoldComparer::OrientationDistance(const vector<Scaffold> &a, const vecto
 	int mismatch = 0;
 	for (int i = 0; i < aSize; i++)
 	{
-		int minScore = INT_MAX;
+		int minScore = numeric_limits<int>::max();
 		for (int j = 0; j < bSize; j++)
 			minScore = min(minScore, OrientationDistance(a[i], b[j]));
 		mismatch += minScore;

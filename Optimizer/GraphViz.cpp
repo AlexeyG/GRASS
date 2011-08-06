@@ -70,7 +70,7 @@ void GraphViz::outputLinks(const DataStore &store, const IterativeSolver &solver
 	for (DataStore::LinkMap::const_iterator it = store.Begin(); it != store.End(); it++)
 	{
 		int a = it->first.first, b = it->first.second;
-		if (T[a] ^ T[b] != it->second.EqualOrientation)
+		if ((T[a] ^ T[b]) != it->second.EqualOrientation)
 			if (maxWeight < it->second.Weight)
 				maxWeight = it->second.Weight;
 	}
@@ -79,7 +79,7 @@ void GraphViz::outputLinks(const DataStore &store, const IterativeSolver &solver
 	for (DataStore::LinkMap::const_iterator it = store.Begin(); it != store.End(); it++)
 	{
 		int a = it->first.first, b = it->first.second;
-		if (T[a] ^ T[b] != it->second.EqualOrientation)
+		if ((T[a] ^ T[b]) != it->second.EqualOrientation)
 		{
 			double xi = solver.GetDistanceSlack(num), delta = solver.GetOrderSlack(num);
 			bool dashed = false;

@@ -25,7 +25,7 @@ DPGraph::DPGraph(const DataStore &store, const vector<bool> &t)
 	for (DataStore::LinkMap::const_iterator it = store.Begin(); it != store.End(); it++)
 	{
 		int i = it->first.first, j = it->first.second;
-		if (t[i] ^ t[j] == it->second.EqualOrientation)
+		if ((t[i] ^ t[j]) == it->second.EqualOrientation)
 			continue;
 		matrix[i][j]++, matrix[j][i]++;
 		list[i].insert(j), list[j].insert(i);
@@ -41,7 +41,7 @@ DPGraph::DPGraph(const DataStore &store, const vector<bool> &t, const vector<boo
 	for (DataStore::LinkMap::const_iterator it = store.Begin(); it != store.End(); it++)
 	{
 		int i = it->first.first, j = it->first.second;
-		if (t[i] ^ t[j] == it->second.EqualOrientation)
+		if ((t[i] ^ t[j]) == it->second.EqualOrientation)
 			continue;
 		if (l[num++])
 		{

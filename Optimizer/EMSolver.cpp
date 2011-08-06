@@ -175,7 +175,7 @@ void EMSolver::updateSlack()
 	for (DataStore::LinkMap::const_iterator it = store.Begin(); it != store.End(); it++, id++)
 	{
 		int a = it->first.first, b = it->first.second;
-		if (ga->T[a] ^ ga->T[b] != it->second.EqualOrientation)
+		if ((ga->T[a] ^ ga->T[b]) != it->second.EqualOrientation)
 		{
 			distanceSlack[id] = iterative->GetDistanceSlack(num);
 			orderSlack[id] = iterative->GetOrderSlack(num);
