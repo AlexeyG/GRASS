@@ -54,8 +54,7 @@ bool BranchAndBound::Solve()
 		return false;
 	try
 	{
-		if (Options.UseOpportunisticSearch)
-			cplex.setParam(cplex.ParallelMode, cplex.Opportunistic);
+		cplex.setParam(cplex.ParallelMode, Options.UseOpportunisticSearch);
 		cplex.setParam(cplex.Threads, Options.Threads);
 		if (Options.SuppressOutput)
 		{
@@ -65,8 +64,9 @@ bool BranchAndBound::Solve()
 		}
 		//cplex.setParam(cplex.ClockType, 1); // CPU Time
 		cplex.setParam(cplex.NumericalEmphasis, 1);
-		//cplex.setParam(cplex.MIPEmphasis, 2);
 		cplex.setParam(cplex.MIPOrdInd, 1);
+		//cplex.exportModel("model.mps");
+		//cplex.writeMIPStart("start.mst");
 		if (Options.TimeLimit > 0)
 			cplex.setParam(cplex.TiLim, Options.TimeLimit);
 		if (!cplex.solve())

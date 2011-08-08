@@ -69,18 +69,16 @@ bool MIQPSolver::Solve()
 	{
 		try
 		{
-			if (Options.UseOpportunisticSearch)
-				cplex.setParam(cplex.ParallelMode, cplex.Opportunistic);
+			cplex.setParam(cplex.ParallelMode, Options.UseOpportunisticSearch);
 			cplex.setParam(cplex.Threads, Options.Threads);
 			if (Options.SuppressOutput)
 			{
 				cplex.setOut(environment.getNullStream());
-				//cplex.setError(environment.getNullStream());
-				//cplex.setWarning(environment.getNullStream());
+				cplex.setError(environment.getNullStream());
+				cplex.setWarning(environment.getNullStream());
 			}
 			if (Options.TimeLimit > 0)
 				cplex.setParam(cplex.TiLim, Options.TimeLimit);
-			//cplex.setParam(cplex.ClockType, 1); // CPU Time
 			if (Options.UseObjectiveHeuristic)
 				cplex.use(BestObjectiveReachedCallback(environment, cplex.getParam(cplex.EpGap), false, bestObjective));
 			//cplex.setParam(cplex.NumericalEmphasis, 1);

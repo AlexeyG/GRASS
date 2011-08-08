@@ -52,8 +52,7 @@ bool RelaxedFixedMIQPSolver::Solve()
 		return false;
 	try
 	{
-		if (Options.UseOpportunisticSearch)
-			cplex.setParam(cplex.ParallelMode, cplex.Opportunistic);
+		cplex.setParam(cplex.ParallelMode, Options.UseOpportunisticSearch);
 		cplex.setParam(cplex.Threads, Options.Threads);
 		if (Options.SuppressOutput)
 		{
@@ -61,7 +60,6 @@ bool RelaxedFixedMIQPSolver::Solve()
 			cplex.setError(environment.getNullStream());
 			cplex.setWarning(environment.getNullStream());
 		}
-		//cplex.setParam(cplex.ClockType, 1); // CPU Time
 		cplex.setParam(cplex.NumericalEmphasis, 1);
 		if (Options.TimeLimit > 0)
 			cplex.setParam(cplex.TiLim, Options.TimeLimit);

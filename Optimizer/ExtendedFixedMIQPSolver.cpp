@@ -58,8 +58,7 @@ bool ExtendedFixedMIQPSolver::Solve()
 		return false;
 	try
 	{
-		if (Options.UseOpportunisticSearch)
-			cplex.setParam(cplex.ParallelMode, cplex.Opportunistic);
+		cplex.setParam(cplex.ParallelMode, Options.UseOpportunisticSearch);
 		cplex.setParam(cplex.Threads, Options.LPThreads);
 		if (Options.SuppressOutput)
 		{
