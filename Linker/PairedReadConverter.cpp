@@ -24,7 +24,7 @@ PairedReadConverter::PairedReadConverterResult PairedReadConverter::Process(cons
 		stringstream groupDescription;
 		groupDescription << (input.IsIllumina ? "Illumina" : "454") << " paired reads: " << input.LeftFileName << " & " << input.RightFileName << " with " << input.Mean << " +/- " << input.Std << " of weight " << input.Weight;
 		int groupId = dataStore.AddGroup(LinkGroup(groupName, groupDescription.str()));
-		result = createLinksFromAlignment(groupId, config.MaximumLinkHits, input);
+		result = createLinksFromAlignment(groupId, config.MaximumLinkHits, input, config.NoOverlapDeviation);
 	}
 	removeBamFiles();
 	return result;
@@ -77,7 +77,7 @@ PairedReadConverter::PairedReadConverterResult PairedReadConverter::alignAndConv
 	return result;
 }
 
-PairedReadConverter::PairedReadConverterResult PairedReadConverter::createLinksFromAlignment(int groupId, int maxHits, const PairedInput &input)
+PairedReadConverter::PairedReadConverterResult PairedReadConverter::createLinksFromAlignment(int groupId, int maxHits, const PairedInput &input, double noOverlapDeviation)
 {
 	PairedReadConverterResult result = Success;
 	AlignmentReader leftReader, rightReader;
@@ -86,13 +86,13 @@ PairedReadConverter::PairedReadConverterResult PairedReadConverter::createLinksF
 	vector<XATag> leftTags, rightTags;
 	BamAlignment leftAlignment, rightAlignment;
 	while (leftReader.GetNextAlignmentGroup(leftAlignment, leftTags) && rightReader.GetNextAlignmentGroup(rightAlignment, rightTags))
-		createLinksForPair(groupId, leftAlignment, leftTags, rightAlignment, rightTags, input, maxHits);
+		createLinksForPair(groupId, leftAlignment, leftTags, rightAlignment, rightTags, input, noOverlapDeviation, maxHits);
 	leftReader.Close();
 	rightReader.Close();
 	return result;
 }
 
-void PairedReadConverter::createLinksForPair(int groupId, const BamAlignment &leftAlg, const vector<XATag> &leftTags, const BamAlignment &rightAlg, const vector<XATag> &rightTags, const PairedInput &input, int maxHits)
+void PairedReadConverter::createLinksForPair(int groupId, const BamAlignment &leftAlg, const vector<XATag> &leftTags, const BamAlignment &rightAlg, const vector<XATag> &rightTags, const PairedInput &input, double noOverlapDeviation, int maxHits)
 {
 	int combinations = leftTags.size() * rightTags.size();
 	if (combinations > maxHits || combinations == 0)
@@ -102,11 +102,11 @@ void PairedReadConverter::createLinksForPair(int groupId, const BamAlignment &le
 		{
 			if (l->RefID == r->RefID)
 				continue;
-			addLinkForTagPair(groupId, *l, leftAlg, *r, rightAlg, input, combinations);
+			addLinkForTagPair(groupId, *l, leftAlg, *r, rightAlg, input, noOverlapDeviation, combinations);
 		}
 }
 
-void PairedReadConverter::addLinkForTagPair(int groupId, const XATag &l, const BamAlignment &leftAlg, const XATag &r, const BamAlignment &rightAlg, const PairedInput &input, int factor)
+void PairedReadConverter::addLinkForTagPair(int groupId, const XATag &l, const BamAlignment &leftAlg, const XATag &r, const BamAlignment &rightAlg, const PairedInput &input, double noOverlapDeviation, int factor)
 {
 	int lRefLen = dataStore[l.RefID].Sequence.Nucleotides.length();
 	int rRefLen = dataStore[r.RefID].Sequence.Nucleotides.length();
@@ -115,6 +115,7 @@ void PairedReadConverter::addLinkForTagPair(int groupId, const XATag &l, const B
 	bool equalOrientation = (l.IsReverseStrand ^ r.IsReverseStrand ? input.IsIllumina : !input.IsIllumina);
 	bool forwardOrder = l.IsReverseStrand ^ input.IsIllumina;
 	double distance = input.Mean;
+	double readDistance = 0;
 
 	if (l.Position + lLen >= lRefLen || r.Position + rLen >= rRefLen)
 		return;
@@ -123,53 +124,56 @@ void PairedReadConverter::addLinkForTagPair(int groupId, const XATag &l, const B
 	if (lLen < input.MinReadLength || rLen < input.MinReadLength)
 		return;
 
-	/*if (inList(leftAlg.Name) || inList(rightAlg.Name))
-	{
-		unsigned int distA = leftAlg.GetEditDistance(distA) ? distA : 0;
-		unsigned int distB = leftAlg.GetEditDistance(distB) ? distB : 0;
-		printf("Left:  %s pos = %4i end = %4i of [%i %i) => %i quality = %i dist = %i\n", leftAlg.Name.c_str(), leftAlg.Position, leftAlg.GetEndPosition(), getStart(dataStore[l.RefID].Sequence.Name(), lRefLen), getEnd(dataStore[l.RefID].Sequence.Name(), lRefLen), getReadPosition(leftAlg), leftAlg.MapQuality, (int)distA);
-		printf("Right: %s pos = %4i end = %4i of [%i %i) => %i quality = %i dist = %i\n", rightAlg.Name.c_str(), rightAlg.Position, rightAlg.GetEndPosition(), getStart(dataStore[r.RefID].Sequence.Name(), rRefLen), getEnd(dataStore[r.RefID].Sequence.Name(), rRefLen), getReadPosition(rightAlg), rightAlg.MapQuality, (int)distB);
-		printf("\n");
-	}
-	else
-		printf("MAPQ: %i %i\n", leftAlg.MapQuality, rightAlg.MapQuality);*/
-
 	if (!input.IsIllumina)
 	{
 		if (!l.IsReverseStrand && !r.IsReverseStrand)
+		{
 			distance += lRefLen - l.Position - lLen + r.Position;
+			readDistance += rRefLen - r.Position + l.Position + lLen;
+		}
 		else if (!l.IsReverseStrand && r.IsReverseStrand)
+		{
 			distance += lRefLen - l.Position - lLen + rRefLen - r.Position - rLen;
+			readDistance += r.Position + rLen + l.Position + lLen;
+		}
 		else if (l.IsReverseStrand && !r.IsReverseStrand)
+		{
 			distance += l.Position + r.Position;
+			readDistance += rRefLen - r.Position + lRefLen - l.Position;
+		}
 		else if (l.IsReverseStrand && r.IsReverseStrand)
+		{
 			distance += l.Position + rRefLen - r.Position - rLen;
+			readDistance += r.Position + rLen + lRefLen - l.Position;
+		}
 	}
 	else
 	{
 		if (!l.IsReverseStrand && !r.IsReverseStrand)
 		{
-			//printf("A\n");
 			distance += l.Position + r.Position;
+			readDistance += lRefLen - l.Position + rRefLen - r.Position;
 		}
 		else if (!l.IsReverseStrand && r.IsReverseStrand)
 		{
-			//printf("B\n");
 			distance += l.Position + rRefLen - r.Position - rLen;
+			readDistance += lRefLen - l.Position + r.Position + rLen;
 		}
 		else if (l.IsReverseStrand && !r.IsReverseStrand)
 		{
-			//printf("C\n");
 			distance += lRefLen - l.Position - lLen + r.Position;
+			readDistance += lLen + l.Position + rRefLen - r.Position;
 		}
 		else if (l.IsReverseStrand && r.IsReverseStrand)
 		{
-			//printf("D\n");
 			distance += lRefLen - l.Position - lLen + rRefLen - r.Position - rLen;
+			readDistance += lLen + l.Position + r.Position + rLen;
 		}
 	}
-	//distance += lLen + rLen;
-	//fprintf(stdout, "Test: %c%i %c%i => %s\n", (l.IsReverseStrand ? '-' : '+'), l.RefID, (r.IsReverseStrand ? '-' : '+'), r.RefID, (equalOrientation ? "equal" : "opposite"));
+
+	if (noOverlapDeviation > Helpers::Eps && readDistance > input.Mean + noOverlapDeviation * input.Std)
+		return;
+
 	string comment = leftAlg.Name + "+" + rightAlg.Name;
 	ContigLink link(l.RefID, r.RefID, distance, input.Std, equalOrientation, forwardOrder, input.Weight / (double)factor, comment);
 	link.Ambiguous = factor > 1;

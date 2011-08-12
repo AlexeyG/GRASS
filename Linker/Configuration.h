@@ -29,8 +29,10 @@ public:
 public:
 	int NumberOfThreads;
 	int MaximumHits;
+	bool ExactMatch;
 	string IndexCommand;
 	string SuffixArrayCommand;
+	string SuffixArrayExactCommand;
 	string AlignSingleEndCommand;
 	string TmpPath;
 };
@@ -69,6 +71,7 @@ public:
 	string InputFileName;
 	string OutputFileName;
 	int MaximumLinkHits;
+	double NoOverlapDeviation;
 	BWAConfiguration BWAConfig;
 	NovoAlignConfiguration NovoAlignConfig;
 	SAMToolsConfiguration SAMToolsConfig;

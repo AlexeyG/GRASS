@@ -38,7 +38,10 @@ bool BWAAligner::Align(const string &outFile)
 	if (success)
 	{
 		outSai = Helpers::TempFile(Configuration.TmpPath);
-		sprintf(str, Configuration.SuffixArrayCommand.c_str(), Configuration.NumberOfThreads, outSai.c_str(), prefix.c_str(), QueryFileName.c_str());
+		if (Configuration.ExactMatch)
+			sprintf(str, Configuration.SuffixArrayExactCommand.c_str(), Configuration.NumberOfThreads, outSai.c_str(), prefix.c_str(), QueryFileName.c_str());
+		else
+			sprintf(str, Configuration.SuffixArrayCommand.c_str(), Configuration.NumberOfThreads, outSai.c_str(), prefix.c_str(), QueryFileName.c_str());
 		if (!Helpers::Execute(str))
 			success = false;
 	}
