@@ -36,9 +36,11 @@ private:
 protected:
 	SolverStatus status;
 
+public:
+	int Iteration;
+
 private:
 	int timerId;
-	int iteration;
 	GASolver *ga;
 	IterativeSolver *iterative;
 	DataStore store;

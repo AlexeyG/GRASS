@@ -33,36 +33,36 @@ bool EMSolver::Solve()
 		return false;
 	timerId = Helpers::ElapsedTimers.AddTimer();
 	bestObjective = -Helpers::Inf;
-	iteration = 0;
+	Iteration = 0;
 	prepareSlacks();
 	bool success = true;
 	double lastElapsed = 0;
 	while (!shouldTerminate())
 	{
-		if (iteration > 0)
+		if (Iteration > 0)
 			lastT = ga->T;
 		if (!expectation())
 		{
 			if (Options.VerboseOutput > 0)
-				fprintf(stderr, "   [+] Iteration %2i: failed expectation (%9.2lf ms).\n", iteration, getTime(lastElapsed));
+				fprintf(stderr, "   [+] Iteration %2i: failed expectation (%9.2lf ms).\n", Iteration, getTime(lastElapsed));
 			success = false;
 			break;
 		}
 		if (Options.VerboseOutput > 0)
-			fprintf(stderr, "   [+] Iteration %2i: expectation  of %10.3lf in %9.2lf ms.\n", iteration, ga->GetObjective(), getTime(lastElapsed));
+			fprintf(stderr, "   [+] Iteration %2i: expectation  of %10.3lf in %9.2lf ms.\n", Iteration, ga->GetObjective(), getTime(lastElapsed));
 		if (!maximization())
 		{
 			if (Options.VerboseOutput > 0)
-				fprintf(stderr, "   [+] Iteration %2i: failed maximization (%9.2lf ms).\n", iteration, getTime(lastElapsed));
+				fprintf(stderr, "   [+] Iteration %2i: failed maximization (%9.2lf ms).\n", Iteration, getTime(lastElapsed));
 			success = false;
 			break;
 		}
 		if (Options.VerboseOutput > 0)
-			fprintf(stderr, "   [+] Iteration %2i: maximization of %10.3lf in %9.2lf ms.\n", iteration, iterative->GetObjective(), getTime(lastElapsed));
+			fprintf(stderr, "   [+] Iteration %2i: maximization of %10.3lf in %9.2lf ms.\n", Iteration, iterative->GetObjective(), getTime(lastElapsed));
 		fprintf(stderr, "\n");
 		updateSlack();
 		updateBest();
-		iteration++;
+		Iteration++;
 	}
 	if (success)
 	{
@@ -131,7 +131,7 @@ void EMSolver::prepareSlacks()
 
 bool EMSolver::converged()
 {
-	return iteration > 0 && lastT == ga->T;
+	return Iteration > 0 && lastT == ga->T;
 }
 
 bool EMSolver::shouldTerminate()

@@ -442,13 +442,21 @@ bool generatePairedReads(const PairedSimulation &simulation, int &counter)
 					}
 					else
 						l = FastQSequence(seq2, Helpers::ItoStr(counter) + ".1|" + Helpers::ItoStr(pos1), qual2), r = FastQSequence(seq1, Helpers::ItoStr(counter) + ".2|" + Helpers::ItoStr(pos1 + insert - len2), qual1);
-					/*if (rand() < RAND_MAX / 2)
+					
+					/* Read flipping */
+					if (rand() < RAND_MAX / 2)
 					{
 						FastQSequence t(l);
 						l = r;
 						r = t;
-						l.ReverseCompelement(), r.ReverseCompelement();
-					}*/
+
+						// Don't understand completely but that's how it works on paper
+						if (!simulation.IsIllumina)
+						{
+							l.ReverseCompelement();
+							r.ReverseCompelement();
+						}
+					}
 					w1.Write(l), w2.Write(r);
 					counter++;
 				}

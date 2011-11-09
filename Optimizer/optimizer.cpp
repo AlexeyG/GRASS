@@ -24,7 +24,6 @@ using namespace std;
 Configuration config;
 DataStore store;
 DPSolver solver;
-//EMSolver solver;
 
 FILE *out;
 
@@ -262,8 +261,10 @@ void testBnB()
 	int n = bnb->Incumbent.size();
 	for (int i = 0; i < n; i++)
 	{
-		bool val = ((int)(bnb->cplex.getValue((i < n / 2 ? bnb->alpha[i] : bnb->beta[i - n / 2])) + 0.5)) > 0;
-		if (bnb->Incumbent[i] != val)
+		IloNumVar var = (i < n / 2 ? bnb->alpha[i] : bnb->beta[i - n / 2]);
+		double val = bnb->cplex.getValue(var);
+		bool sw = ((int)(val + 0.5)) > 0;
+		if (bnb->Incumbent[i] != sw)
 			count++;
 	}
 	fprintf(out, "Mismatch: %i Total: %i\n", count, n);
@@ -273,7 +274,7 @@ void testBnB()
 		double val = bnb->cplex.getValue(var);
 		bool sw = ((int)(val + 0.5)) > 0;
 		if (bnb->Incumbent[i] != sw)
-			fprintf(out, "%s %.5lf : %i -> %i\n", (i < n / 2 ? "alpha" : "beta"), bnb->Slack[i], (int)bnb->Incumbent[i], (int)val);
+			fprintf(out, "%s %.5lf : %i -> %i\n", (i < n / 2 ? "alpha" : "beta"), bnb->Slack[i], (int)bnb->Incumbent[i], (int)sw);
 	}
 	delete bnb;
 	delete it;
@@ -356,6 +357,7 @@ void testGround(const DPSolver &found)
 	fprintf(out, "Orientation mismatch: %i\n", ScaffoldComparer::OrientationDistance(foundScaffold, wantScaffold));
 	fprintf(out, "Found distance: %i\n", ScaffoldComparer::Compare(foundScaffold, truth));
 	fprintf(out, "Want distance: %i\n", ScaffoldComparer::Compare(wantScaffold, truth));
+	fprintf(out, "EM iterations: %i\n", solver.MaxIteration);
 	
 	/*int id = 0;
     int pos = 0;
@@ -447,11 +449,12 @@ bool outputScaffolds(const string &fileName, const vector<Scaffold> &scaffolds)
 	fprintf(out, "%i\n", count);
 	for (int j = 0; j < count; j++)
 	{
-		for (int i = 0; i < scaffolds[j].ContigCount(); i++)
+		int size = scaffolds[j].ContigCount();
+		for (int i = 0; i < size; i++)
 			fprintf(out, "%c%i ", (scaffolds[j][i].T ? '-' : '+'), scaffolds[j][i].Id);
 		fprintf(out, "\n");
-		for (int i = 1; i < scaffolds[j].ContigCount(); i++)
-			fprintf(out, "%i ", getDistance(scaffolds[j][i - 1], scaffolds[j][i]));
+		for (int i = 0; i < size; i++)
+			fprintf(out, "%i ", (int)scaffolds[j][i].X);
 		fprintf(out, "\n");
 	}
 	fclose(out);
@@ -520,6 +523,9 @@ int main(int argc, char *argv[])
 			cerr << "[-] Unable to output solution." << endl;
 			return -4;
 		}
+		out = fopen(config.OutputFileName.c_str(), "w");
+		testGround(solver);
+		fclose(out);
 		return 0;
 	}
 	cerr << config.LastError;

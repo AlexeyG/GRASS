@@ -9,6 +9,7 @@ DPSolver::DPSolver()
 	ContigCount = 0;
 	status = Clean;
 	objectiveValue = 0;
+	MaxIteration = 0;
 }
 
 DPSolver::~DPSolver()
@@ -63,6 +64,7 @@ bool DPSolver::processComponents()
 	vector<double> maxX(nComponents);
 	vector< vector<int> > backTransform(nComponents);
 	vector<Scaffold> scaffolds;
+	MaxIteration = 0;
 	for (int i = 0; i < nComponents; i++)
 	{
 		int nContigsComponent = connectedComponents[i].size();
@@ -85,6 +87,7 @@ bool DPSolver::processComponents()
 			it->ApplyTransform(backTransform[i]);
 		Scaffolds.insert(Scaffolds.end(), scaffolds.begin(), scaffolds.end());
 		objectiveValue += solver->GetObjective();
+		MaxIteration = max(MaxIteration, solver->Iteration);
 		minX[i] =   Helpers::Inf;
 		maxX[i] = - Helpers::Inf;
 		for (int j = 0; j < nContigsComponent; j++)

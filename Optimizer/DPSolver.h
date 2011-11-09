@@ -30,6 +30,9 @@ public:
 private:
 	bool processComponents();
 
+public:
+	int MaxIteration;
+
 private:
 	DataStore store;
 	DPGraph graph;
