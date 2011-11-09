@@ -1,6 +1,6 @@
 #ifndef _ALIGNER_H
 #define _ALIGNER_H
-#include "Configuration.h"
+#include "AlignerConfiguration.h"
 #include <string>
 #include <vector>
 

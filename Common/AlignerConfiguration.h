@@ -1,0 +1,45 @@
+#ifndef _ALIGNERCONFIGURATION_H
+#define _ALIGNERCONFIGURATION_H
+
+#include <string>
+
+using namespace std;
+
+class BWAConfiguration
+{
+public:
+	BWAConfiguration();
+
+public:
+	int NumberOfThreads;
+	int MaximumHits;
+	bool ExactMatch;
+	string IndexCommand;
+	string SuffixArrayCommand;
+	string SuffixArrayExactCommand;
+	string AlignSingleEndCommand;
+	string TmpPath;
+};
+
+class NovoAlignConfiguration
+{
+public:
+	NovoAlignConfiguration();
+
+public:
+	string IndexCommand;
+	string AlignSingleEndCommand;
+	string TmpPath;
+};
+
+class SAMToolsConfiguration
+{
+public:
+	SAMToolsConfiguration();
+
+public:
+	string ConvertCommand;
+	string TmpPath;
+};
+
+#endif
