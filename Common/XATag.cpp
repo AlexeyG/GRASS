@@ -1,4 +1,5 @@
 #include "XATag.h"
+#include "Helpers.h"
 
 XATag::XATag(const BamAlignment &alg)
 {
@@ -22,6 +23,7 @@ XATag::XATag(const string &str, const BamReader &reader)
         if (position[0] != '+' && position[0] != '-')
                 throw new exception();
         RefID = reader.GetReferenceID(name);
-        Position = atoi(position.c_str() + 1);
+		bool tmp;
+        Position = Helpers::ParseInt(position.c_str() + 1, tmp);
         IsReverseStrand = position[0] == '-';
 }

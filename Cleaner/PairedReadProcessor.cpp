@@ -87,7 +87,7 @@ PairedReadProcessor::PairedReadProcessorResult PairedReadProcessor::processAlign
 		int leftCount = leftTags.size(), rightCount = rightTags.size();
 		if (leftCount > 1 || rightCount > 1)
 			continue;
-		if (!leftWriter.Write(leftAlignment) || !rightWriter.Write(rightAlignment))
+		if (!leftWriter.Write(FastQSequence(leftAlignment)) || !rightWriter.Write(FastQSequence(rightAlignment)))
 		{
 			result = FailedIO;
 			break;

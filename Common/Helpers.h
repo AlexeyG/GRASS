@@ -19,9 +19,9 @@ namespace Helpers
 	double RandomUniform();
 	double RandomNormal(double mean = 0.0, double std = 1.0);
 	int RandomNormal(int mean = 0, int std = 1);
-	bool IsNumber(char *str);
+	bool IsNumber(const char *str);
 	string ItoStr(int a);
-	int ParseInt(char *str, bool &success);
+	int ParseInt(const char *str, bool &success);
 	string TempFile(string path = "");
 	string RandomString(int len, const char *alpha = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
 	bool FileExists(const string &fileName);

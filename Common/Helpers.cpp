@@ -31,7 +31,7 @@ int Helpers::RandomNormal(int mean, int std)
 	return (int)Helpers::RandomNormal((double)mean, (double)std);
 }
 
-bool Helpers::IsNumber(char *str)
+bool Helpers::IsNumber(const char *str)
 {
 	int len = strlen(str);
 	if (len == 0)
@@ -58,7 +58,7 @@ string Helpers::ItoStr(int a)
 	return string(buf);
 }
 
-int Helpers::ParseInt(char *str, bool &success)
+int Helpers::ParseInt(const char *str, bool &success)
 {
 	int len = strlen(str);
 	success = Helpers::IsNumber(str);

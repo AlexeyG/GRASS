@@ -3,6 +3,7 @@
 #include "Defines.h"
 #include <sstream>
 #include <cstring>
+#include <cstdlib>
 
 // Configuration segment class ctor
 Segment::Segment(int start, int finish, int chromosome) : Start(start), Finish(finish), Chromosome(chromosome)

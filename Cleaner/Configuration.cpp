@@ -170,5 +170,5 @@ void Configuration::printHelpMessage(stringstream &serr)
 	serr << "[i] BWA configuration options:" << endl;
 	serr << "[i] -bwathreads <n>                                     Number of threads used in BWA alignment. [8]" << endl;
 	serr << "[i] -bwahits <n>                                        Maximum number of alignment hits BWA should report. [1000]" << endl;
-	serr << "[i] -bwaexact <yes/no>                                  Use exact matching in BWA? [no]";
+	serr << "[i] -bwaexact <yes/no>                                  Use exact matching in BWA? [no]" << endl;
 }

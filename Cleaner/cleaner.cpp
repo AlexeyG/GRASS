@@ -16,7 +16,7 @@ bool processPairs(const Configuration &config, const vector<PairedInput> &paired
 	for (int i = 0; i < n; i++)
 	{
 		PairedInput p = paired[i];
-		cerr << "   [i] Processing " << (p.IsIllumina ? "Illumina" : "454") << " paired reads (" << p.LeftFileName << ", " << p.RightFileName << ") of weight " << p.Weight << " with insert size " << p.Mean << " +/- " << p.Std << endl; 
+		cerr << "   [i] Processing " << (p.IsIllumina ? "Illumina" : "454") << " paired reads (" << p.LeftFileName << ", " << p.RightFileName << ")" << endl; 
 		switch (processor.Process(config, paired[i]))
 		{
 		case PairedReadProcessor::Success:
