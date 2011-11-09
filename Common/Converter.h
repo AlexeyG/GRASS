@@ -1,7 +1,7 @@
 #ifndef _CONVERTER_H
 #define _CONVERTER_H
 
-#include "Configuration.h"
+#include "AlignerConfiguration.h"
 #include <string>
 
 using namespace std;
