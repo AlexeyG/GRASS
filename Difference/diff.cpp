@@ -4,11 +4,17 @@
 #include <iostream>
 #include <algorithm>
 #include <cstring>
+#include <cstdlib>
 
 using namespace std;
 
 Configuration config;
 vector<FastQSequence> A, B;
+
+bool isNameLess(const FastQSequence &a, const FastQSequence &b)
+{
+	return strcmp(a.Comment.c_str(), b.Comment.c_str()) < 0;
+}
 
 bool readSet(const string &fileName, vector<FastQSequence> &reads)
 {
@@ -29,11 +35,17 @@ bool calculateDifference(const vector<FastQSequence> &A, const vector<FastQSeque
 		if (j >= bSize)
 			result = result && writer.Write(A[i++]);
 		else if (i >= aSize)
-			result = false;
-		else if (strcmp(A[i].Comment.c_str(), B[j].Comment.c_str()) == 0)
-			i++, j++;
+			j++;
 		else
-			result = result && writer.Write(A[i++]);
+		{
+			int cmp = strcmp(A[i].Comment.c_str(), B[j].Comment.c_str());
+			if (cmp == 0)
+				i++, j++;
+			else if (cmp < 0)
+				result = result && writer.Write(A[i++]);
+			else
+				j++;
+		}
 	}
 	writer.Close();
 	return result;
@@ -54,6 +66,8 @@ int main(int argc, char *argv[])
 			cerr << "[-] Unable to read first input file: " << config.BFileName << endl;
 			return -3;
 		}
+		sort(A.begin(), A.end(), isNameLess);
+		sort(B.begin(), B.end(), isNameLess);
 		cerr << "[+] Successfully read second input file." << endl;
 		cerr << "[i] Calculating difference..." << endl;
 		if (!calculateDifference(A, B, config.CFileName))

@@ -9,7 +9,7 @@ using namespace std;
 class PairedInput
 {
 public:
-	PairedInput(const string &leftFileName, const string &rightFileName, double mean, double std, bool isIllumina, double weight = 1, int mapQ = 0, int minReadLength = 0) : LeftFileName(leftFileName), RightFileName(rightFileName), Mean(mean), Std(std), IsIllumina(isIllumina), Weight(weight), MapQ(mapQ), MinReadLength(minReadLength) {};
+	PairedInput(const string &leftFileName, const string &rightFileName, double mean, double std, bool isIllumina, double weight = 1, int mapQ = 0, int minReadLength = 0, int maxEditDistance = 10000) : LeftFileName(leftFileName), RightFileName(rightFileName), Mean(mean), Std(std), IsIllumina(isIllumina), Weight(weight), MapQ(mapQ), MinReadLength(minReadLength), MaxEditDistance(maxEditDistance) {};
 
 public:
 	string LeftFileName;
@@ -20,6 +20,7 @@ public:
 	double Weight;
 	int MapQ;
 	int MinReadLength;
+	int MaxEditDistance;
 };
 
 class Configuration

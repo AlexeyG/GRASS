@@ -23,12 +23,6 @@ private:
 	void removeBamFiles();
 
 private:
-	bool inList(const string &name);
-	int getStart(const string &name, int len);
-	int getEnd(const string &name, int len);
-	int getReadPosition(const BamAlignment &alg);
-
-private:
 	DataStore &dataStore;
 	string leftBamFileName;
 	string rightBamFileName;

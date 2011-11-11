@@ -85,6 +85,11 @@ PairedReadProcessor::PairedReadProcessorResult PairedReadProcessor::processAlign
 	while (leftReader.GetNextAlignmentGroup(leftAlignment, leftTags) && rightReader.GetNextAlignmentGroup(rightAlignment, rightTags))
 	{
 		int leftCount = leftTags.size(), rightCount = rightTags.size();
+		/*if (leftAlignment.Name.find("96138.1") != string::npos || leftAlignment.Name.find("96138.2") != string::npos)
+		{
+			cout << "left: " << leftAlignment.Name << " : " << leftCount << endl;
+			cout << "right: " << rightAlignment.Name << " : " << rightCount << endl;
+		}*/
 		if (leftCount > 1 || rightCount > 1)
 			continue;
 		if (!leftWriter.Write(FastQSequence(leftAlignment)) || !rightWriter.Write(FastQSequence(rightAlignment)))

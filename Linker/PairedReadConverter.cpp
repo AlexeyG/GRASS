@@ -69,6 +69,8 @@ PairedReadConverter::PairedReadConverterResult PairedReadConverter::alignAndConv
 		leftConverter.RemoveOutput = rightConverter.RemoveOutput = false;
 		leftBamFileName = leftConverter.OutputFileName;
 		rightBamFileName = rightConverter.OutputFileName;
+		//cout << input.IsIllumina << " " << input.LeftFileName << " " << leftBamFileName << endl;
+		//cout << input.IsIllumina << " " << input.RightFileName << " " << rightBamFileName << endl;
 	}
 
 	delete leftAlignment;
@@ -95,6 +97,11 @@ PairedReadConverter::PairedReadConverterResult PairedReadConverter::createLinksF
 void PairedReadConverter::createLinksForPair(int groupId, const BamAlignment &leftAlg, const vector<XATag> &leftTags, const BamAlignment &rightAlg, const vector<XATag> &rightTags, const PairedInput &input, double noOverlapDeviation, int maxHits)
 {
 	int combinations = leftTags.size() * rightTags.size();
+	/*if (leftAlg.Name == "660005.1|479132" | leftAlg.Name == "660005.2|479603")
+	{
+		cout << leftAlg.IsMapped() << " " << leftAlg.Length << " " << leftAlg.MapQuality << " " << leftAlg.Name << " " << leftAlg.Position << endl;
+		cout << rightAlg.IsMapped() << " " << rightAlg.Length << " " << rightAlg.MapQuality << " " << rightAlg.Name << " " << rightAlg.Position << endl;
+	}*/
 	if (combinations > maxHits || combinations == 0)
 		return;
 	for (vector<XATag>::const_iterator l = leftTags.begin(); l != leftTags.end(); l++)
@@ -122,6 +129,9 @@ void PairedReadConverter::addLinkForTagPair(int groupId, const XATag &l, const B
 	if (leftAlg.MapQuality < input.MapQ || rightAlg.MapQuality < input.MapQ)
 		return;
 	if (lLen < input.MinReadLength || rLen < input.MinReadLength)
+		return;
+	int leftEdit, rightEdit;
+	if (!leftAlg.GetTag("NM", leftEdit) || !rightAlg.GetTag("NM", rightEdit) || leftEdit > input.MaxEditDistance || rightEdit > input.MaxEditDistance)
 		return;
 
 	if (!input.IsIllumina)
@@ -190,37 +200,3 @@ void PairedReadConverter::removeBamFiles()
 	rightBamFileName.clear();
 }
 
-bool PairedReadConverter::inList(const string &name)
-{
-	string list = "133448.1|74726+133448.2|75182|286248.1|74732+286248.2|75185|246773.1|74733+246773.2|75186|110685.1|74733+110685.2|75185|219041.1|74728+219041.2|75180|197878.1|74727+197878.2|75178|315396.1|74735+315396.2|75185|278283.1|74727+278283.2|75176|113656.1|74736+113656.2|75184|363369.1|74731+363369.2|75174|177996.1|74740+177996.2|75182|19598.1|74735+19598.2|75175|667.1|74742+667.2|75181|197133.1|74731+197133.2|75169|153451.1|74733+153451.2|75164|85752.1|74757+85752.2|75184|139282.1|74739+139282.2|75162|63446.1|74761+63446.2|75179|237589.1|74743+237589.2|75160|197788.1|74766+197788.2|75174";
-	return list.find(name) != string::npos;
-}
-
-int PairedReadConverter::getStart(const string &name, int len)
-{
-	int i = 1, strLen = name.length();
-	while (i < strLen && name[i] != '|')
-		i++;
-	int num = 0;
-	for (int j = 1; j < i; j++)
-		num = num * 10 + name[j] - '0';
-	if (name[0] == '-')
-		num -= len;
-	return num;
-}
-
-int PairedReadConverter::getEnd(const string &name, int len)
-{
-	return getStart(name, len) + len;
-}
-
-int PairedReadConverter::getReadPosition(const BamAlignment &alg)
-{
-	string name = dataStore[alg.RefID].Sequence.Name();
-	int len = dataStore[alg.RefID].Sequence.Nucleotides.length();
-	int start = getStart(name, len);
-	int pos = alg.Position;
-	if (name[0] == '-')
-		pos = len - pos - alg.Length;
-	return start + pos;
-}
