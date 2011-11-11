@@ -9,7 +9,7 @@ BWAConfiguration::BWAConfiguration()
 	ExactMatch = false;
 	IndexCommand = "bwa index -a is -p %s %s >& /dev/null";
 	SuffixArrayCommand = "bwa aln -t %i -f %s %s %s >& /dev/null";
-	SuffixArrayExactCommand = "bwa aln -n 0 -t %i -f %s %s %s >& /dev/null";
+	SuffixArrayExactCommand = "bwa aln -t %i -f %s %s %s >& /dev/null";
 	AlignSingleEndCommand = "bwa samse -f %s -n %i %s %s %s >& /dev/null";
 }
 
