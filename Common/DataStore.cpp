@@ -194,18 +194,40 @@ void DataStore::Extract(const vector<int> &what, DataStore &store, vector<int> &
 		}
 }
 
-void DataStore::RemoveAmbiguous()
+int DataStore::RemoveAmbiguous()
 {
 	vector<ContigLink> keep;
+	int count = 0;
 	for (LinkMap::iterator it = links.begin(); it != links.end(); it++)
 		if (!it->second.Ambiguous)
 			keep.push_back(it->second);
+		else
+			count++;
 	links.clear();
 	for (vector<ContigLink>::iterator it = keep.begin(); it != keep.end(); it++)
 	{
 		pair<int, int> pos(it->First, it->Second);
 		links.insert(pair<pair<int,int>,ContigLink>(pos, *it));
 	}
+	return count;
+}
+
+int DataStore::Erode(double weight)
+{
+	vector<ContigLink> keep;
+	int count = 0;
+	for (LinkMap::iterator it = links.begin(); it != links.end(); it++)
+		if (it->Weigth - weight > - Helpers::Eps)
+			keep.push_back(it->second);
+		else
+			count++;
+	links.clear();
+	for (vector<ContigLink>::iterator it = keep.begin(); it != keep.end(); it++)
+	{
+		pair<int, int> pos(it->First, it->Second);
+		links.insert(pair<pair<int,int>,ContigLink>(pos, *it));
+	}
+	return count;
 }
 
 /*void DataStore::temp()

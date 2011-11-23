@@ -19,8 +19,10 @@ Configuration::Configuration()
 	BundleAmbiguous = true;
 	PrintMatrix = false;
 	BundleDistance = 3.0;
+	Erosion = 5.0;
 	InputFileName = "";
 	OutputFileName = "scaffold.fasta";
+	SolutionOutputFileName = "";
 }
 
 // Parses command line arguments. Returns true if successful.
@@ -174,6 +176,25 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
 				}
 				BundleDistance = distance;
 			}
+			else if (!strcmp("-erosion", argv[i]))
+			{
+				if (argc - i - 1 < 1)
+				{
+					cerr << "[-] Parsing error in -erosion: must have an argument." << endl;
+					this->Success = false;
+					break;
+				}
+				i++;
+				bool erosionSuccess;
+				int erosion = Helpers::ParseInt(argv[i], erosionSuccess);
+				if (!erosionSuccess || erosion < Helpers::Eps)
+				{
+					cerr << "[-] Parsing error in -erosion: distance must be a non-negative number." << endl;
+					this->Success = false;
+					break;
+				}
+				Erosion = erosion;
+			}
 			else if (!strcmp("-output", argv[i]))
 			{
 				if (argc - i - 1 < 1)
@@ -184,6 +205,17 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
 				}
 				i++;
 				OutputFileName = argv[i];
+			}
+			else if (!strcmp("-solution-output", argv[i]))
+			{
+				if (argc - i - 1 < 1)
+				{
+					serr << "[-] Parsing error in -solution-output: must have an argument." << endl;
+					this->Success = false;
+					break;
+				}
+				i++;
+				SolutionOutputFileName = argv[i];
 			}
 			else if (!strcmp("-print-matrix", argv[i]))
 			{
@@ -463,6 +495,7 @@ void Configuration::printHelpMessage(stringstream &serr)
 	serr << "[i] -bundle-groups <yes/no>                             Bundle contig links from different link groups? [yes]" << endl;
 	serr << "[i] -bundle-ambiguous <yes/no>                          Bundle ambiguous and non-ambiguous contig links together? [yes]" << endl;
 	serr << "[i] -bundle-distance <distance>                         Bundle contig links withing <distance> standard deviation from the median. [3]" << endl;
+	serr << "[i] -erosion <weight>                                   Remove contig links with weight smaller than <weigth> (should be used only with link bundling). [5]" << endl;
 	serr << "[i] -time-limit <seconds>                               Time limit for a single run of CPLEX or GA in seconds. [infinite]" << endl;
 	serr << "[i] -threads <n>                                        Number of threads a solver can use. [automatic]" << endl;
 	serr << "[i] -cplex-opportunistic <yes/no>                       Use CPLEX opportunistic optimization mode. [yes]" << endl;
@@ -474,5 +507,6 @@ void Configuration::printHelpMessage(stringstream &serr)
 	serr << "[i] -ga-limit <seconds>                                 Time in seconds for solving a single GA optimization problem. [unlimited]" << endl;
 	serr << "[i] -ga-restarts <number>                               Number of restarts before exiting GA optimization. [unlimited]" << endl;
 	serr << "[i] -verbose <yes/no/more>                              Verbose output of solvers? [no]" << endl;
-	serr << "[i] -output [output filename]                           Output filename for optimzation information. [scaffold.fasta]" << endl;
+	serr << "[i] -output <output filename>                           Output filename for final scaffolds. [scaffold.fasta]" << endl;
+	serr << "[i] -solution-output <output filename>                  Output filename for optimzation solution. [not output]" << endl;
 }

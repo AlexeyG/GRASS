@@ -56,6 +56,8 @@ void Sequence::complement()
 				break;
 			case 'n' : Nucleotides[i] = 'n';
 				break;
+			case '*' : Nucleotides[i] = '*';
+				break;
 			default :
 				Nucleotides[i] = 'N';
 		}

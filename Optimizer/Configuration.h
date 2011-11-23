@@ -24,10 +24,12 @@ public:
 	bool BundlePerGroup;
 	bool BundleAmbiguous;
 	double BundleDistance;
+	double Erosion;
 	bool PrintMatrix;
 	SolverConfiguration Options;
 	string InputFileName;
 	string OutputFileName;
+	string SolutionOutputFileName;
 
 private:
 	void printHelpMessage(stringstream &serr);

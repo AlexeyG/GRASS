@@ -25,7 +25,7 @@ Configuration config;
 DataStore store;
 DPSolver solver;
 
-FILE *out;
+//FILE *out;
 
 bool readStore(const string &fileName, DataStore &store)
 {
@@ -461,6 +461,19 @@ bool outputScaffolds(const string &fileName, const vector<Scaffold> &scaffolds)
 	return true;
 }
 
+bool outputFastaScaffolds(const string &fileName, const vector<Scaffold> &scaffolds)
+{
+	FILE *out = fopen(fileName.c_str(), "w");
+	if (out == NULL)
+		return false;
+	int count = scaffolds.size();
+	vector<FastASequence> fasta(count);
+	for (int j = 0; j < count; j++);
+		//fasta.push_back(
+	fclose(out);
+	return true;
+}
+
 int main(int argc, char *argv[])
 {
 	Helpers::ElapsedTimers.AddTimer();
@@ -474,13 +487,8 @@ int main(int argc, char *argv[])
 			return -1;
 		}
 		cerr << "[+] Read optimization problem (" << config.InputFileName << ")." << endl;
-		//for (DataStore::LinkMap::iterator it = store.Begin(); it != store.End(); it++)
-		//	fprintf(stderr, "Group %i - Linked: d(%i,%i) = %8.2f +/- %8.2f; orientation: %8s; order: %7s with weight %.5lf.\n", it->second.GetGroupID(), it->second.First, it->second.Second, it->second.Mean, it->second.Std, (it->second.EqualOrientation ? "equal" : "opposite"), (it->second.ForwardOrder ? "forward" : "reverse"), it->second.Weight);
 		if (config.RemoveAmbiguous)
-		{
-			store.RemoveAmbiguous();
-			cerr << "[+] Removed ambiguous links." << endl;
-		}
+			cerr << "[+] Removed " << store.RemoveAmbiguous() << " ambiguous links." << endl;
 		if (config.PrintMatrix)
 		{
 			cerr << "[i] Original matrix:" << endl;
@@ -501,11 +509,8 @@ int main(int argc, char *argv[])
 			cerr << "[i] Optimized matrix:" << endl;
 			Helpers::PrintDataStore(store);
 		}
-		//out = fopen(config.OutputFileName.c_str(), "w");
-		//testGroundIterative();
-		//testBnB();
-		//fclose(out);
-		//return 0;
+		if (config.Erosion > 0)
+			cerr << "[i] Erosion removed " << store.Erode(erosion) << " contig links." << endl;
 		if (!solver.Formulate(store))
 		{
 			cerr << "[-] Unable to formulate the optimization problem." << endl;
@@ -518,14 +523,16 @@ int main(int argc, char *argv[])
 			return -3;
 		}
 		cerr << "[+] Solved the optimization problem." << endl;
-		if (!outputScaffolds(config.OutputFileName, ScaffoldExtractor::Extract(solver)))
+		if (!outputFastaScaffolds(config.OutputFileName, ScaffoldExtractor::Extract(solver)))
 		{
-			cerr << "[-] Unable to output solution." << endl;
+			cerr << "[-] Unable to output scaffolds (FastA)." << endl;
 			return -4;
 		}
-		out = fopen(config.OutputFileName.c_str(), "w");
-		testGround(solver);
-		fclose(out);
+		if (!config.SolutionOutputFileName.empty() && !outputScaffolds(config.SolutionOutputFileName, ScaffoldExtractor::Extract(solver)))
+		{
+			cerr << "[-] Unable to output solution." << endl;
+			return -5;
+		}
 		return 0;
 	}
 	cerr << config.LastError;

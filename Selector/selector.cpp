@@ -450,7 +450,6 @@ bool generatePairedReads(const PairedSimulation &simulation, int &counter)
 						l = r;
 						r = t;
 
-						// Don't understand completely but that's how it works on paper
 						if (!simulation.IsIllumina)
 						{
 							l.ReverseCompelement();

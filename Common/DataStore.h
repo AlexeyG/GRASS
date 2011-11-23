@@ -90,7 +90,8 @@ public:
 	void Sort();
 	void Bundle(bool sortLinks, bool perGroup, bool joinAmbiguous, double distance = 3);
 	void Extract(const vector<int> &what, DataStore &store, vector<int> &transBack);
-	void RemoveAmbiguous();
+	int RemoveAmbiguous();
+	int Erode(double weight);
 
 private:
 	void bundleLinks(vector<ContigLink> &l, bool perGroup, bool joinAmbiguous, double distance);
