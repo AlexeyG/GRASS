@@ -14,6 +14,9 @@
 
 #include "ScaffoldExtractor.h"
 #include "ScaffoldComparer.h"
+#include "ScaffoldConverter.h"
+
+#include "Writer.h"
 
 #include "GraphViz.h"
 
@@ -463,15 +466,10 @@ bool outputScaffolds(const string &fileName, const vector<Scaffold> &scaffolds)
 
 bool outputFastaScaffolds(const string &fileName, const vector<Scaffold> &scaffolds)
 {
-	FILE *out = fopen(fileName.c_str(), "w");
-	if (out == NULL)
-		return false;
-	int count = scaffolds.size();
-	vector<FastASequence> fasta(count);
-	for (int j = 0; j < count; j++);
-		//fasta.push_back(
-	fclose(out);
-	return true;
+	FastAWriter writer;
+	bool result = writer.Open(fileName) && writer.Write(ScaffoldConverter::ToFasta(store, scaffolds[i]));
+	writer.Close();
+	return result;
 }
 
 int main(int argc, char *argv[])
