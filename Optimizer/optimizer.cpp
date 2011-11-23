@@ -205,7 +205,7 @@ void writeLog(const string &fileName, int success, double time, int linksBefore,
 	fclose(out);
 }
 
-void testBnB()
+/*void testBnB()
 {
 	vector<bool> tBest(store.ContigCount);
 	for (int i = 0; i < store.ContigCount; i++)
@@ -281,7 +281,7 @@ void testBnB()
 	}
 	delete bnb;
 	delete it;
-}
+}*/
 
 double getRealDistance(const ScaffoldContig &a, const ScaffoldContig &b)
 {
@@ -467,7 +467,7 @@ bool outputScaffolds(const string &fileName, const vector<Scaffold> &scaffolds)
 bool outputFastaScaffolds(const string &fileName, const vector<Scaffold> &scaffolds)
 {
 	FastAWriter writer;
-	bool result = writer.Open(fileName) && writer.Write(ScaffoldConverter::ToFasta(store, scaffolds[i]));
+	bool result = writer.Open(fileName) && writer.Write(ScaffoldConverter::ToFasta(store, scaffolds));
 	writer.Close();
 	return result;
 }
