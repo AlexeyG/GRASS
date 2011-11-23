@@ -11,8 +11,8 @@ using namespace std;
 class ScaffoldConverter
 {
 public:
-	FastASequence ToFasta(const DataStore &store, const Scaffold &scaffold);
-	vector<FastASequence> ToFasta(const DataStore &store, const vector<Scaffold> &scaffold);
+	static FastASequence ToFasta(const DataStore &store, const Scaffold &scaffold);
+	static vector<FastASequence> ToFasta(const DataStore &store, const vector<Scaffold> &scaffold);
 };
 
 #endif

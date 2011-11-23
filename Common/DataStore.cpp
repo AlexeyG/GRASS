@@ -217,7 +217,7 @@ int DataStore::Erode(double weight)
 	vector<ContigLink> keep;
 	int count = 0;
 	for (LinkMap::iterator it = links.begin(); it != links.end(); it++)
-		if (it->Weight - weight > - Helpers::Eps)
+		if (it->second.Weight - weight > - Helpers::Eps)
 			keep.push_back(it->second);
 		else
 			count++;
