@@ -14,7 +14,7 @@
     <ProjectGuid>{A5F0C478-B045-40DF-BA87-70CA8CE97B2B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>dataFilter</RootNamespace>
-    <ProjectName>Filter</ProjectName>
+    <ProjectName>dataFilter</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
