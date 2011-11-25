@@ -87,6 +87,7 @@
     <ClCompile Include="RandomizedGreedyInitializer.cpp" />
     <ClCompile Include="RelaxedFixedMIQPSolver.cpp" />
     <ClCompile Include="ScaffoldComparer.cpp" />
+    <ClCompile Include="ScaffoldConverter.cpp" />
     <ClCompile Include="ScaffoldExtractor.cpp" />
     <ClCompile Include="SolverConfiguration.cpp" />
     <ClCompile Include="DPGraph.cpp" />
@@ -109,6 +110,7 @@
     <ClInclude Include="RandomizedGreedyInitializer.h" />
     <ClInclude Include="RelaxedFixedMIQPSolver.h" />
     <ClInclude Include="ScaffoldComparer.h" />
+    <ClInclude Include="ScaffoldConverter.h" />
     <ClInclude Include="ScaffoldExtractor.h" />
     <ClInclude Include="SolverConfiguration.h" />
     <ClInclude Include="DPGraph.h" />
