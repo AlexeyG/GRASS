@@ -29,11 +29,11 @@ bool containedInContig(const BamAlignment &alg, const vector<XATag> &tags, const
 {
 	vector<int> pos;
 	pos.push_back(alg.Position);
-	for (int i = 0; i < tags.size(); i++)
+	for (int i = 0; i < (int)tags.size(); i++)
 		pos.push_back(tags[i].Position); 
 	int n = contigs.size();
 	int readLen = alg.Length;
-	for (int j = 0; j < pos.size(); j++)
+	for (int j = 0; j < (int)pos.size(); j++)
 	{
 		bool contained = false;
 		for (int i = 0; i < n; i++)
