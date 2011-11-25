@@ -99,8 +99,8 @@ bool DPSolver::processComponents()
 			if (solver->U[j])
 			{
 				int contigLen = compStore[j].Sequence.Nucleotides.length();
-				minX[i] = min(minX[i], (T[i] == 1 ? solver->X[j] - contigLen + 1 : solver->X[j]));
-				maxX[i] = max(maxX[i], (T[i] == 0 ? solver->X[j] + contigLen - 1 : solver->X[j]));
+				minX[i] = min(minX[i], (solver->T[j] == 1 ? solver->X[j] - contigLen + 1 : solver->X[j]));
+				maxX[i] = max(maxX[i], (solver->T[j] == 0 ? solver->X[j] + contigLen - 1 : solver->X[j]));
 			}
 		}
 		delete solver;
