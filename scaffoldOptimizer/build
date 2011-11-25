@@ -1,0 +1,38 @@
+#!/bin/bash
+CCCFLAGS='-O2 -Wall -m64 -fPIC -fexceptions -fopenmp -DNDEBUG -DIL_STD'
+#CCCFLAGS='-O2 -Wall -m64 -fPIC -fexceptions -fopenmp -g -DIL_STD'
+CCCINC='-I../Common/ -I/data/bio/alexeygritsenk/apps/include -I/data/bio/alexeygritsenk/apps/ILOG/cplex/include -I/data/bio/alexeygritsenk/apps/ILOG/concert/include'
+CCCLIB='-L/data/bio/alexeygritsenk/apps/lib -lbamtools -L/data/bio/alexeygritsenk/apps/ILOG/cplex/lib/x86-64_sles10_4.1/static_pic -lilocplex -lcplex -L/data/bio/alexeygritsenk/apps/ILOG/concert/lib/x86-64_sles10_4.1/static_pic -lconcert -lm -pthread'
+
+g++ -c $CCCFLAGS $CCCINC -o Configuration.o Configuration.cpp
+g++ -c $CCCFLAGS $CCCINC -o Helpers.o ../Common/Helpers.cpp
+g++ -c $CCCFLAGS $CCCINC -o Timers.o ../Common/Timers.cpp
+g++ -c $CCCFLAGS $CCCINC -o Sequence.o ../Common/Sequence.cpp
+g++ -c $CCCFLAGS $CCCINC -o DataStore.o ../Common/DataStore.cpp
+g++ -c $CCCFLAGS $CCCINC -o DataStoreReader.o ../Common/DataStoreReader.cpp
+g++ -c $CCCFLAGS $CCCINC -o Reader.o ../Common/Reader.cpp
+g++ -c $CCCFLAGS $CCCINC -o Writer.o ../Common/Writer.cpp
+g++ -c $CCCFLAGS $CCCINC -o ScaffoldExtractor.o ScaffoldExtractor.cpp
+g++ -c $CCCFLAGS $CCCINC -o ScaffoldComparer.o ScaffoldComparer.cpp
+g++ -c $CCCFLAGS $CCCINC -o ScaffoldConverter.o ScaffoldConverter.cpp
+g++ -c $CCCFLAGS $CCCINC -o GraphViz.o GraphViz.cpp
+g++ -c $CCCFLAGS $CCCINC -o DPGraph.o DPGraph.cpp
+g++ -c $CCCFLAGS $CCCINC -o DPSolver.o DPSolver.cpp
+g++ -c $CCCFLAGS $CCCINC -o MIQPSolver.o MIQPSolver.cpp
+g++ -c $CCCFLAGS $CCCINC -o GAIndividual.o GAIndividual.cpp
+g++ -c $CCCFLAGS $CCCINC -o GASolver.o GASolver.cpp
+g++ -c $CCCFLAGS $CCCINC -o FixedMIQPSolver.o FixedMIQPSolver.cpp
+g++ -c $CCCFLAGS $CCCINC -o ExtendedFixedMIQPSolver.o ExtendedFixedMIQPSolver.cpp
+g++ -c $CCCFLAGS $CCCINC -o RelaxedFixedMIQPSolver.o RelaxedFixedMIQPSolver.cpp
+g++ -c $CCCFLAGS $CCCINC -o SolverConfiguration.o SolverConfiguration.cpp
+g++ -c $CCCFLAGS $CCCINC -o Solver.o Solver.cpp
+g++ -c $CCCFLAGS $CCCINC -o RandomizedGreedyInitializer.o RandomizedGreedyInitializer.cpp
+g++ -c $CCCFLAGS $CCCINC -o GAMatrix.o GAMatrix.cpp
+g++ -c $CCCFLAGS $CCCINC -o BranchAndBound.o BranchAndBound.cpp
+g++ -c $CCCFLAGS $CCCINC -o IterativeSolver.o IterativeSolver.cpp
+g++ -c $CCCFLAGS $CCCINC -o EMSolver.o EMSolver.cpp
+g++ -c $CCCFLAGS $CCCINC -o optimizer.o optimizer.cpp
+
+g++ $CCCFLAGS $CCCINC -o ../bin/scaffoldOptimizer Configuration.o Helpers.o Sequence.o DataStore.o DataStoreReader.o Reader.o Writer.o DPGraph.o DPSolver.o MIQPSolver.o GAIndividual.o GASolver.o FixedMIQPSolver.o ExtendedFixedMIQPSolver.o RelaxedFixedMIQPSolver.o Timers.o SolverConfiguration.o Solver.o RandomizedGreedyInitializer.o GAMatrix.o BranchAndBound.o IterativeSolver.o EMSolver.o ScaffoldExtractor.o ScaffoldComparer.o ScaffoldConverter.o GraphViz.o optimizer.o $CCCLIB
+
+rm -f *.o

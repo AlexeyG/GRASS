@@ -1,0 +1,2 @@
+#!/bin/bash
+g++ -O2 -Wall -I../Common/ -I/data/bio/alexeygritsenk/apps/include/ -L/data/bio/alexeygritsenk/apps/lib/ -lbamtools -o ../bin/kmer Configuration.cpp ../Common/Helpers.cpp ../Common/DataStore.cpp ../Common/Timers.cpp ../Common/Reader.cpp ../Common/Sequence.cpp ../Common/XATag.cpp Location.cpp kmer.cpp
