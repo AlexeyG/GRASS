@@ -187,7 +187,7 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
 				i++;
 				bool erosionSuccess;
 				int erosion = Helpers::ParseInt(argv[i], erosionSuccess);
-				if (!erosionSuccess || erosion < Helpers::Eps)
+				if (!erosionSuccess || erosion < 0)
 				{
 					cerr << "[-] Parsing error in -erosion: distance must be a non-negative number." << endl;
 					this->Success = false;
