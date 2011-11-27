@@ -84,7 +84,10 @@ bool DPSolver::processComponents()
 			fprintf(stderr, "        [+] Formulated and solved subproblem.\n");
 		scaffolds = ScaffoldExtractor::Extract(*solver);
 		for (vector<Scaffold>::iterator it = scaffolds.begin(); it != scaffolds.end(); it++)
+		{
 			it->ApplyTransform(backTransform[i]);
+			it->NormalizeCoordindates();
+		}
 		Scaffolds.insert(Scaffolds.end(), scaffolds.begin(), scaffolds.end());
 		objectiveValue += solver->GetObjective();
 		MaxIteration = max(MaxIteration, solver->Iteration);
@@ -109,8 +112,8 @@ bool DPSolver::processComponents()
 	for (int i = 0; i < nComponents; i++)
 	{
 		int shift = minX[i];
-		//int offset = (i > 0 ? maxX[i - 1] + ScaffoldSeprator : 0); // that's a strange statement - was I planning to put all scaffolds on a single line?
-		int offset = 0;
+		int offset = (i > 0 ? maxX[i - 1] + ScaffoldSeprator : 0); // that's a strange statement - was I planning to put all scaffolds on a single line?
+		//int offset = 0;
 		int nContigsComponent = connectedComponents[i].size();
 		for (int j = 0; j < nContigsComponent; j++)
 			if (U[backTransform[i][j]])
