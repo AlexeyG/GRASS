@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="79">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>BranchAndBound.h</itemPath>
+      <itemPath>Configuration.h</itemPath>
+      <itemPath>DPGraph.h</itemPath>
+      <itemPath>DPSolver.h</itemPath>
+      <itemPath>Defines.h</itemPath>
+      <itemPath>EMSolver.h</itemPath>
+      <itemPath>ExpectationMaximization.h</itemPath>
+      <itemPath>ExtendedFixedMIQPSolver.h</itemPath>
+      <itemPath>FixedMIQPSolver.h</itemPath>
+      <itemPath>GAIndividual.h</itemPath>
+      <itemPath>GAMatrix.h</itemPath>
+      <itemPath>GASolver.h</itemPath>
+      <itemPath>GraphViz.h</itemPath>
+      <itemPath>IterativeSolver.h</itemPath>
+      <itemPath>MIQPSolver.h</itemPath>
+      <itemPath>RandomizedGreedyInitializer.h</itemPath>
+      <itemPath>RelaxedFixedMIQPSolver.h</itemPath>
+      <itemPath>ScaffoldComparer.h</itemPath>
+      <itemPath>ScaffoldConverter.h</itemPath>
+      <itemPath>ScaffoldExtractor.h</itemPath>
+      <itemPath>Solver.h</itemPath>
+      <itemPath>SolverConfiguration.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>BranchAndBound.cpp</itemPath>
+      <itemPath>Configuration.cpp</itemPath>
+      <itemPath>DPGraph.cpp</itemPath>
+      <itemPath>DPSolver.cpp</itemPath>
+      <itemPath>EMSolver.cpp</itemPath>
+      <itemPath>ExtendedFixedMIQPSolver.cpp</itemPath>
+      <itemPath>FixedMIQPSolver.cpp</itemPath>
+      <itemPath>GAIndividual.cpp</itemPath>
+      <itemPath>GAMatrix.cpp</itemPath>
+      <itemPath>GASolver.cpp</itemPath>
+      <itemPath>GraphViz.cpp</itemPath>
+      <itemPath>IterativeSolver.cpp</itemPath>
+      <itemPath>MIQPSolver.cpp</itemPath>
+      <itemPath>RandomizedGreedyInitializer.cpp</itemPath>
+      <itemPath>RelaxedFixedMIQPSolver.cpp</itemPath>
+      <itemPath>ScaffoldComparer.cpp</itemPath>
+      <itemPath>ScaffoldConverter.cpp</itemPath>
+      <itemPath>ScaffoldExtractor.cpp</itemPath>
+      <itemPath>Solver.cpp</itemPath>
+      <itemPath>SolverConfiguration.cpp</itemPath>
+      <itemPath>optimizer.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <incDir>
+            <pElem>../Common</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>../Common</pElem>
+          </incDir>
+        </ccTool>
+      </compileType>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+    </conf>
+  </confs>
+</configurationDescriptor>
