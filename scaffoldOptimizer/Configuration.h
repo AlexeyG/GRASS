@@ -25,9 +25,11 @@ public:
 	bool BundleAmbiguous;
 	double BundleDistance;
 	double Erosion;
+        double ExpectedCoverage;
 	bool PrintMatrix;
 	SolverConfiguration Options;
 	string InputFileName;
+        string ReadCoverageFileName;
 	string OutputFileName;
 	string SolutionOutputFileName;
 

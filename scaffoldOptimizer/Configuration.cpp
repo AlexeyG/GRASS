@@ -20,7 +20,9 @@ Configuration::Configuration()
 	PrintMatrix = false;
 	BundleDistance = 3.0;
 	Erosion = 5.0;
+        ExpectedCoverage = 0.0;
 	InputFileName = "";
+        ReadCoverageFileName = "";
 	OutputFileName = "scaffold.fasta";
 	SolutionOutputFileName = "";
 }
@@ -175,6 +177,27 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
 					break;
 				}
 				BundleDistance = distance;
+			}
+                        else if (!strcmp("-repeat-coverage", argv[i]))
+			{
+				if (argc - i - 1 < 2)
+				{
+					cerr << "[-] Parsing error in -repeat-coverage: must have two arguments argument." << endl;
+					this->Success = false;
+					break;
+				}
+				i++;
+				bool expectedCoverageSuccess;
+				int expectedCoverage = Helpers::ParseInt(argv[i], expectedCoverageSuccess);
+				if (!expectedCoverageSuccess || expectedCoverage <= 0)
+				{
+					cerr << "[-] Parsing error in -repeat-coverage: expected coverage must be a positive number." << endl;
+					this->Success = false;
+					break;
+				}
+				ExpectedCoverage = expectedCoverage;
+                                i++;
+                                ReadCoverageFileName = argv[i];
 			}
 			else if (!strcmp("-erosion", argv[i]))
 			{
@@ -495,6 +518,7 @@ void Configuration::printHelpMessage(stringstream &serr)
 	serr << "[i] -bundle-groups <yes/no>                             Bundle contig links from different link groups? [yes]" << endl;
 	serr << "[i] -bundle-ambiguous <yes/no>                          Bundle ambiguous and non-ambiguous contig links together? [yes]" << endl;
 	serr << "[i] -bundle-distance <distance>                         Bundle contig links withing <distance> standard deviation from the median. [3]" << endl;
+        serr << "[i] -repeat-coverage <exp. cov.> <cov. filename>        Detect repeats using expected coverage and read coverage provided in a file." << endl;
 	serr << "[i] -erosion <weight>                                   Remove contig links with weight smaller than <weigth> (should be used only with link bundling). [5]" << endl;
 	serr << "[i] -time-limit <seconds>                               Time limit for a single run of CPLEX or GA in seconds. [infinite]" << endl;
 	serr << "[i] -threads <n>                                        Number of threads a solver can use. [automatic]" << endl;

@@ -4,6 +4,7 @@
 #include "Configuration.h"
 #include "DataStore.h"
 #include "DataStoreReader.h"
+#include "ReadCoverageReader.h"
 #include "DPSolver.h"
 #include "Helpers.h"
 
@@ -29,6 +30,7 @@ using namespace std;
 Configuration config;
 DataStore store;
 DPSolver solver;
+ReadCoverage coverage;
 
 #ifdef _INHOUSETESTS
 FILE *out;
@@ -448,6 +450,14 @@ bool readStore(const string &fileName, DataStore &store)
 	return result;
 }
 
+bool readCoverage(const string &fileName, ReadCoverage &coverage)
+{
+    ReadCoverageReader reader;
+    bool result = reader.Open(fileName) && reader.Read(coverage);
+    reader.Close();
+    return result;
+}
+
 bool outputScaffolds(const string &fileName, const vector<Scaffold> &scaffolds)
 {
 	FILE *out = fopen(fileName.c_str(), "w");
@@ -514,6 +524,8 @@ int main(int argc, char *argv[])
 		}
 		if (config.Erosion > 0)
 			cerr << "[i] Erosion removed " << store.Erode(config.Erosion) << " contig links." << endl;
+                if (!config.ReadCoverageFileName.empty() && !readCoverage(config.ReadCoverageFileName, coverage))
+                    cerr << "[-] Unable to read contig coverage (" << config.ReadCoverageFileName << ")." << endl;
 		if (!solver.Formulate(store))
 		{
 			cerr << "[-] Unable to formulate the optimization problem." << endl;
