@@ -6,6 +6,7 @@
  */
 
 #include "ReadCoverageWriter.h"
+#include <cstdio>
 
 ReadCoverageWriter::ReadCoverageWriter()
 {
@@ -47,7 +48,7 @@ bool ReadCoverageWriter::Write(const ReadCoverage &coverage)
         int readCount = (int)coverage.ReadLocations[i].size();
         fprintf(out, "%i\t%i\n", i, readCount);
         for (int j = 0; j < readCount; j++)
-            fprintf(out, (j < readCount - 1 > "%i\t", "%i\n"), coverage.ReadLocations[i][j]);
+            fprintf(out, (j < readCount - 1 ? "%i\t" : "%i\n"), coverage.ReadLocations[i][j]);
     }
     return true;
 }
