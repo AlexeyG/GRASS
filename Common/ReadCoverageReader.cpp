@@ -81,4 +81,5 @@ bool ReadCoverageReader::readContig(int contigID, ReadCoverage &coverage)
     getline(in, line);
     for (int j = 0; j < nPositions; j++)
         coverage.AddLocation(contigID, Helpers::GetArgument<int>(Helpers::NextEntry(line)));
+    return true;
 }
