@@ -99,7 +99,7 @@ PairedReadConverter::PairedReadConverterResult PairedReadConverter::createLinksF
         if (ReadLocations.empty())
             ReadLocations.assign(referenceSize, vector<int>());
         
-        if (ReadLocations.size() != referenceSize)
+        if ((int)ReadLocations.size() != referenceSize)
             result = InconsistentReferenceSets;
         
         if (result == Success)
