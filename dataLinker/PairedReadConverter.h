@@ -20,7 +20,7 @@ public:
 	PairedReadConverterResult Process(const Configuration &config, const PairedInput &input);
 
 public:
-    ReadCoverage ReadCoverage;
+    ReadCoverage ContigReadCoverage;
         
 private:
 	PairedReadConverterResult alignAndConvert(const Configuration &config, const PairedInput &input);
