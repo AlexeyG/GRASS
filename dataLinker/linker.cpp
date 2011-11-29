@@ -14,8 +14,8 @@ DataStore store;
 
 bool processPairs(const Configuration &config, DataStore &store, const vector<PairedInput> &paired)
 {
-	PairedReadConverter converter(store, !config.ReadCoverageFileName.empty());
-	int n = paired.size();
+	PairedReadConverter converter(store);
+	int n = (int)paired.size();
 	for (int i = 0; i < n; i++)
 	{
 		PairedInput p = paired[i];
@@ -40,6 +40,9 @@ bool processPairs(const Configuration &config, DataStore &store, const vector<Pa
 		case PairedReadConverter::FailedLinkCreation:
 			cerr << "      [-] Unable to create contig links from alignment." << endl;
 			return false;
+                    case PairedReadConverter::InconsistentReferenceSets:
+                        cerr << "      [-] Inconsistent reference sets in alignments." << endl;
+                        return false;
 		}
 	}
 	return true;
