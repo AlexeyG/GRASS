@@ -1,7 +1,7 @@
 #include "ReadCoverage.h"
 
-ReadCoverage::ReadCoverage(int contigCount = 0)
-        : ReadLocations(0)
+ReadCoverage::ReadCoverage(int contigCount)
+        : ReadLocations(contigCount)
 {
     TotalReadCount = 0;
     AverageReadLength = 0;
@@ -13,7 +13,7 @@ int ReadCoverage::GetContigCount() const
     return ReadLocations.size();
 }
 
-void ReadCoverage::SetContigCount(int cout)
+void ReadCoverage::SetContigCount(int count)
 {
     ReadLocations.resize(count, vector<int>());
 }

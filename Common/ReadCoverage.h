@@ -15,7 +15,7 @@ using namespace std;
 class ReadCoverage
 {
 public:
-    ReadCoverage(int contigCount);
+    ReadCoverage(int contigCount = 0);
     
 public:
     int GetContigCount() const;
