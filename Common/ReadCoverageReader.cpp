@@ -25,14 +25,15 @@ bool ReadCoverageReader::Close()
     return true;
 }
 
-bool ReadCoverageReader::Read(ReadCoverage &store)
+bool ReadCoverageReader::Read(ReadCoverage &coverage)
 {
     int nContigs;
     if (!in.is_open())
         return false;
-    if (!readHeader(nContigs, store))
+    coverage = ReadCoverage();
+    if (!readHeader(nContigs, coverage))
         return false;
-    if (!readContigs(nContigs, store))
+    if (!readContigs(nContigs, coverage))
         return false;
     return true;
 }
