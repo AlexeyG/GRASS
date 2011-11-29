@@ -11,8 +11,11 @@ using namespace std;
 
 Configuration config;
 DataStore store;
+vector< vector<int> > readCoverage;
+double averageReadLength;
+int readCount;
 
-bool processPairs(const Configuration &config, DataStore &store, const vector<PairedInput> &paired)
+bool processPairs(const Configuration &config, DataStore &store, const vector<PairedInput> &paired, vector< vector<int> > &readCoverage, double &averageReadLength, int &readCount)
 {
 	PairedReadConverter converter(store);
 	int n = (int)paired.size();
@@ -45,6 +48,9 @@ bool processPairs(const Configuration &config, DataStore &store, const vector<Pa
                         return false;
 		}
 	}
+        readCoverage = converter.ReadLocations;
+        averageReadLength = converter.AverageReadLength;
+        readCount = converter.TotalReadCount;
 	return true;
 }
 
@@ -54,6 +60,11 @@ bool writeStore(const DataStore &store, const string &fileName)
 	bool result = writer.Open(fileName) && writer.Write(store);
 	writer.Close();
 	return result;
+}
+
+bool writeCoverage(const vector< vector<int> > &readCoverage, double averageReadLength, int readCount, const string &fileName)
+{
+    return true;
 }
 
 int main(int argc, char *argv[])
@@ -68,14 +79,19 @@ int main(int argc, char *argv[])
 		}
 		cerr << "[+] Read input contigs from file (" << config.InputFileName << ")." << endl;
 		cerr << "[i] Processing paired reads." << endl;
-		if (!processPairs(config, store, config.PairedReadInputs))
+		if (!processPairs(config, store, config.PairedReadInputs, readCoverage, averageReadLength, readCount))
 			return -3;
 		if (!writeStore(store, config.OutputFileName))
 		{
 			cerr << "[-] Unable to output generated links into file (" << config.OutputFileName << ")." << endl;
 			return -4;
 		}
-		cerr << "[+] Output generated link into file (" << config.OutputFileName << ")." << endl;
+                cerr << "[+] Output generated link into file (" << config.OutputFileName << ")." << endl;
+                if (!config.ReadCoverageFileName.empty() && !writeCoverage(readCoverage, averageReadLength, readCount, config.ReadCoverageFileName))
+                {
+                    cerr << "[-] Unable to output read coverage statistics into file (" << config.ReadCoverageFileName << ")." << endl;
+                }
+                cerr << "[+] Output read coverage into file (" << config.ReadCoverageFileName << ")." << endl;
 		return 0;
 	}
 	cerr << config.LastError;
