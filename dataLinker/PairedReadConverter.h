@@ -11,7 +11,7 @@ using namespace std;
 class PairedReadConverter
 {
 public:
-	PairedReadConverter(DataStore &store, bool trackCoverage);
+	PairedReadConverter(DataStore &store);
 	static bool IsCorrectRelativeOrientation(const XATag &l, const XATag &r, bool isIllumina);
         enum PairedReadConverterResult { Success, FailedLeftAlignment, FailedRightAlignment, FailedLeftConversion, FailedRightConversion, FailedLinkCreation, InconsistentReferenceSets };
 
