@@ -10,7 +10,6 @@
       <itemPath>DPSolver.h</itemPath>
       <itemPath>Defines.h</itemPath>
       <itemPath>EMSolver.h</itemPath>
-      <itemPath>ExpectationMaximization.h</itemPath>
       <itemPath>ExtendedFixedMIQPSolver.h</itemPath>
       <itemPath>FixedMIQPSolver.h</itemPath>
       <itemPath>GAIndividual.h</itemPath>
@@ -84,6 +83,7 @@
         <ccTool>
           <incDir>
             <pElem>../Common</pElem>
+            <pElem>/Users/alexeyg/apps/include</pElem>
           </incDir>
         </ccTool>
       </compileType>
