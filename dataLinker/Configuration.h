@@ -35,7 +35,8 @@ public:
 	bool Success;
 	string InputFileName;
 	string OutputFileName;
-	int MaximumLinkHits;
+	string ReadCoverageFileName;
+        int MaximumLinkHits;
 	double NoOverlapDeviation;
 	BWAConfiguration BWAConfig;
 	NovoAlignConfiguration NovoAlignConfig;

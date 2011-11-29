@@ -14,6 +14,7 @@ Configuration::Configuration()
 	Success = false;
 	InputFileName = "";
 	OutputFileName = "output.opt";
+        ReadCoverageFileName = "";
 	MaximumLinkHits = 5;
 	NoOverlapDeviation = 0;
 }
@@ -227,6 +228,17 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
 				i++;
 				this->OutputFileName = argv[i];
 			}
+                        else if (!strcmp("-readcoverage", argv[i]))
+			{
+				if (argc - i - 1 < 1)
+				{
+					serr << "[-] Parsing error in -readcoverage: must have an argument." << endl;
+					this->Success = false;
+					break;
+				}
+				i++;
+				this->ReadCoverageFileName = argv[i];
+			}
 			else if (!strcmp("-tmp", argv[i]))
 			{
 				if (argc - i - 1 < 1)
@@ -331,7 +343,8 @@ void Configuration::printHelpMessage(stringstream &serr)
 	serr << "[i] -nooverlapdeviation <num>                           Maximum allowed deviation from mean insert size when no overlaps are allowed. [disabled]" << endl;
 	serr << "[i] -454 <left.fq> <right.fq> <mu> <sigma>              Process 454 paired reads with insert size <mu>+/-<sigma> into linking information." << endl;
 	serr << "[i] -illumina <left.fq> <right.fq> <mu> <sigma>         Process Illumina paired reads with insert size <mu>+/-<sigma> into linking information." << endl;
-	serr << "[i] -output [output filename]                           Output filename for optimzation information. [output.opt]" << endl;
+        serr << "[i] -readcoverage <filename>                            Produce contig read coverage data and output it to file <filename>. [disabled]" << endl;
+	serr << "[i] -output <filename>                                  Output filename for optimzation information. [output.opt]" << endl;
 	serr << "[i] -tmp <path>                                         Define scrap path for temporary files. [/tmp]" << endl;
 	serr << "[i] BWA configuration options:" << endl;
 	serr << "[i] -bwathreads <n>                                     Number of threads used in BWA alignment. [8]" << endl;

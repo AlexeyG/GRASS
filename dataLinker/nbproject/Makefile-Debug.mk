@@ -33,7 +33,10 @@ include Makefile
 OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
-OBJECTFILES=
+OBJECTFILES= \
+	${OBJECTDIR}/Configuration.o \
+	${OBJECTDIR}/PairedReadConverter.o \
+	${OBJECTDIR}/linker.o
 
 
 # C Compiler Flags
@@ -58,7 +61,22 @@ LDLIBSOPTIONS=
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/datalinker: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/datalinker ${OBJECTFILES} ${LDLIBSOPTIONS} 
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/datalinker ${OBJECTFILES} ${LDLIBSOPTIONS} 
+
+${OBJECTDIR}/Configuration.o: Configuration.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../Common -I/Users/alexeyg/apps/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/Configuration.o Configuration.cpp
+
+${OBJECTDIR}/PairedReadConverter.o: PairedReadConverter.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../Common -I/Users/alexeyg/apps/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/PairedReadConverter.o PairedReadConverter.cpp
+
+${OBJECTDIR}/linker.o: linker.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../Common -I/Users/alexeyg/apps/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/linker.o linker.cpp
 
 # Subprojects
 .build-subprojects:

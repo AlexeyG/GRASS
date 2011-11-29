@@ -14,7 +14,7 @@ DataStore store;
 
 bool processPairs(const Configuration &config, DataStore &store, const vector<PairedInput> &paired)
 {
-	PairedReadConverter converter(store);
+	PairedReadConverter converter(store, !config.ReadCoverageFileName.empty());
 	int n = paired.size();
 	for (int i = 0; i < n; i++)
 	{

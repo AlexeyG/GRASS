@@ -5,9 +5,16 @@
 #include "AlignmentReader.h"
 #include <sstream>
 
+using namespace BamTools;
+
 PairedReadConverter::PairedReadConverter(DataStore &store)
 	: dataStore(store) 
 {
+    AverageReadLength = 0;
+    TotalReadCount = 0;
+    ReadLocations.clear();
+    
+    totalReadLength = 0;
 }
 
 bool PairedReadConverter::IsCorrectRelativeOrientation(const XATag &l, const XATag &r, bool isIllumina)
@@ -88,7 +95,12 @@ PairedReadConverter::PairedReadConverterResult PairedReadConverter::createLinksF
 	vector<XATag> leftTags, rightTags;
 	BamAlignment leftAlignment, rightAlignment;
 	while (leftReader.GetNextAlignmentGroup(leftAlignment, leftTags) && rightReader.GetNextAlignmentGroup(rightAlignment, rightTags))
-		createLinksForPair(groupId, leftAlignment, leftTags, rightAlignment, rightTags, input, noOverlapDeviation, maxHits);
+        {
+            processCoverage(leftAlignment, leftTags);
+            processCoverage(rightAlignment, rightTags);
+            createLinksForPair(groupId, leftAlignment, leftTags, rightAlignment, rightTags, input, noOverlapDeviation, maxHits);
+            AverageReadLength = (double)totalReadLength / (double)TotalReadCount;
+        }
 	leftReader.Close();
 	rightReader.Close();
 	return result;
@@ -111,6 +123,16 @@ void PairedReadConverter::createLinksForPair(int groupId, const BamAlignment &le
 				continue;
 			addLinkForTagPair(groupId, *l, leftAlg, *r, rightAlg, input, noOverlapDeviation, combinations);
 		}
+}
+
+void PairedReadConverter::processCoverage(const BamAlignment &alg, const vector<XATag> &tags)
+{
+    if (tags.size() != 1)
+        return;
+    totalReadLength += alg.QueryBases.length();
+    TotalReadCount++;
+    AverageReadLength = (double) totalReadLength / (double) TotalReadCount;
+    
 }
 
 void PairedReadConverter::addLinkForTagPair(int groupId, const XATag &l, const BamAlignment &leftAlg, const XATag &r, const BamAlignment &rightAlg, const PairedInput &input, double noOverlapDeviation, int factor)
