@@ -10,7 +10,7 @@ using namespace std;
 class ReadCoverageReader
 {
 public:
-    ReadCoverageReader() {};
+    ReadCoverageReader();
     virtual ~ReadCoverageReader();
 
 public:
