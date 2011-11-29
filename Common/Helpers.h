@@ -36,5 +36,9 @@ namespace Helpers
 		a = b;
 		b = t;
 	}
+        
+        string NextEntry(string &str);
+	template <class T>
+	T GetArgument(const string &str);
 }
 #endif

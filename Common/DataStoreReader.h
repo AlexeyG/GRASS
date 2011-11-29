@@ -27,11 +27,6 @@ private:
 	bool readGroup(LinkGroup &group, int &id);
 	bool readLink(int &groupID, ContigLink &link);
 
-private:
-	static string nextEntry(string &str);
-	template <class T>
-	static T getArgument(const string &str);
-
 protected:
 	fstream in;
 };

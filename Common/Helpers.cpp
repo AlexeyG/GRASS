@@ -149,4 +149,29 @@ void Helpers::PrintDataStore(const DataStore &store)
 	printf("Sum: %i (%6.2lf)\n", totalCnt, totalW);
 }
 
+string Helpers::NextEntry(string &str)
+{
+	int len = str.length();
+	if (len == 0)
+		return string();
+	int pos = 0;
+	while (pos < len && str[pos] != '\t' && str[pos] != '\n')
+		pos++;
+	string result = str.substr(0, pos);
+	if (len - pos - 1 <= 0 || pos + 1 >= len)
+		str = string();
+	else
+		str = str.substr(pos + 1, len - pos - 1);
+	return result;
+}
+
+template <class T>
+T Helpers::GetArgument(const string &str)
+{
+	stringstream ss(str);
+	T res;
+	ss >> res;
+	return res;
+}
+
 Timers Helpers::ElapsedTimers;

@@ -1,4 +1,5 @@
 #include "DataStoreReader.h"
+#include "Helpers.h"
 #include <sstream>
 
 #include <iostream>
@@ -45,14 +46,14 @@ bool DataStoreReader::readHeader(int &nContigs, int &nGroups, int &nLinks)
 {
 	string line;
 	getline(in, line);
-	string contigsStr = nextEntry(line);
-	string groupsStr = nextEntry(line);
-	string linksStr = nextEntry(line);
+	string contigsStr = Helpers::NextEntry(line);
+	string groupsStr = Helpers::NextEntry(line);
+	string linksStr = Helpers::NextEntry(line);
 	if (contigsStr.length() == 0 || groupsStr.length() == 0 || linksStr.length() == 0)
 		return false;
-	nContigs = getArgument<int>(contigsStr);
-	nGroups = getArgument<int>(groupsStr);
-	nLinks = getArgument<int>(linksStr);
+	nContigs = Helpers::GetArgument<int>(contigsStr);
+	nGroups = Helpers::GetArgument<int>(groupsStr);
+	nLinks = Helpers::GetArgument<int>(linksStr);
 	if (nContigs <= 0 || nGroups <= 0 || nLinks < 0)
 		return false;
 	return true;
@@ -105,12 +106,12 @@ bool DataStoreReader::readContig(Contig &contig, int &id)
 	getline(in, line);
 	if (in.eof()) return false;
 	getline(in, seq);
-	string idStr = nextEntry(line);
-	string commentStr = nextEntry(line);
-	seq = nextEntry(seq);
+	string idStr = Helpers::NextEntry(line);
+	string commentStr = Helpers::NextEntry(line);
+	seq = Helpers::NextEntry(seq);
 	if (idStr.length() == 0 || commentStr.length() == 0 || seq.length() == 0)
 		return false;
-	id = getArgument<int>(idStr);
+	id = Helpers::GetArgument<int>(idStr);
 	contig = Contig(FastASequence(seq, commentStr));
 	return true;
 }
@@ -119,12 +120,12 @@ bool DataStoreReader::readGroup(LinkGroup &group, int &id)
 {
 	string line;
 	getline(in, line);
-	string idStr = nextEntry(line);
-	string nameStr = nextEntry(line);
-	string descriptionStr = nextEntry(line);
+	string idStr = Helpers::NextEntry(line);
+	string nameStr = Helpers::NextEntry(line);
+	string descriptionStr = Helpers::NextEntry(line);
 	if (idStr.length() == 0 || nameStr.length() == 0)
 		return false;
-	id = getArgument<int>(idStr);
+	id = Helpers::GetArgument<int>(idStr);
 	group = LinkGroup(nameStr, descriptionStr);
 	return true;
 }
@@ -133,55 +134,30 @@ bool DataStoreReader::readLink(int &groupID, ContigLink &link)
 {
 	string line;
 	getline(in, line);
-	string groupIdStr = nextEntry(line);
-	string firstStr = nextEntry(line);
-	string secondStr = nextEntry(line);
-	string orientationStr = nextEntry(line);
-	string orderStr = nextEntry(line);
-	string meanStr = nextEntry(line);
-	string stdStr = nextEntry(line);
-	string ambiguousStr = nextEntry(line);
-	string weightStr = nextEntry(line);
-	string commentStr = nextEntry(line);
+	string groupIdStr = Helpers::NextEntry(line);
+	string firstStr = Helpers::NextEntry(line);
+	string secondStr = Helpers::NextEntry(line);
+	string orientationStr = Helpers::NextEntry(line);
+	string orderStr = Helpers::NextEntry(line);
+	string meanStr = Helpers::NextEntry(line);
+	string stdStr = Helpers::NextEntry(line);
+	string ambiguousStr = Helpers::NextEntry(line);
+	string weightStr = Helpers::NextEntry(line);
+	string commentStr = Helpers::NextEntry(line);
 	if (firstStr.length() == 0 || secondStr.length() == 0 || orientationStr.length() == 0 || orderStr.length() == 0 || meanStr.length() == 0 || stdStr.length() == 0 || ambiguousStr.length() == 0 || weightStr.length() == 0)
 		return false;
-	groupID = getArgument<int>(groupIdStr);
-	int first = getArgument<int>(firstStr);
-	int second = getArgument<int>(secondStr);
-	bool equalOrientation = getArgument<int>(orientationStr) == 1;
-	bool forwardOrder = getArgument<int>(orderStr) == 1;
-	double mean = getArgument<double>(meanStr);
-	double std = getArgument<double>(stdStr);
-	bool ambiguous = getArgument<int>(ambiguousStr) == 1;
-	double weight = getArgument<double>(weightStr);
+	groupID = Helpers::GetArgument<int>(groupIdStr);
+	int first = Helpers::GetArgument<int>(firstStr);
+	int second = Helpers::GetArgument<int>(secondStr);
+	bool equalOrientation = Helpers::GetArgument<int>(orientationStr) == 1;
+	bool forwardOrder = Helpers::GetArgument<int>(orderStr) == 1;
+	double mean = Helpers::GetArgument<double>(meanStr);
+	double std = Helpers::GetArgument<double>(stdStr);
+	bool ambiguous = Helpers::GetArgument<int>(ambiguousStr) == 1;
+	double weight = Helpers::GetArgument<double>(weightStr);
 	if (groupID < 0 || first < 0 || second < 0 || weight <= 0)
 		return false;
 	link = ContigLink(first, second, mean, std, equalOrientation, forwardOrder, weight, commentStr);
 	link.Ambiguous = ambiguous;
 	return true;
-}
-
-string DataStoreReader::nextEntry(string &str)
-{
-	int len = str.length();
-	if (len == 0)
-		return string();
-	int pos = 0;
-	while (pos < len && str[pos] != '\t' && str[pos] != '\n')
-		pos++;
-	string result = str.substr(0, pos);
-	if (len - pos - 1 <= 0 || pos + 1 >= len)
-		str = string();
-	else
-		str = str.substr(pos + 1, len - pos - 1);
-	return result;
-}
-
-template <class T>
-T DataStoreReader::getArgument(const string &str)
-{
-	stringstream ss(str);
-	T res;
-	ss >> res;
-	return res;
 }

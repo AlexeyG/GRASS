@@ -22,6 +22,7 @@ public:
     void SetContigCount(int count);
     void AddLocation(int id, int location);
     void UpdateAverage(int readLength);
+    void SetAverageReadLength(long long totalReadLength, int totalReadCount);
     
 public:
     vector< vector<int> > ReadLocations;

@@ -29,3 +29,10 @@ void ReadCoverage::UpdateAverage(int readLength)
     TotalReadCount++;
     AverageReadLength = (double)totalReadLength / (double)TotalReadCount;
 }
+
+void ReadCoverage::SetAverageReadLength(long long totalReadLength, int totalReadCount)
+{
+    this->totalReadLength = totalReadLength;
+    TotalReadCount = totalReadCount;
+    AverageReadLength = (double)totalReadLength / (double)totalReadCount;
+}
