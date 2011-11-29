@@ -7,6 +7,7 @@
 #include "PairedReadConverter.h"
 #include "DataStoreWriter.h"
 #include "ReadCoverage.h"
+#include "ReadCoverageWriter.h"
 
 using namespace std;
 
@@ -61,8 +62,10 @@ bool writeStore(const DataStore &store, const string &fileName)
 
 bool writeCoverage(const ReadCoverage &coverage, const string &fileName)
 {
-    //
-    return true;
+    ReadCoverageWriter writer;
+    bool result = writer.Open(fileName) && writerWrite(coverage);
+    writer.Close();
+    return result;
 }
 
 int main(int argc, char *argv[])
