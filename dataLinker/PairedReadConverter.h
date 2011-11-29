@@ -13,7 +13,7 @@ class PairedReadConverter
 public:
 	PairedReadConverter(DataStore &store, bool trackCoverage);
 	static bool IsCorrectRelativeOrientation(const XATag &l, const XATag &r, bool isIllumina);
-	enum PairedReadConverterResult { Success, FailedLeftAlignment, FailedRightAlignment, FailedLeftConversion, FailedRightConversion, FailedLinkCreation };
+        enum PairedReadConverterResult { Success, FailedLeftAlignment, FailedRightAlignment, FailedLeftConversion, FailedRightConversion, FailedLinkCreation, InconsistentReferenceSets };
 
 public:
 	PairedReadConverterResult Process(const Configuration &config, const PairedInput &input);

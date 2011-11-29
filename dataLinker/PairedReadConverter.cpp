@@ -27,11 +27,11 @@ PairedReadConverter::PairedReadConverterResult PairedReadConverter::Process(cons
 	PairedReadConverterResult result = alignAndConvert(config, input);
 	if (result == Success)
 	{
-		string groupName = (input.IsIllumina ? "Ilumina paired read alignment" : "454 paired read alignment");
-		stringstream groupDescription;
-		groupDescription << (input.IsIllumina ? "Illumina" : "454") << " paired reads: " << input.LeftFileName << " & " << input.RightFileName << " with " << input.Mean << " +/- " << input.Std << " of weight " << input.Weight;
-		int groupId = dataStore.AddGroup(LinkGroup(groupName, groupDescription.str()));
-		result = createLinksFromAlignment(groupId, config.MaximumLinkHits, input, config.NoOverlapDeviation);
+            string groupName = (input.IsIllumina ? "Ilumina paired read alignment" : "454 paired read alignment");
+            stringstream groupDescription;
+            groupDescription << (input.IsIllumina ? "Illumina" : "454") << " paired reads: " << input.LeftFileName << " & " << input.RightFileName << " with " << input.Mean << " +/- " << input.Std << " of weight " << input.Weight;
+            int groupId = dataStore.AddGroup(LinkGroup(groupName, groupDescription.str()));
+            result = createLinksFromAlignment(groupId, config.MaximumLinkHits, input, config.NoOverlapDeviation);
 	}
 	removeBamFiles();
 	return result;
@@ -92,14 +92,27 @@ PairedReadConverter::PairedReadConverterResult PairedReadConverter::createLinksF
 	AlignmentReader leftReader, rightReader;
 	if (!leftReader.Open(leftBamFileName) || !rightReader.Open(rightBamFileName))
 		result = FailedLinkCreation;
-	vector<XATag> leftTags, rightTags;
-	BamAlignment leftAlignment, rightAlignment;
-	while (leftReader.GetNextAlignmentGroup(leftAlignment, leftTags) && rightReader.GetNextAlignmentGroup(rightAlignment, rightTags))
+        if (leftReader.GetReferenceCount() != rightReader.GetReferenceCount())
+            result = InconsistentReferenceSets;
+
+        int referenceSize = leftReader.GetReferenceCount();
+        if (ReadLocations.empty())
+            ReadLocations.assign(referenceSize, vector<int>());
+        
+        if (ReadLocations.size() != referenceSize)
+            result = InconsistentReferenceSets;
+        
+        if (result == Success)
         {
-            processCoverage(leftAlignment, leftTags);
-            processCoverage(rightAlignment, rightTags);
-            createLinksForPair(groupId, leftAlignment, leftTags, rightAlignment, rightTags, input, noOverlapDeviation, maxHits);
-            AverageReadLength = (double)totalReadLength / (double)TotalReadCount;
+            vector<XATag> leftTags, rightTags;
+            BamAlignment leftAlignment, rightAlignment;
+            while (leftReader.GetNextAlignmentGroup(leftAlignment, leftTags) && rightReader.GetNextAlignmentGroup(rightAlignment, rightTags))
+            {
+                processCoverage(leftAlignment, leftTags);
+                processCoverage(rightAlignment, rightTags);
+                createLinksForPair(groupId, leftAlignment, leftTags, rightAlignment, rightTags, input, noOverlapDeviation, maxHits);
+                AverageReadLength = (double)totalReadLength / (double)TotalReadCount;
+            }
         }
 	leftReader.Close();
 	rightReader.Close();
