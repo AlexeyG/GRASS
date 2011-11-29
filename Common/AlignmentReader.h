@@ -19,8 +19,10 @@ public:
 	bool IsOpen() const;
 	bool GetNextAlignmentGroup(vector<BamAlignment> &alg);
 	bool GetNextAlignmentGroup(BamAlignment &alignment, vector<XATag> &tags);
-        const RefVector & GetReferences() const;
-        int GetReferenceCount() const;
+        
+public:
+    const RefVector & GetReferences() const;
+    int GetReferenceCount() const;
 
 private:
 	void parseXATag(const string &str, vector<XATag> &tags);
