@@ -59,7 +59,7 @@ bool writeStore(const DataStore &store, const string &fileName)
 	return result;
 }
 
-bool writeCoverage(const vector< vector<int> > &readCoverage, const ReadCoverage &coverage)
+bool writeCoverage(const ReadCoverage &coverage, const string &fileName)
 {
     //
     return true;
