@@ -6,16 +6,15 @@
 #include "DataStore.h"
 #include "PairedReadConverter.h"
 #include "DataStoreWriter.h"
+#include "ReadCoverage.h"
 
 using namespace std;
 
 Configuration config;
 DataStore store;
-vector< vector<int> > readCoverage;
-double averageReadLength;
-int readCount;
+ReadCoverage coverage;
 
-bool processPairs(const Configuration &config, DataStore &store, const vector<PairedInput> &paired, vector< vector<int> > &readCoverage, double &averageReadLength, int &readCount)
+bool processPairs(const Configuration &config, DataStore &store, const vector<PairedInput> &paired, ReadCoverage &coverage)
 {
 	PairedReadConverter converter(store);
 	int n = (int)paired.size();
@@ -48,9 +47,7 @@ bool processPairs(const Configuration &config, DataStore &store, const vector<Pa
                         return false;
 		}
 	}
-        readCoverage = converter.ReadLocations;
-        averageReadLength = converter.AverageReadLength;
-        readCount = converter.TotalReadCount;
+        coverage = converter.ReadCoverage;
 	return true;
 }
 
@@ -62,8 +59,9 @@ bool writeStore(const DataStore &store, const string &fileName)
 	return result;
 }
 
-bool writeCoverage(const vector< vector<int> > &readCoverage, double averageReadLength, int readCount, const string &fileName)
+bool writeCoverage(const vector< vector<int> > &readCoverage, const ReadCoverage &coverage)
 {
+    //
     return true;
 }
 
@@ -74,22 +72,23 @@ int main(int argc, char *argv[])
 	{
 		if (!store.ReadContigs(config.InputFileName))
 		{
-			cerr << "[-] Unable to read contigs from file (" << config.InputFileName << ")." << endl;
-			return -2;
+                    cerr << "[-] Unable to read contigs from file (" << config.InputFileName << ")." << endl;
+                    return -2;
 		}
 		cerr << "[+] Read input contigs from file (" << config.InputFileName << ")." << endl;
 		cerr << "[i] Processing paired reads." << endl;
-		if (!processPairs(config, store, config.PairedReadInputs, readCoverage, averageReadLength, readCount))
+		if (!processPairs(config, store, config.PairedReadInputs, coverage))
 			return -3;
 		if (!writeStore(store, config.OutputFileName))
 		{
-			cerr << "[-] Unable to output generated links into file (" << config.OutputFileName << ")." << endl;
-			return -4;
+                    cerr << "[-] Unable to output generated links into file (" << config.OutputFileName << ")." << endl;
+                    return -4;
 		}
                 cerr << "[+] Output generated link into file (" << config.OutputFileName << ")." << endl;
-                if (!config.ReadCoverageFileName.empty() && !writeCoverage(readCoverage, averageReadLength, readCount, config.ReadCoverageFileName))
+                if (!config.ReadCoverageFileName.empty() && !writeCoverage(coverage, config.ReadCoverageFileName))
                 {
                     cerr << "[-] Unable to output read coverage statistics into file (" << config.ReadCoverageFileName << ")." << endl;
+                    return -5;
                 }
                 cerr << "[+] Output read coverage into file (" << config.ReadCoverageFileName << ")." << endl;
 		return 0;
