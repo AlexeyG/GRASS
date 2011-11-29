@@ -63,7 +63,7 @@ bool writeStore(const DataStore &store, const string &fileName)
 bool writeCoverage(const ReadCoverage &coverage, const string &fileName)
 {
     ReadCoverageWriter writer;
-    bool result = writer.Open(fileName) && writerWrite(coverage);
+    bool result = writer.Open(fileName) && writer.Write(coverage);
     writer.Close();
     return result;
 }
