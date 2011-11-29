@@ -2,7 +2,7 @@
 #define _DATASTOREREADER_H
 
 #include <string>
-#include <iostream>
+#include <fstream>
 #include "DataStore.h"
 
 using namespace std;
