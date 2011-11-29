@@ -47,7 +47,7 @@ bool processPairs(const Configuration &config, DataStore &store, const vector<Pa
                         return false;
 		}
 	}
-        coverage = converter.ReadCoverage;
+        coverage = converter.ContigReadCoverage;
 	return true;
 }
 
