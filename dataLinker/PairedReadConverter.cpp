@@ -91,11 +91,11 @@ PairedReadConverter::PairedReadConverterResult PairedReadConverter::createLinksF
             result = InconsistentReferenceSets;
 
         int referenceSize = leftReader.GetReferenceCount();
-        int readCoverageContigCount = ReadCoverage.GetContigCount();
-        if (readCoverageContigCount == 0)
-            ReadCoverage.SetContigCount(referenceSize);
+        int ContigReadCoverageContigCount = ContigReadCoverage.GetContigCount();
+        if (ContigReadCoverageContigCount == 0)
+            ContigReadCoverage.SetContigCount(referenceSize);
         
-        if (readCoverageContigCount != referenceSize)
+        if (ContigReadCoverageContigCount != referenceSize)
             result = InconsistentReferenceSets;
         
         if (result == Success)
@@ -139,8 +139,8 @@ void PairedReadConverter::processCoverage(const BamAlignment &alg, const vector<
         return;
     
     int readLength = alg.QueryBases.length();
-    ReadCoverage.AddLocation(alg.RefID, (alg.IsReverseStrand() ? alg.Position - readLength : alg.Position));
-    ReadCoverage.UpdateAverage(readLength);
+    ContigReadCoverage.AddLocation(alg.RefID, (alg.IsReverseStrand() ? alg.Position - readLength : alg.Position));
+    ContigReadCoverage.UpdateAverage(readLength);
 }
 
 void PairedReadConverter::addLinkForTagPair(int groupId, const XATag &l, const BamAlignment &leftAlg, const XATag &r, const BamAlignment &rightAlg, const PairedInput &input, double noOverlapDeviation, int factor)
