@@ -10,11 +10,6 @@ using namespace BamTools;
 PairedReadConverter::PairedReadConverter(DataStore &store)
 	: dataStore(store) 
 {
-    AverageReadLength = 0;
-    TotalReadCount = 0;
-    ReadLocations.clear();
-    
-    totalReadLength = 0;
 }
 
 bool PairedReadConverter::IsCorrectRelativeOrientation(const XATag &l, const XATag &r, bool isIllumina)
@@ -96,10 +91,11 @@ PairedReadConverter::PairedReadConverterResult PairedReadConverter::createLinksF
             result = InconsistentReferenceSets;
 
         int referenceSize = leftReader.GetReferenceCount();
-        if (ReadLocations.empty())
-            ReadLocations.assign(referenceSize, vector<int>());
+        int readCoverageContigCount = ReadCoverage.GetContigCount();
+        if (readCoverageContigCount == 0)
+            ReadCoverage.SetContigCount(referenceSize);
         
-        if ((int)ReadLocations.size() != referenceSize)
+        if (readCoverageContigCount != referenceSize)
             result = InconsistentReferenceSets;
         
         if (result == Success)
@@ -111,7 +107,6 @@ PairedReadConverter::PairedReadConverterResult PairedReadConverter::createLinksF
                 processCoverage(leftAlignment, leftTags);
                 processCoverage(rightAlignment, rightTags);
                 createLinksForPair(groupId, leftAlignment, leftTags, rightAlignment, rightTags, input, noOverlapDeviation, maxHits);
-                AverageReadLength = (double)totalReadLength / (double)TotalReadCount;
             }
         }
 	leftReader.Close();
@@ -144,11 +139,8 @@ void PairedReadConverter::processCoverage(const BamAlignment &alg, const vector<
         return;
     
     int readLength = alg.QueryBases.length();
-    ReadLocations[alg.RefID].push_back((alg.IsReverseStrand() ? alg.Position - readLength : alg.Position));
-    
-    totalReadLength += readLength;
-    TotalReadCount++;
-    AverageReadLength = (double) totalReadLength / (double) TotalReadCount;
+    ReadCoverage.AddLocation(alg.RefID, (alg.IsReverseStrand() ? alg.Position - readLength : alg.Position));
+    ReadCoverage.UpdateAverage(readLength);
 }
 
 void PairedReadConverter::addLinkForTagPair(int groupId, const XATag &l, const BamAlignment &leftAlg, const XATag &r, const BamAlignment &rightAlg, const PairedInput &input, double noOverlapDeviation, int factor)

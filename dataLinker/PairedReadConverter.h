@@ -4,6 +4,7 @@
 #include "Configuration.h"
 #include "DataStore.h"
 #include "XATag.h"
+#include "ReadCoverage.h"
 #include <vector>
 
 using namespace std;
@@ -19,9 +20,7 @@ public:
 	PairedReadConverterResult Process(const Configuration &config, const PairedInput &input);
 
 public:
-    double AverageReadLength;
-    int TotalReadCount;
-    vector< vector<int> > ReadLocations;
+    ReadCoverage ReadCoverage;
         
 private:
 	PairedReadConverterResult alignAndConvert(const Configuration &config, const PairedInput &input);
@@ -35,6 +34,5 @@ private:
 	DataStore &dataStore;
 	string leftBamFileName;
 	string rightBamFileName;
-        long long totalReadLength;
 };
 #endif
