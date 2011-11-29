@@ -19,7 +19,7 @@ public:
     
 public:
     int GetContigCount() const;
-    int SetContigCount();
+    int SetContigCount(int count);
     void AddLocation(int id, int location);
     void UpdateAverage(int readLength);
     

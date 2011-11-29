@@ -13,9 +13,9 @@ int ReadCoverage::GetContigCount() const
     return ReadLocations.size();
 }
 
-void ReadCoverage::SetContigCount(int size)
+void ReadCoverage::SetContigCount(int cout)
 {
-    ReadLocations.resize(size, vector<int>());
+    ReadLocations.resize(count, vector<int>());
 }
 
 void ReadCoverage::AddLocation(int id, int location)
