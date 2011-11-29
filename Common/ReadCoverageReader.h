@@ -2,7 +2,7 @@
 #define _READCOVERAGEREADER_H
 
 #include <string>
-#include <iostream>
+#include <fstream>
 #include "ReadCoverage.h"
 
 using namespace std;
