@@ -42,7 +42,7 @@ bool ReadCoverageWriter::Write(const ReadCoverage &coverage)
     if (out == NULL)
         return false;
     int contigCount = coverage.GetContigCount();
-    fprintf(out, "%.10lf\t%ld\t%i\t%i\n", coverage.AverageReadLength, coverage.totalReadLength, coverage.TotalReadCount, contigCount);
+    fprintf(out, "%.10lf\t%lld\t%i\t%i\n", coverage.AverageReadLength, coverage.TotalReadLength, coverage.TotalReadCount, contigCount);
     for (int i = 0; i < contigCount; i++)
     {
         int readCount = (int)coverage.ReadLocations[i].size();

@@ -5,7 +5,7 @@ ReadCoverage::ReadCoverage(int contigCount)
 {
     TotalReadCount = 0;
     AverageReadLength = 0;
-    totalReadLength = 0;
+    TotalReadLength = 0;
 }
 
 int ReadCoverage::GetContigCount() const
@@ -25,14 +25,14 @@ void ReadCoverage::AddLocation(int id, int location)
 
 void ReadCoverage::UpdateAverage(int readLength)
 {
-    totalReadLength += readLength;
+    TotalReadLength += readLength;
     TotalReadCount++;
-    AverageReadLength = (double)totalReadLength / (double)TotalReadCount;
+    AverageReadLength = (double)TotalReadLength / (double)TotalReadCount;
 }
 
 void ReadCoverage::SetAverageReadLength(long long totalReadLength, int totalReadCount)
 {
-    this->totalReadLength = totalReadLength;
+    TotalReadLength = totalReadLength;
     TotalReadCount = totalReadCount;
     AverageReadLength = (double)totalReadLength / (double)totalReadCount;
 }

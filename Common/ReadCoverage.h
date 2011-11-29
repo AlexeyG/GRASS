@@ -28,9 +28,7 @@ public:
     vector< vector<int> > ReadLocations;
     double AverageReadLength;
     int TotalReadCount;
-    
-private:
-    long long totalReadLength;
+    long long TotalReadLength;
 };
 
 #endif	/* READCOVERAGE_H */
