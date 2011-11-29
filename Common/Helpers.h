@@ -39,6 +39,12 @@ namespace Helpers
         
         string NextEntry(string &str);
 	template <class T>
-	T GetArgument(const string &str);
+	T GetArgument(const string &str)
+        {
+            stringstream ss(str);
+            T res;
+            ss >> res;
+            return res;
+        }
 }
 #endif

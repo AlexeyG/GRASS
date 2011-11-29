@@ -165,13 +165,4 @@ string Helpers::NextEntry(string &str)
 	return result;
 }
 
-template <class T>
-T Helpers::GetArgument(const string &str)
-{
-	stringstream ss(str);
-	T res;
-	ss >> res;
-	return res;
-}
-
 Timers Helpers::ElapsedTimers;
