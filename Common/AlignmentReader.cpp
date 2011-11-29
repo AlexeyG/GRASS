@@ -63,6 +63,16 @@ bool AlignmentReader::GetNextAlignmentGroup(BamAlignment &alignment, vector<XATa
 	return true;
 }
 
+const RefVector &AlignmentReader::GetReferences() const
+{
+    return reader.GetReferenceData();
+}
+
+int AlignmentReader::GetReferenceCount() const
+{
+    return reader.GetReferenceCount();
+}
+
 void AlignmentReader::parseXATag(const string &str, vector<XATag> &tags)
 {
 	int offset = 0;
