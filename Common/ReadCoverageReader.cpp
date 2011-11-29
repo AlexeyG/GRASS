@@ -69,7 +69,7 @@ bool ReadCoverageReader::readContigs(int nContigs, ReadCoverage &coverage)
     return true;
 }
 
-bool ReadCoverage::readContig(int contigID, ReadCoverage &coverage)
+bool ReadCoverageReader::readContig(int contigID, ReadCoverage &coverage)
 {
     string line;
     getline(in, line);
