@@ -94,8 +94,7 @@ PairedReadConverter::PairedReadConverterResult PairedReadConverter::createLinksF
         int ContigReadCoverageContigCount = ContigReadCoverage.GetContigCount();
         if (ContigReadCoverageContigCount == 0)
             ContigReadCoverage.SetContigCount(referenceSize);
-        
-        if (ContigReadCoverageContigCount != referenceSize)
+        else if (ContigReadCoverageContigCount != referenceSize)
             result = InconsistentReferenceSets;
         
         if (result == Success)
