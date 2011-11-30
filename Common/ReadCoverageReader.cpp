@@ -1,6 +1,8 @@
 #include "ReadCoverageReader.h"
 #include "Helpers.h"
 
+#include <iostream>
+
 ReadCoverageReader::ReadCoverageReader()
 {
 }
@@ -33,6 +35,7 @@ bool ReadCoverageReader::Read(ReadCoverage &coverage)
     coverage = ReadCoverage();
     if (!readHeader(nContigs, coverage))
         return false;
+    cout << "Have " << nContigs << " contigs!" << endl;
     if (!readContigs(nContigs, coverage))
         return false;
     return true;
@@ -64,22 +67,29 @@ bool ReadCoverageReader::readHeader(int &nContigs, ReadCoverage &coverage)
 bool ReadCoverageReader::readContigs(int nContigs, ReadCoverage &coverage)
 {
     for (int i = 0; i < nContigs; i++)
-        if (!readContig(i, coverage))
+        if (!readContig(coverage))
             return false;
     return true;
 }
 
-bool ReadCoverageReader::readContig(int contigID, ReadCoverage &coverage)
+bool ReadCoverageReader::readContig(ReadCoverage &coverage)
 {
     string line;
     getline(in, line);
     string contigIdStr = Helpers::NextEntry(line);
     string nPositionsStr = Helpers::NextEntry(line);
+    int contigID = Helpers::GetArgument<int>(contigIdStr);
     int nPositions = Helpers::GetArgument<int>(nPositionsStr);
+    if (contigID < 0)
+        return false;
     if (nPositions < 0)
         return false;
+    cout << "Have contig " << contigID << " with " << nPositions << " positions!" << endl;
     getline(in, line);
     for (int j = 0; j < nPositions; j++)
+    {
+        cout << "Position " << j << endl;
         coverage.AddLocation(contigID, Helpers::GetArgument<int>(Helpers::NextEntry(line)));
+    }
     return true;
 }
