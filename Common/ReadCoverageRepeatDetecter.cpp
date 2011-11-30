@@ -4,7 +4,7 @@
 
 using namespace std;
 
-static vector<int> ReadCoverageRepeatDetecter::Detect(double expectedCoverage, const ReadCoverage &coverage, const DataStore &store, double uniqunessCutoff)
+vector<int> ReadCoverageRepeatDetecter::Detect(double expectedCoverage, const ReadCoverage &coverage, const DataStore &store, double uniqunessCutoff)
 {
     double expectedStarts = expectedCoverage / coverage.AverageReadLength;
     vector<int> repeatContigs;
@@ -31,4 +31,6 @@ static vector<int> ReadCoverageRepeatDetecter::Detect(double expectedCoverage, c
         if (logRatio < uniqunessCutoff)
             repeatContigs.push_back(i);
     }
+    
+    return repeatContigs;
 }
