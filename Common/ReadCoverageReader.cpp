@@ -1,7 +1,10 @@
 #include "ReadCoverageReader.h"
 #include "Helpers.h"
+#include <sstream>
 
 #include <iostream>
+
+using namespace std;
 
 ReadCoverageReader::ReadCoverageReader()
 {
@@ -85,9 +88,11 @@ bool ReadCoverageReader::readContig(ReadCoverage &coverage)
     if (nPositions < 0)
         return false;
     cout << "Have contig " << contigID << " with " << nPositions << " positions!" << endl;
+    getline(in, line);
+    stringstream ss(line);
     for (int j = 0, pos; j < nPositions; j++)
     {
-        in >> pos;
+        ss >> pos;
         coverage.AddLocation(contigID, pos);
     }
     return true;
