@@ -21,7 +21,7 @@ public:
 private:
     bool readHeader(int &nContigs, ReadCoverage &coverage);
     bool readContigs(int nContigs, ReadCoverage &coverage);
-    bool readContig(int id, ReadCoverage &coverage);
+    bool readContig(ReadCoverage &coverage);
         
 protected:
     fstream in;
