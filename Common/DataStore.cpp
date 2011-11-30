@@ -235,11 +235,19 @@ int DataStore::IsolateContigs(const vector<int> &ids)
     vector<ContigLink> keep;
     int count = 0;
     for (LinkMap::const_iterator it = links.begin(); it != links.end(); it++)
+    {
+        bool shouldKeep = true;
         for (vector<int>::const_iterator id = ids.begin(); id != ids.end(); id++)
-            if (it->first.first != *id && it->first.second != *id)
-                keep.push_back(it->second);
-            else
-                count++;
+            if (it->first.first == *id || it->first.second == *id)
+            {
+                shouldKeep = false;
+                break;
+            }
+        if (shouldKeep)
+            keep.push_back(it->second);
+        else
+            count++;
+    }
     links.clear();
     for (vector<ContigLink>::iterator it = keep.begin(); it != keep.end(); it++)
     {
