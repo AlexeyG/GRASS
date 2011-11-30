@@ -85,8 +85,11 @@ bool ReadCoverageReader::readContig(ReadCoverage &coverage)
     if (nPositions < 0)
         return false;
     cout << "Have contig " << contigID << " with " << nPositions << " positions!" << endl;
-    getline(in, line);
     for (int j = 0; j < nPositions; j++)
-        coverage.AddLocation(contigID, Helpers::GetArgument<int>(Helpers::NextEntry(line)));
+    {
+        int pos;
+        in >> pos;
+        coverage.AddLocation(contigID, pos);
+    }
     return true;
 }
