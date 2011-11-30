@@ -230,6 +230,25 @@ int DataStore::Erode(double weight)
 	return count;
 }
 
+int DataStore::IsolateContigs(const vector<int> &ids)
+{
+    vector<ContigLink> keep;
+    int count = 0;
+    for (LinkMap::iterator it = links.begin(); it != links.end; it++)
+        for (vector<int>::iterator id = ids.begin(); id != ids.end(); id++)
+            if (it->first.first != *id && it->first.second != *id)
+                keep.push_back(it->second);
+            else
+                count++;
+    links.clear();
+    for (vector<ContigLink>::iterator it = keep.begin(); it != keep.end(); it++)
+    {
+        pair<int, int> pos(it->First, it->Second);
+        links.insert(pair<pair<int,int>,ContigLink>(pos, *it));
+    }
+    return count;
+}
+
 /*void DataStore::temp()
 {
 	vector<ContigLink> newStore;

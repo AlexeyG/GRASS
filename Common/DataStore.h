@@ -92,6 +92,7 @@ public:
 	void Extract(const vector<int> &what, DataStore &store, vector<int> &transBack);
 	int RemoveAmbiguous();
 	int Erode(double weight);
+        int IsolateContigs(const vector<int> &ids);
 
 private:
 	void bundleLinks(vector<ContigLink> &l, bool perGroup, bool joinAmbiguous, double distance);
