@@ -2,8 +2,6 @@
 #include "Helpers.h"
 #include <sstream>
 
-#include <iostream>
-
 using namespace std;
 
 ReadCoverageReader::ReadCoverageReader()
@@ -38,7 +36,6 @@ bool ReadCoverageReader::Read(ReadCoverage &coverage)
     coverage = ReadCoverage();
     if (!readHeader(nContigs, coverage))
         return false;
-    cout << "Have " << nContigs << " contigs!" << endl;
     if (!readContigs(nContigs, coverage))
         return false;
     return true;
@@ -87,7 +84,6 @@ bool ReadCoverageReader::readContig(ReadCoverage &coverage)
         return false;
     if (nPositions < 0)
         return false;
-    cout << "Have contig " << contigID << " with " << nPositions << " positions!" << endl;
     getline(in, line);
     stringstream ss(line);
     for (int j = 0, pos; j < nPositions; j++)

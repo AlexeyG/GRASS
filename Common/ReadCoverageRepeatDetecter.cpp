@@ -17,7 +17,6 @@ vector<int> ReadCoverageRepeatDetecter::Detect(double expectedCoverage, const Re
         int observedGroups = 0;
         int contigLength = store[i].Sequence.Nucleotides.length();
         vector<int> readPositions(coverage.ReadLocations[i]);
-        printf("Contig %i: positions %i position %i\n", i, coverage.ReadLocations[i].size(), readPositions.size());
         sort(readPositions.begin(), readPositions.end());
         vector<int>::const_iterator pos = readPositions.begin();
         while (pos != readPositions.end())
@@ -28,9 +27,7 @@ vector<int> ReadCoverageRepeatDetecter::Detect(double expectedCoverage, const Re
             while (pos != readPositions.end() && *pos == *start)
                 count++, pos++;
             observedMean += count;
-            printf("          Group %i count: %i\n", observedGroups - 1, count);
         }
-        printf("          Total groups: %i\n", observedGroups);
         observedMean /= (double)observedGroups;
         printf("Contig %i observed mean: %.5lf\n", i, observedMean);
         double logRatio = log(2.0) / 2.0 + contigLength * (expectedStarts * expectedStarts - observedMean * observedMean / 2.0) / (2.0 * expectedStarts);
