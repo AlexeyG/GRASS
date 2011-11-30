@@ -10,6 +10,7 @@
 
 #include <vector>
 #include "ReadCoverage.h"
+#include "DataStore.h"
 
 using namespace std;
 

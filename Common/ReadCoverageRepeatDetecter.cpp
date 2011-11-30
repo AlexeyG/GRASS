@@ -1,11 +1,10 @@
 #include "ReadCoverageRepeatDetecter.h"
-#include "DataStore.h"
 #include <algorithm>
 #include <cmath>
 
 using namespace std;
 
-vector<int> ReadCoverageRepeatDetecter::Detect(double expectedCoverage, const ReadCoverage &coverage, const DataStore &store, double uniqunessCutoff)
+static vector<int> ReadCoverageRepeatDetecter::Detect(double expectedCoverage, const ReadCoverage &coverage, const DataStore &store, double uniqunessCutoff)
 {
     double expectedStarts = expectedCoverage / coverage.AverageReadLength;
     vector<int> repeatContigs;
