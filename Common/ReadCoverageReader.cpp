@@ -85,9 +85,8 @@ bool ReadCoverageReader::readContig(ReadCoverage &coverage)
     if (nPositions < 0)
         return false;
     cout << "Have contig " << contigID << " with " << nPositions << " positions!" << endl;
-    for (int j = 0; j < nPositions; j++)
+    for (int j = 0, pos; j < nPositions; j++)
     {
-        int pos;
         in >> pos;
         coverage.AddLocation(contigID, pos);
     }
