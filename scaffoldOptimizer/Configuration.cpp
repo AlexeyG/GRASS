@@ -21,6 +21,7 @@ Configuration::Configuration()
 	BundleDistance = 3.0;
 	Erosion = 5.0;
         ExpectedCoverage = 0.0;
+        UniquenessFCutoff = 5.0;
 	InputFileName = "";
         ReadCoverageFileName = "";
 	OutputFileName = "scaffold.fasta";
@@ -182,7 +183,7 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
 			{
 				if (argc - i - 1 < 2)
 				{
-					cerr << "[-] Parsing error in -repeat-coverage: must have two arguments argument." << endl;
+					cerr << "[-] Parsing error in -repeat-coverage: must have at least two arguments argument." << endl;
 					this->Success = false;
 					break;
 				}
@@ -198,6 +199,19 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
 				ExpectedCoverage = expectedCoverage;
                                 i++;
                                 ReadCoverageFileName = argv[i];
+                                if (argc - i - 1 >= 1 && Helpers::IsNumber(argv[i + 1]))
+                                {
+                                    i++;
+                                    bool uniquenessFCutoffSuccess;
+                                    int uniquenessFCutoff = Helpers::ParseInt(argv[i], uniquenessFCutoffSuccess);
+                                    if (!uniquenessFCutoffSuccess || uniquenessFCutoff <= 0)
+                                    {
+                                        cerr << "[i] Parsing error in -repeat-coverage: uniqueness F cutoff must be a position number." << endl;
+                                        this->Success = false;
+                                        break;
+                                    }
+                                    UniquenessFCutoff = uniquenessFCutoff;
+                                }
 			}
 			else if (!strcmp("-erosion", argv[i]))
 			{
@@ -518,8 +532,9 @@ void Configuration::printHelpMessage(stringstream &serr)
 	serr << "[i] -bundle-groups <yes/no>                             Bundle contig links from different link groups? [yes]" << endl;
 	serr << "[i] -bundle-ambiguous <yes/no>                          Bundle ambiguous and non-ambiguous contig links together? [yes]" << endl;
 	serr << "[i] -bundle-distance <distance>                         Bundle contig links withing <distance> standard deviation from the median. [3]" << endl;
-        serr << "[i] -repeat-coverage <exp. cov.> <cov. filename>        Detect repeats using expected coverage and read coverage provided in a file." << endl;
+        serr << "[i] -repeat-coverage <exp. cov.> <cov. filename> [F]    Detect repeats using expected coverage and read coverage provided in a file. [5]" << endl;
 	serr << "[i] -erosion <weight>                                   Remove contig links with weight smaller than <weigth> (should be used only with link bundling). [5]" << endl;
+        serr << endl;
 	serr << "[i] -time-limit <seconds>                               Time limit for a single run of CPLEX or GA in seconds. [infinite]" << endl;
 	serr << "[i] -threads <n>                                        Number of threads a solver can use. [automatic]" << endl;
 	serr << "[i] -cplex-opportunistic <yes/no>                       Use CPLEX opportunistic optimization mode. [yes]" << endl;

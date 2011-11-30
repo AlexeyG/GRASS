@@ -26,6 +26,7 @@ public:
 	double BundleDistance;
 	double Erosion;
         double ExpectedCoverage;
+        double UniquenessFCutoff;
 	bool PrintMatrix;
 	SolverConfiguration Options;
 	string InputFileName;
