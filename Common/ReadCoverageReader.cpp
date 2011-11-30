@@ -75,7 +75,7 @@ bool ReadCoverageReader::readContig(int contigID, ReadCoverage &coverage)
     getline(in, line);
     string contigIdStr = Helpers::NextEntry(line);
     string nPositionsStr = Helpers::NextEntry(line);
-    int nPositions = Helpers::GetArgument<int>(line);
+    int nPositions = Helpers::GetArgument<int>(nPositionsStr);
     if (nPositions < 0)
         return false;
     getline(in, line);
