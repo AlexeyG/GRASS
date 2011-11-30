@@ -5,6 +5,7 @@
 #include "DataStore.h"
 #include "DataStoreReader.h"
 #include "ReadCoverageReader.h"
+#include "ReadCoverageRepeatDetecter.h"
 #include "DPSolver.h"
 #include "Helpers.h"
 
@@ -489,67 +490,75 @@ bool outputFastaScaffolds(const string &fileName, const vector<Scaffold> &scaffo
 
 int main(int argc, char *argv[])
 {
-	Helpers::ElapsedTimers.AddTimer();
-	srand((unsigned int)time(NULL));
-	if (config.ProcessCommandLine(argc, argv))
-	{
-		solver.Options = config.Options;
-		if (!readStore(config.InputFileName, store))
-		{
-			cerr << "[-] Unable to read optimization problem (" << config.InputFileName << ")." << endl;
-			return -1;
-		}
-		cerr << "[+] Read optimization problem (" << config.InputFileName << ")." << endl;
-		if (config.RemoveAmbiguous)
-			cerr << "[+] Removed " << store.RemoveAmbiguous() << " ambiguous links." << endl;
-		if (config.PrintMatrix)
-		{
-			cerr << "[i] Original matrix:" << endl;
-			Helpers::PrintDataStore(store);
-		}
-		if (config.Sort && !config.Bundle)
-		{
-			store.Sort();
-			cerr << "[i] Sorted contig links." << endl;
-		}
-		else if (config.Bundle)
-		{
-			store.Bundle(config.Sort, config.BundlePerGroup, config.BundleAmbiguous, config.BundleDistance);
-			cerr << "[i] Bundled contig links." << endl;
-		}
-		if ((config.Sort || config.Bundle) && config.PrintMatrix)
-		{
-			cerr << "[i] Optimized matrix:" << endl;
-			Helpers::PrintDataStore(store);
-		}
-		if (config.Erosion > 0)
-			cerr << "[i] Erosion removed " << store.Erode(config.Erosion) << " contig links." << endl;
-                if (!config.ReadCoverageFileName.empty() && !readCoverage(config.ReadCoverageFileName, coverage))
-                    cerr << "[-] Unable to read contig coverage (" << config.ReadCoverageFileName << ")." << endl;
-		if (!solver.Formulate(store))
-		{
-			cerr << "[-] Unable to formulate the optimization problem." << endl;
-			return -2;
-		}
-		cerr << "[+] Formulated the optimization problem." << endl;
-		if (!solver.Solve())
-		{
-			cerr << "[-] Unable to solve the optimization problem." << endl;
-			return -3;
-		}
-		cerr << "[+] Solved the optimization problem." << endl;
-		if (!outputFastaScaffolds(config.OutputFileName, ScaffoldExtractor::Extract(solver)))
-		{
-			cerr << "[-] Unable to output scaffolds (FastA)." << endl;
-			return -4;
-		}
-		if (!config.SolutionOutputFileName.empty() && !outputScaffolds(config.SolutionOutputFileName, ScaffoldExtractor::Extract(solver)))
-		{
-			cerr << "[-] Unable to output solution." << endl;
-			return -5;
-		}
-		return 0;
-	}
-	cerr << config.LastError;
-	return -1;
+    Helpers::ElapsedTimers.AddTimer();
+    srand((unsigned int)time(NULL));
+    if (config.ProcessCommandLine(argc, argv))
+    {
+        solver.Options = config.Options;
+        if (!readStore(config.InputFileName, store))
+        {
+            cerr << "[-] Unable to read optimization problem (" << config.InputFileName << ")." << endl;
+            return -1;
+        }
+        cerr << "[+] Read optimization problem (" << config.InputFileName << ")." << endl;
+        if (config.RemoveAmbiguous)
+            cerr << "[+] Removed " << store.RemoveAmbiguous() << " ambiguous links." << endl;
+        if (config.PrintMatrix)
+        {
+            cerr << "[i] Original matrix:" << endl;
+            Helpers::PrintDataStore(store);
+        }
+        if (config.Sort && !config.Bundle)
+        {
+            store.Sort();
+            cerr << "[i] Sorted contig links." << endl;
+        }
+        else if (config.Bundle)
+        {
+            store.Bundle(config.Sort, config.BundlePerGroup, config.BundleAmbiguous, config.BundleDistance);
+            cerr << "[i] Bundled contig links." << endl;
+        }
+        if ((config.Sort || config.Bundle) && config.PrintMatrix)
+        {
+            cerr << "[i] Optimized matrix:" << endl;
+            Helpers::PrintDataStore(store);
+        }
+        if (config.Erosion > 0)
+            cerr << "[i] Erosion removed " << store.Erode(config.Erosion) << " contig links." << endl;
+        if (!config.ReadCoverageFileName.empty())
+        {
+            if (!readCoverage(config.ReadCoverageFileName, coverage))
+                cerr << "[-] Unable to read contig coverage (" << config.ReadCoverageFileName << ")." << endl;
+            else
+            {
+                vector<int> repeats = ReadCoverageRepeatDetecter::Detect(config.ExpectedCoverage, coverage, store, config.UniquenessFCutoff);
+                cerr << "[i] Detected " << repeats.size() << " repeat contigs. Removed " << store.IsolateContigs(repeats) << " contig links to isolate them." << endl;
+            }
+        }
+        if (!solver.Formulate(store))
+        {
+            cerr << "[-] Unable to formulate the optimization problem." << endl;
+            return -2;
+        }
+        cerr << "[+] Formulated the optimization problem." << endl;
+        if (!solver.Solve())
+        {
+            cerr << "[-] Unable to solve the optimization problem." << endl;
+            return -3;
+        }
+        cerr << "[+] Solved the optimization problem." << endl;
+        if (!outputFastaScaffolds(config.OutputFileName, ScaffoldExtractor::Extract(solver)))
+        {
+            cerr << "[-] Unable to output scaffolds (FastA)." << endl;
+            return -4;
+        }
+        if (!config.SolutionOutputFileName.empty() && !outputScaffolds(config.SolutionOutputFileName, ScaffoldExtractor::Extract(solver)))
+        {
+            cerr << "[-] Unable to output solution." << endl;
+            return -5;
+        }
+        return 0;
+    }
+    cerr << config.LastError;
+    return -1;
 }
