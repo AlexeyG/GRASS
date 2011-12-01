@@ -21,7 +21,7 @@ public:
 	virtual bool Write(const vector<FastASequence> &seq) = 0;
 
 protected:
-	void splitPrint(const string &seq, int num = 1000);
+	void splitPrint(const string &seq, int num = 80);
 
 protected:
     FILE *fout;

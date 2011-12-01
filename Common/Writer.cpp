@@ -60,8 +60,8 @@ bool FastAWriter::Write(const string &seq, const string &comment)
 		return false;
 
     fprintf(fout, ">%s\n", comment.c_str());
-	fprintf(fout, "%s\n", seq.c_str());
-	//splitPrint(seq);
+    //fprintf(fout, "%s\n", seq.c_str());
+    splitPrint(seq);
 
     return true;
 }
@@ -92,13 +92,13 @@ bool FastQWriter::Write(const string &seq, const string &comment)
 
 bool FastQWriter::Write(const string &seq, const string &comment, const string &quality)
 {
-	if (fout == NULL)
-		return false;
-
-	fprintf(fout, "@%s\n", comment.c_str());
-	fprintf(fout, "%s\n", seq.c_str());
-	//splitPrint(seq);
-	fprintf(fout, "+%s\n", comment.c_str());
+    if (fout == NULL)
+        return false;
+    
+    fprintf(fout, "@%s\n", comment.c_str());
+    fprintf(fout, "%s\n", seq.c_str());
+    //splitPrint(seq);
+    fprintf(fout, "+%s\n", comment.c_str());
     fprintf(fout, "%s\n", quality.c_str());
 
     return true;

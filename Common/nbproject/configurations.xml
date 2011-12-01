@@ -14,6 +14,10 @@
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/Globals.h</itemPath>
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/Helpers.h</itemPath>
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/MinMax.h</itemPath>
+      <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverage.h</itemPath>
+      <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverageReader.h</itemPath>
+      <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverageRepeatDetecter.h</itemPath>
+      <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverageWriter.h</itemPath>
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/Reader.h</itemPath>
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/Sequence.h</itemPath>
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/Timers.h</itemPath>
@@ -35,6 +39,10 @@
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/DataStoreReader.cpp</itemPath>
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/DataStoreWriter.cpp</itemPath>
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/Helpers.cpp</itemPath>
+      <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverage.cpp</itemPath>
+      <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverageReader.cpp</itemPath>
+      <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverageRepeatDetecter.cpp</itemPath>
+      <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverageWriter.cpp</itemPath>
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/Reader.cpp</itemPath>
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/Sequence.cpp</itemPath>
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/Writer.cpp</itemPath>

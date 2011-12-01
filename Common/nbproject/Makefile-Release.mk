@@ -35,14 +35,18 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/_ext/152718998/DataStoreReader.o \
+	${OBJECTDIR}/_ext/152718998/ReadCoverageWriter.o \
 	${OBJECTDIR}/_ext/152718998/DataStore.o \
+	${OBJECTDIR}/_ext/152718998/ReadCoverageReader.o \
 	${OBJECTDIR}/_ext/152718998/Writer.o \
 	${OBJECTDIR}/_ext/152718998/Helpers.o \
+	${OBJECTDIR}/_ext/152718998/ReadCoverageRepeatDetecter.o \
 	${OBJECTDIR}/_ext/152718998/Aligner.o \
 	${OBJECTDIR}/_ext/152718998/Reader.o \
 	${OBJECTDIR}/_ext/152718998/XATag.o \
 	${OBJECTDIR}/_ext/152718998/AlignmentReader.o \
 	${OBJECTDIR}/_ext/152718998/AlignerConfiguration.o \
+	${OBJECTDIR}/_ext/152718998/ReadCoverage.o \
 	${OBJECTDIR}/_ext/152718998/Converter.o \
 	${OBJECTDIR}/_ext/152718998/Sequence.o \
 	${OBJECTDIR}/_ext/152718998/DataStoreWriter.o
@@ -77,10 +81,20 @@ ${OBJECTDIR}/_ext/152718998/DataStoreReader.o: /Users/alexeyg/Documents/src/tud-
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/152718998/DataStoreReader.o /Users/alexeyg/Documents/src/tud-scaffolding/Common/DataStoreReader.cpp
 
+${OBJECTDIR}/_ext/152718998/ReadCoverageWriter.o: /Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverageWriter.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/152718998
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/152718998/ReadCoverageWriter.o /Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverageWriter.cpp
+
 ${OBJECTDIR}/_ext/152718998/DataStore.o: /Users/alexeyg/Documents/src/tud-scaffolding/Common/DataStore.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/152718998
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/152718998/DataStore.o /Users/alexeyg/Documents/src/tud-scaffolding/Common/DataStore.cpp
+
+${OBJECTDIR}/_ext/152718998/ReadCoverageReader.o: /Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverageReader.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/152718998
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/152718998/ReadCoverageReader.o /Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverageReader.cpp
 
 ${OBJECTDIR}/_ext/152718998/Writer.o: /Users/alexeyg/Documents/src/tud-scaffolding/Common/Writer.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/152718998
@@ -91,6 +105,11 @@ ${OBJECTDIR}/_ext/152718998/Helpers.o: /Users/alexeyg/Documents/src/tud-scaffold
 	${MKDIR} -p ${OBJECTDIR}/_ext/152718998
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/152718998/Helpers.o /Users/alexeyg/Documents/src/tud-scaffolding/Common/Helpers.cpp
+
+${OBJECTDIR}/_ext/152718998/ReadCoverageRepeatDetecter.o: /Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverageRepeatDetecter.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/152718998
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/152718998/ReadCoverageRepeatDetecter.o /Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverageRepeatDetecter.cpp
 
 ${OBJECTDIR}/_ext/152718998/Aligner.o: /Users/alexeyg/Documents/src/tud-scaffolding/Common/Aligner.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/152718998
@@ -116,6 +135,11 @@ ${OBJECTDIR}/_ext/152718998/AlignerConfiguration.o: /Users/alexeyg/Documents/src
 	${MKDIR} -p ${OBJECTDIR}/_ext/152718998
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/152718998/AlignerConfiguration.o /Users/alexeyg/Documents/src/tud-scaffolding/Common/AlignerConfiguration.cpp
+
+${OBJECTDIR}/_ext/152718998/ReadCoverage.o: /Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverage.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/152718998
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/152718998/ReadCoverage.o /Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverage.cpp
 
 ${OBJECTDIR}/_ext/152718998/Converter.o: /Users/alexeyg/Documents/src/tud-scaffolding/Common/Converter.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/152718998
