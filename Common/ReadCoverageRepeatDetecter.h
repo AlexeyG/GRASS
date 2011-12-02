@@ -17,7 +17,7 @@ using namespace std;
 class ReadCoverageRepeatDetecter
 {   
 public:
-    static vector<int> Detect(double expectedCoverage, const ReadCoverage &coverage, const DataStore &store, double uniqunessCutoff);
+    static vector<int> Detect(double expectedCoverage, const ReadCoverage &coverage, const DataStore &store, double uniquenessCutoff);
 };
 
 #endif	/* _READCOVERAGEREPEATDETECTER_H */
