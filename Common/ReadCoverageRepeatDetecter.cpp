@@ -9,6 +9,7 @@ using namespace std;
 vector<int> ReadCoverageRepeatDetecter::Detect(double expectedCoverage, const ReadCoverage &coverage, const DataStore &store, double uniqunessCutoff)
 {
     double expectedStarts = expectedCoverage / coverage.AverageReadLength;
+    printf("Expecting coverage: %.5lf\n", expectedStarts);
     vector<int> repeatContigs;
     int nContigs = coverage.ReadLocations.size();
     for (int i = 0; i < nContigs; i++)
