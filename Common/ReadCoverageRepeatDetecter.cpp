@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <cmath>
 
+#include <cstdio>
+
 using namespace std;
 
 vector<int> ReadCoverageRepeatDetecter::Detect(double expectedCoverage, const ReadCoverage &coverage, const DataStore &store, double uniqunessCutoff)
@@ -27,6 +29,7 @@ vector<int> ReadCoverageRepeatDetecter::Detect(double expectedCoverage, const Re
             observedMean += count;
         }
         observedMean /= (double)observedGroups;
+        printf("Observed coverage: %.5lf\n", observedMean);
         double logRatio = log(2.0) / 2.0 + contigLength * (expectedStarts * expectedStarts - observedMean * observedMean / 2.0) / (2.0 * expectedStarts);
         if (logRatio < uniqunessCutoff)
             repeatContigs.push_back(i);
