@@ -5,6 +5,7 @@
  * Created on December 3, 2011, 1:02 PM
  */
 
+#include <cstdlib>
 #include <iostream>
 #include <vector>
 #include "Configuration.h"
@@ -39,7 +40,7 @@ bool readCoverage(const string &fileName, ReadCoverage &coverage)
 bool calculateDepth(const ReadCoverage &coverage, const vector<FastASequence> &contigs, vector< vector<int> > &depth)
 {
     int nContigs = coverage.GetContigCount();
-    if (nContigs != contigs.size())
+    if (nContigs != (int)contigs.size())
         return false;
     depth.assign(nContigs, vector<int>());
     int avgReadLength = (int)coverage.AverageReadLength;
@@ -47,7 +48,7 @@ bool calculateDepth(const ReadCoverage &coverage, const vector<FastASequence> &c
     {
         int contigLength = contigs[i].Nucleotides.length();
         depth[i].assign(0, contigLength);
-        int readCount = ReadCoverage.ReadLocations[i].size();
+        int readCount = (int)coverage.ReadLocations[i].size();
         for (int j = 0; j < readCount; j++)
         {
             int pos = coverage.ReadLocations[i][j];
