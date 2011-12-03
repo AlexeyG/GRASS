@@ -65,6 +65,7 @@ bool outputMIPSformat(const vector<FastASequence> &contigs, const vector<int*> &
     int nContigs = contigs.size();
     for (int i = 0; i < nContigs; i++)
     {
+        cout << "at " << i << endl;
         int contigLength = contigs[i].Nucleotides.length();
         long long coverageSum = 0;
         for (int j = 0; j < contigLength; j++)
@@ -101,15 +102,15 @@ int main(int argc, char* argv[])
         cerr << "[+] Read coverage (" << config.CoverageFileName << ")." << endl;
         if (!calculateDepth(coverage, contigs, depth))
         {
-            cerr << "[-] Unable to calculate coverage depth." << endl;
             clearDepthVector(depth);
+            cerr << "[-] Unable to calculate coverage depth." << endl;
             return -4;
         }
         cerr << "[+] Calculated coverage depth." << endl;
         if (!outputMIPSformat(contigs, depth))
         {
-            cerr << "[-] Unable to output coverage statistics." << endl;
             clearDepthVector(depth);
+            cerr << "[-] Unable to output coverage statistics." << endl;
             return -4;
         }
         
