@@ -18,7 +18,7 @@ using namespace std;
 Configuration config;
 ReadCoverage coverage;
 vector<FastASequence> contigs;
-vector< vector<int> > depth;
+vector< vector<int> > *depth;
 
 
 bool readContigs(const string &fileName, vector<FastASequence> &contigs)
@@ -84,6 +84,7 @@ bool outputMIPSformat(const vector<FastASequence> &contigs, const vector< vector
 int main(int argc, char* argv[])
 {
     srand((unsigned int)time(NULL));
+    depth = new vector< vector<int> >();
     if (config.ProcessCommandLine(argc, argv))
     {
         if (!readContigs(config.ContigFileName, contigs))
@@ -98,13 +99,13 @@ int main(int argc, char* argv[])
             return -3;
         }
         cerr << "[+] Read coverage (" << config.CoverageFileName << ")." << endl;
-        if (!calculateDepth(coverage, contigs, depth))
+        if (!calculateDepth(coverage, contigs, *depth))
         {
             cerr << "[-] Unable to calculate coverage depth." << endl;
             return -4;
         }
         cerr << "[+] Calculated coverage depth." << endl;
-        if (!outputMIPSformat(contigs, depth))
+        if (!outputMIPSformat(contigs, *depth))
         {
             cerr << "[-] Unable to output coverage statistics." << endl;
             return -4;
