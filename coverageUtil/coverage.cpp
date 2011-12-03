@@ -18,7 +18,7 @@ using namespace std;
 Configuration config;
 ReadCoverage coverage;
 vector<FastASequence> contigs;
-vector< vector<int> *> depth;
+vector<int *> depth;
 
 
 bool readContigs(const string &fileName, vector<FastASequence> &contigs)
@@ -37,7 +37,7 @@ bool readCoverage(const string &fileName, ReadCoverage &coverage)
     return result;
 }
 
-bool calculateDepth(const ReadCoverage &coverage, const vector<FastASequence> &contigs, vector< vector<int> *> &depth)
+bool calculateDepth(const ReadCoverage &coverage, const vector<FastASequence> &contigs, vector<int*> &depth)
 {
     int nContigs = coverage.GetContigCount();
     if (nContigs != (int)contigs.size())
@@ -59,7 +59,7 @@ bool calculateDepth(const ReadCoverage &coverage, const vector<FastASequence> &c
     return true;
 }
 
-bool outputMIPSformat(const vector<FastASequence> &contigs, const vector< vector<int> *> &depth)
+bool outputMIPSformat(const vector<FastASequence> &contigs, const vector<int*> &depth)
 {
     int nContigs = contigs.size();
     for (int i = 0; i < nContigs; i++)
