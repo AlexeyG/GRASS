@@ -43,23 +43,15 @@ bool calculateDepth(const ReadCoverage &coverage, const vector<FastASequence> &c
     if (nContigs != (int)contigs.size())
         return false;
     depth.resize(nContigs, NULL);
-    cout << nContigs << " " << contigs.size() << " " << coverage.ReadLocations.size() << endl;
     int avgReadLength = (int)coverage.AverageReadLength;
     for (int i = 0; i < nContigs; i++)
     {
-        cout << "A" << endl;
         int contigLength = contigs[i].Nucleotides.length();
-        cout << "B" << endl;
-        //depth[i].resize(contigLength, 0);
         depth[i] = new int[contigLength];
-        cout << "C" << endl;
         int readCount = (int)coverage.ReadLocations[i].size();
-        cout << "D" << endl;
-        cout << "Contig " << i << " of length " << contigLength << " with count " << readCount << endl;
         for (int j = 0; j < readCount; j++)
         {
             int pos = coverage.ReadLocations[i][j];
-            //cout << "  Read " << j << " with position " << pos << " and length " << avgReadLength << endl;
             for (int k = pos; k < pos + avgReadLength && k < contigLength; k++)
                 depth[i][k]++;
         }
@@ -77,7 +69,6 @@ bool outputMIPSformat(const vector<FastASequence> &contigs, const vector< vector
         for (int j = 0; j < contigLength; j++)
             coverageSum += depth[i][j];
         double averageCoverage = (double)coverageSum / (double)contigLength;
-        cout << i + i << "\t" << contigs[i].Comment << "\t" << contigLength << "\t" << averageCoverage << endl;
     }
     return true;
 }
