@@ -53,7 +53,7 @@ bool calculateDepth(const ReadCoverage &coverage, const vector<FastASequence> &c
         for (int j = 0; j < readCount; j++)
         {
             int pos = coverage.ReadLocations[i][j];
-            //cout << "  Read " << j << " with position " << pos << " and length " << avgReadLength << endl;
+            cout << "  Read " << j << " with position " << pos << " and length " << avgReadLength << endl;
             for (int k = pos; k < pos + avgReadLength && k < contigLength; k++)
                 depth[i][k]++;
         }
