@@ -23,7 +23,7 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
 	this->Success = true;
 	stringstream serr;
 
-	if (argc < 3)
+	if (argc < 2)
 	{
 		serr << "[-] Not enough arguments. Consult -help." << endl;
 		this->Success = false;
