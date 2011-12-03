@@ -65,12 +65,12 @@ bool outputMIPSformat(const vector<FastASequence> &contigs, const vector<int*> &
     int nContigs = contigs.size();
     for (int i = 0; i < nContigs; i++)
     {
-        cout << "at " << i << endl;
         int contigLength = contigs[i].Nucleotides.length();
         long long coverageSum = 0;
         for (int j = 0; j < contigLength; j++)
             coverageSum += depth[i][j];
         double averageCoverage = (double)coverageSum / (double)contigLength;
+        cout << i + i << "\t" << contigs[i].Comment << "\t" << contigLength << "\t" << averageCoverage << endl;
     }
     return true;
 }
