@@ -5,6 +5,7 @@
  * Created on November 30, 2011, 9:28 AM
  */
 
+
 #ifndef _READCOVERAGEREPEATDETECTER_H
 #define	_READCOVERAGEREPEATDETECTER_H
 
