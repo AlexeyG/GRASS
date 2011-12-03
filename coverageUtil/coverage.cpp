@@ -18,7 +18,7 @@ using namespace std;
 Configuration config;
 ReadCoverage coverage;
 vector<FastASequence> contigs;
-vector< vector<int> > depth;
+vector< vector<int> *> depth;
 
 
 bool readContigs(const string &fileName, vector<FastASequence> &contigs)
@@ -37,12 +37,12 @@ bool readCoverage(const string &fileName, ReadCoverage &coverage)
     return result;
 }
 
-bool calculateDepth(const ReadCoverage &coverage, const vector<FastASequence> &contigs, vector< vector<int> > &depth)
+bool calculateDepth(const ReadCoverage &coverage, const vector<FastASequence> &contigs, vector< vector<int> *> &depth)
 {
     int nContigs = coverage.GetContigCount();
     if (nContigs != (int)contigs.size())
         return false;
-    depth.resize(nContigs, vector<int>());
+    depth.resize(nContigs, NULL);
     cout << nContigs << " " << contigs.size() << " " << coverage.ReadLocations.size() << endl;
     int avgReadLength = (int)coverage.AverageReadLength;
     for (int i = 0; i < nContigs; i++)
@@ -50,7 +50,8 @@ bool calculateDepth(const ReadCoverage &coverage, const vector<FastASequence> &c
         cout << "A" << endl;
         int contigLength = contigs[i].Nucleotides.length();
         cout << "B" << endl;
-        depth[i].resize(contigLength, 0);
+        //depth[i].resize(contigLength, 0);
+        depth[i] = new int[contigLength];
         cout << "C" << endl;
         int readCount = (int)coverage.ReadLocations[i].size();
         cout << "D" << endl;
@@ -66,7 +67,7 @@ bool calculateDepth(const ReadCoverage &coverage, const vector<FastASequence> &c
     return true;
 }
 
-bool outputMIPSformat(const vector<FastASequence> &contigs, const vector< vector<int> > &depth)
+bool outputMIPSformat(const vector<FastASequence> &contigs, const vector< vector<int> *> &depth)
 {
     int nContigs = contigs.size();
     for (int i = 0; i < nContigs; i++)
