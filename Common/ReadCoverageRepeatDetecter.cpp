@@ -16,7 +16,7 @@ vector<int> ReadCoverageRepeatDetecter::Detect(double expectedCoverage, const Re
     {
         double observedMean = 0.0;
         int observedGroups = 0;
-        int contigLength = store[i].Sequence.Nucleotides.length();
+        int contigLength = store[i].Sequence.Nucleotides.length();vi 
         vector<int> readPositions(coverage.ReadLocations[i]);
         sort(readPositions.begin(), readPositions.end());
         vector<int>::const_iterator pos = readPositions.begin();
