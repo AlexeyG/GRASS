@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <vector>
+#include <memory>
 #include "Configuration.h"
 #include "ReadCoverageReader.h"
 #include "Reader.h"
@@ -73,6 +74,14 @@ bool outputMIPSformat(const vector<FastASequence> &contigs, const vector<int*> &
     return true;
 }
 
+void clearDepthVector(vector<int *> &depth)
+{
+    int n = depth.size();
+    for (int i = 0; i < n; i++)
+        delete depth[i];
+    depth.clear();
+}
+
 int main(int argc, char* argv[])
 {
     srand((unsigned int)time(NULL));
@@ -93,15 +102,18 @@ int main(int argc, char* argv[])
         if (!calculateDepth(coverage, contigs, depth))
         {
             cerr << "[-] Unable to calculate coverage depth." << endl;
+            clearDepthVector(depth);
             return -4;
         }
         cerr << "[+] Calculated coverage depth." << endl;
         if (!outputMIPSformat(contigs, depth))
         {
             cerr << "[-] Unable to output coverage statistics." << endl;
+            clearDepthVector(depth);
             return -4;
         }
         
+        clearDepthVector(depth);
         return 0;
     }
     cerr << config.LastError;
