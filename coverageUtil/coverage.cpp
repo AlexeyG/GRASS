@@ -16,7 +16,7 @@
 
 using namespace std;
 
-typedef vector< int * > Depth;
+typedef vector< vector<int> > Depth;
 typedef vector<FastASequence> Sequences;
 
 Configuration config;
