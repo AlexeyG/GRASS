@@ -70,8 +70,8 @@ bool outputMIPSformat(const Sequences &contigs, const Depth &depth)
     {
         int contigLength = contigs[i].Nucleotides.length();
         long long coverageSum = 0;
-        for (int j = 0; j < contigLength; j++)
-            coverageSum += depth[i][j];
+        for (int j = 0; j < contigLength; j++);
+            //coverageSum += depth[i][j];
         double averageCoverage = (double)coverageSum / (double)contigLength;
         cout << i + 1 << "\t" << contigs[i].Comment << "\t" << contigLength << "\t" << averageCoverage << endl;
     }
