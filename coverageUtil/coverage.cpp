@@ -85,7 +85,7 @@ void clearDepthVector(vector<int *> &depth)
 int main(int argc, char* argv[])
 {
     srand((unsigned int)time(NULL));
-    coverage = new ReadCoverage();
+    coverage = auto_ptr<ReadCoverage>(new ReadCoverage());
     if (config.ProcessCommandLine(argc, argv))
     {
         if (!readContigs(config.ContigFileName, contigs))
