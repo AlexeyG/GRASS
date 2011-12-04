@@ -138,7 +138,7 @@ void PairedReadConverter::processCoverage(const BamAlignment &alg, const vector<
         return;
     
     int readLength = alg.QueryBases.length();
-    ContigReadCoverage.AddLocation(alg.RefID, (alg.IsReverseStrand() ? alg.Position/* - readLength*/ : alg.Position));
+    ContigReadCoverage.AddLocation(alg.RefID, /*(alg.IsReverseStrand() ? alg.Position - readLength : alg.Position)*/ alg.Position);
     ContigReadCoverage.UpdateAverage(readLength);
 }
 
