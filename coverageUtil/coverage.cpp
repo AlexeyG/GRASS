@@ -16,7 +16,7 @@
 
 using namespace std;
 
-typedef vector< vector<int> > Depth;
+typedef vector< int * > Depth;
 typedef vector<FastASequence> Sequences;
 
 Configuration config;
@@ -55,6 +55,7 @@ bool calculateDepth(const ReadCoverage &coverage, const Sequences &contigs, Dept
         int *t = new int[contigLength];
         for (int j = 0; j < contigLength; j++)
             t[j] = 999;
+        depth[i] = t;
         //cout << "Got " << t << " " << sizeof(t) << " (aiming at " << contigLength << ")" << endl;
         for (vector<int>::const_iterator it = coverage.ReadLocations[i].begin(); it != coverage.ReadLocations[i].end(); it++)
         {
@@ -84,7 +85,6 @@ int main(int argc, char* argv[])
 {
     srand((unsigned int)time(NULL));
     coverage = auto_ptr<ReadCoverage>(new ReadCoverage());
-    depth = auto_ptr<Depth>(new Depth());
     contigs = auto_ptr<Sequences>(new Sequences());
     if (config.ProcessCommandLine(argc, argv))
     {
@@ -93,6 +93,7 @@ int main(int argc, char* argv[])
             cerr << "[-] Unable to read contigs (" << config.ContigFileName << ")." << endl;
             return -2;
         }
+        depth = auto_ptr<Depth>(new Depth(contigs->size(), NULL));
         cerr << "[+] Read contigs (" << config.ContigFileName << ")." << endl;
         if (!readCoverage(config.CoverageFileName, *coverage))
         {
