@@ -79,7 +79,8 @@ void clearDepthVector(vector<int *> &depth)
 {
     int n = depth.size();
     for (int i = 0; i < n; i++)
-        delete [] depth[i];
+        if (depth[i] != NULL)
+            delete [] depth[i];
     depth.clear();
 }
 
