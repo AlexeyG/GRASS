@@ -49,6 +49,8 @@ bool calculateDepth(const ReadCoverage &coverage, const vector<FastASequence> &c
     {
         int contigLength = contigs[i].Nucleotides.length();
         depth[i] = new int[contigLength];
+        for (int j = 0; j < contigLength; j++)
+            depth[i][j] = 0;
         int readCount = (int)coverage.ReadLocations[i].size();
         for (int j = 0; j < readCount; j++)
         {
