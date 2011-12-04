@@ -33,7 +33,7 @@ bool ReadCoverageReader::Read(ReadCoverage &coverage)
     int nContigs;
     if (!in.is_open())
         return false;
-    coverage = ReadCoverage();
+    coverage.SetContigCount(0);
     if (!readHeader(nContigs, coverage))
         return false;
     if (!readContigs(nContigs, coverage))
