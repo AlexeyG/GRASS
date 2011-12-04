@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
             cerr << "[-] Unable to read contigs (" << config.ContigFileName << ")." << endl;
             return -2;
         }
-        depth = auto_ptr<Depth>(new Depth(contigs->size(), NULL));
+        depth = auto_ptr<Depth>(new Depth(contigs->size(), NULL)); // otherwise we get a segfault. Resizing vector in place in a pain (stack overrun?)
         cerr << "[+] Read contigs (" << config.ContigFileName << ")." << endl;
         if (!readCoverage(config.CoverageFileName, *coverage))
         {
