@@ -17,11 +17,12 @@
 using namespace std;
 
 typedef vector< vector<int> > Depth;
+typedef vector<FastASequence> Sequences;
 
 Configuration config;
 auto_ptr<ReadCoverage> coverage;
 auto_ptr<Depth> depth;
-vector<FastASequence> contigs;
+auto_ptr<Sequences> contigs;
 
 
 bool readContigs(const string &fileName, vector<FastASequence> &contigs)
@@ -40,7 +41,7 @@ bool readCoverage(const string &fileName, ReadCoverage &coverage)
     return result;
 }
 
-bool calculateDepth(const ReadCoverage &coverage, const vector<FastASequence> &contigs, Depth &depth)
+bool calculateDepth(const ReadCoverage &coverage, const Sequences &contigs, Depth &depth)
 {
     int nContigs = coverage.GetContigCount();
     if (nContigs != (int)contigs.size())
@@ -60,7 +61,7 @@ bool calculateDepth(const ReadCoverage &coverage, const vector<FastASequence> &c
     return true;
 }
 
-bool outputMIPSformat(const vector<FastASequence> &contigs, const Depth &depth)
+bool outputMIPSformat(const Sequences &contigs, const Depth &depth)
 {
     int nContigs = contigs.size();
     for (int i = 0; i < nContigs; i++)
@@ -75,23 +76,15 @@ bool outputMIPSformat(const vector<FastASequence> &contigs, const Depth &depth)
     return true;
 }
 
-void clearDepthVector(vector<int *> &depth)
-{
-    int n = depth.size();
-    for (int i = 0; i < n; i++)
-        if (depth[i] != NULL)
-            delete [] depth[i];
-    depth.clear();
-}
-
 int main(int argc, char* argv[])
 {
     srand((unsigned int)time(NULL));
     coverage = auto_ptr<ReadCoverage>(new ReadCoverage());
     depth = auto_ptr<Depth>(new Depth());
+    contigs = auto_ptr<Sequences>(new Sequences());
     if (config.ProcessCommandLine(argc, argv))
     {
-        if (!readContigs(config.ContigFileName, contigs))
+        if (!readContigs(config.ContigFileName, *contigs))
         {
             cerr << "[-] Unable to read contigs (" << config.ContigFileName << ")." << endl;
             return -2;
@@ -103,14 +96,14 @@ int main(int argc, char* argv[])
             return -3;
         }
         cerr << "[+] Read coverage (" << config.CoverageFileName << ")." << endl;
-        if (!calculateDepth(*coverage, contigs, *depth))
+        if (!calculateDepth(*coverage, *contigs, *depth))
         {
             //clearDepthVector(depth);
             cerr << "[-] Unable to calculate coverage depth." << endl;
             return -4;
         }
         cerr << "[+] Calculated coverage depth." << endl;
-        if (!outputMIPSformat(contigs, *depth))
+        if (!outputMIPSformat(*contigs, *depth))
         {
             //clearDepthVector(depth);
             cerr << "[-] Unable to output coverage statistics." << endl;
