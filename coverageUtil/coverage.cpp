@@ -58,7 +58,7 @@ bool calculateDepth(const ReadCoverage &coverage, const Sequences &contigs, Dept
         for (vector<int>::const_iterator it = coverage.ReadLocations[i].begin(); it != coverage.ReadLocations[i].end(); it++)
         {
             for (int k = *it; k < *it + avgReadLength && k < contigLength; k++)
-                t[k]++;
+                t[k] = 9999;
                 //depth[i][k]++;
         }
     }
