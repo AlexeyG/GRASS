@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <memory>
+#include <boost/shared_array.hpp>
 #include <cstring>
 #include "Configuration.h"
 #include "ReadCoverageReader.h"
@@ -17,7 +18,7 @@
 
 using namespace std;
 
-typedef vector< auto_ptr<int> > Depth;
+typedef vector< shared_array<int> > Depth;
 typedef vector<FastASequence> Sequences;
 
 Configuration config;
@@ -52,7 +53,7 @@ bool calculateDepth(const ReadCoverage &coverage, const Sequences &contigs, Dept
     for (int i = 0; i < nContigs; i++)
     {
         int contigLength = contigs[i].Nucleotides.length();
-        depth[i] = auto_ptr<int>(new int[contigLength]);
+        depth[i] = shared_array<int>(new int[contigLength]);
         memset(depth[i].get(), 0, contigLength * sizeof(int));
         for (vector<int>::const_iterator it = coverage.ReadLocations[i].begin(); it != coverage.ReadLocations[i].end(); it++)
         {
