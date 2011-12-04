@@ -126,10 +126,10 @@ int main(int argc, char* argv[])
         {
             if (!outputDepth(config.DepthFileName, *contigs, *depth))
             {
-                cerr << "[-] Unable to output coverage depth (" << config.CoverageFileName << ")." << endl;
+                cerr << "[-] Unable to output coverage depth (" << config.DepthFileName << ")." << endl;
                 return -5;
             }
-            cerr << "[+] Output coverage depth (" << config.CoverageFileName << ")." << endl;
+            cerr << "[+] Output coverage depth (" << config.DepthFileName << ")." << endl;
         }
         if (!outputMIPSformat(*contigs, *depth))
         {
