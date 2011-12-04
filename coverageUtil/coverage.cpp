@@ -111,8 +111,6 @@ int main(int argc, char* argv[])
             cerr << "[-] Unable to calculate coverage depth." << endl;
             return -4;
         }
-        for (int i = 0; i < contigs.size(); i++)
-            cout << i << ": " << contigs[i].Comment << endl;
         cerr << "[+] Calculated coverage depth." << endl;
         if (!outputMIPSformat(contigs, depth))
         {
