@@ -47,9 +47,8 @@ bool calculateDepth(const ReadCoverage &coverage, const vector<FastASequence> &c
     int avgReadLength = (int)coverage.AverageReadLength;
     for (int i = 0; i < nContigs; i++)
     {
-        int contigLength = (int)contigs[i].Nucleotides.length();
-        depth[i].assign(contigLength, 0);
         int contigLength = contigs[i].Nucleotides.length();
+        depth[i].assign(contigLength, 0);
         for (vector<int>::const_iterator it = coverage.ReadLocations[i].begin(); it != coverage.ReadLocations[i].end(); it++)
         {
             for (int k = *it; k < *it + avgReadLength && k < contigLength; k++)
