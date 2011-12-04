@@ -20,8 +20,8 @@ typedef vector< vector<int> > Depth;
 
 Configuration config;
 auto_ptr<ReadCoverage> coverage;
-vector<FastASequence> contigs;
 auto_ptr<Depth> depth;
+vector<FastASequence> contigs;
 
 
 bool readContigs(const string &fileName, vector<FastASequence> &contigs)
