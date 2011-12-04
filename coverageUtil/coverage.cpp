@@ -64,6 +64,23 @@ bool calculateDepth(const ReadCoverage &coverage, const Sequences &contigs, Dept
     return true;
 }
 
+bool outputDepth(const string &fileName, const Sequences &contigs, const Depth &depth)
+{
+    FILE *out = fopen(fileName.c_str(), "w");
+    if (out == NULL)
+        return false;
+    
+    int nContigs = contigs.size();
+    for (int i = 0; i < nContigs; i++)
+    {
+        int contigLength = contigs[i].Nucleotides.length();
+        for (int j = 0; j < contigLength; j++)
+            fprintf(out, "%i\n", depth[i][j]);
+    }
+    fclose(out);
+    return true;
+}
+
 bool outputMIPSformat(const Sequences &contigs, const Depth &depth)
 {
     int nContigs = contigs.size();
@@ -101,18 +118,24 @@ int main(int argc, char* argv[])
         cerr << "[+] Read coverage (" << config.CoverageFileName << ")." << endl;
         if (!calculateDepth(*coverage, *contigs, *depth))
         {
-            //clearDepthVector(depth);
             cerr << "[-] Unable to calculate coverage depth." << endl;
             return -4;
         }
         cerr << "[+] Calculated coverage depth." << endl;
+        if (!config.DepthFileName.empty())
+        {
+            if (!outputDepth(config.DepthFileName, *contigs, *depth))
+            {
+                cerr << "[-] Unable to output coverage depth (" << config.CoverageFileName << ")." << endl;
+                return -5;
+            }
+            cerr << "[+] Output coverage depth (" << config.CoverageFileName << ")." << endl;
+        }
         if (!outputMIPSformat(*contigs, *depth))
         {
-            //clearDepthVector(depth);
             cerr << "[-] Unable to output coverage statistics." << endl;
             return -4;
         }
-        //clearDepthVector(depth);
         return 0;
     }
     cerr << config.LastError;
