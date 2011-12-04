@@ -100,8 +100,6 @@ int main(int argc, char* argv[])
             cerr << "[-] Unable to read coverage (" << config.CoverageFileName << ")." << endl;
             return -3;
         }
-        for (int i = 0; i < contigs.size(); i++)
-            cout << i << ": " << contigs[i].Comment << endl;
         cerr << "[+] Read coverage (" << config.CoverageFileName << ")." << endl;
         if (!calculateDepth(coverage, contigs, depth))
         {
@@ -109,6 +107,8 @@ int main(int argc, char* argv[])
             cerr << "[-] Unable to calculate coverage depth." << endl;
             return -4;
         }
+        for (int i = 0; i < contigs.size(); i++)
+            cout << i << ": " << contigs[i].Comment << endl;
         cerr << "[+] Calculated coverage depth." << endl;
         if (!outputMIPSformat(contigs, depth))
         {
