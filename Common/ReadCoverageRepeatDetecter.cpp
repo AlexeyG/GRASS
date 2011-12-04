@@ -22,12 +22,12 @@ vector<int> ReadCoverageRepeatDetecter::Detect(double expectedCoverage, const Re
         vector<int>::const_iterator pos = readPositions.begin();
         while (pos != readPositions.end())
         {
-            observedGroups++;
-            int count = 1;
             vector<int>::const_iterator start = pos++;
+            int count = 1;
+            if (*start >= 0) observedGroups++;
             while (pos != readPositions.end() && *pos == *start)
                 count++, pos++;
-            observedMean += count;
+            if (*start >= 0) observedMean += count;
         }
         observedMean /= (double)observedGroups;
         double logRatio = log(2.0) / 2.0 + contigLength * (expectedStarts * expectedStarts - observedMean * observedMean / 2.0) / (2.0 * expectedStarts);
