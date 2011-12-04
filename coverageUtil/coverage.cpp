@@ -18,7 +18,7 @@
 
 using namespace std;
 
-typedef vector< shared_array<int> > Depth;
+typedef vector< boost::shared_array<int> > Depth;
 typedef vector<FastASequence> Sequences;
 
 Configuration config;
@@ -53,7 +53,7 @@ bool calculateDepth(const ReadCoverage &coverage, const Sequences &contigs, Dept
     for (int i = 0; i < nContigs; i++)
     {
         int contigLength = contigs[i].Nucleotides.length();
-        depth[i] = shared_array<int>(new int[contigLength]);
+        depth[i] = boost::shared_array<int>(new int[contigLength]);
         memset(depth[i].get(), 0, contigLength * sizeof(int));
         for (vector<int>::const_iterator it = coverage.ReadLocations[i].begin(); it != coverage.ReadLocations[i].end(); it++)
         {
