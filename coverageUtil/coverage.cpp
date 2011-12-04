@@ -16,7 +16,7 @@
 
 using namespace std;
 
-typedef vector< vector<int> > Depth;
+typedef vector< int * > Depth;
 typedef vector<FastASequence> Sequences;
 
 Configuration config;
@@ -25,7 +25,7 @@ auto_ptr<Depth> depth;
 auto_ptr<Sequences> contigs;
 
 
-bool readContigs(const string &fileName, vector<FastASequence> &contigs)
+bool readContigs(const string &fileName, Sequences &contigs)
 {
     FastAReader reader;
     bool result = reader.Open(fileName) && reader.Read(contigs) > 0;
@@ -46,12 +46,14 @@ bool calculateDepth(const ReadCoverage &coverage, const Sequences &contigs, Dept
     int nContigs = coverage.GetContigCount();
     if (nContigs != (int)contigs.size())
         return false;
-    depth.resize(nContigs, vector<int>());
+    //depth.resize(nContigs, vector<int>());
+    depth.resize(nContigs, NULL);
     int avgReadLength = (int)coverage.AverageReadLength;
     for (int i = 0; i < nContigs; i++)
     {
         int contigLength = contigs[i].Nucleotides.length();
-        depth[i].assign(contigLength, 0);
+        depth[i] = new int[contigLength];
+        //depth[i].assign(contigLength, 0);
         for (vector<int>::const_iterator it = coverage.ReadLocations[i].begin(); it != coverage.ReadLocations[i].end(); it++)
         {
             for (int k = *it; k < *it + avgReadLength && k < contigLength; k++)
