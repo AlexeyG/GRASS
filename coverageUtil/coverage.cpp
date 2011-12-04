@@ -70,7 +70,7 @@ bool outputMIPSformat(const vector<FastASequence> &contigs, const vector<int*> &
         for (int j = 0; j < contigLength; j++)
             coverageSum += depth[i][j];
         double averageCoverage = (double)coverageSum / (double)contigLength;
-        cout << i + i << "\t" << contigs[i].Comment << "\t" << contigLength << "\t" << averageCoverage << endl;
+        cout << i + 1 << "\t" << contigs[i].Comment << "\t" << contigLength << "\t" << averageCoverage << endl;
     }
     return true;
 }
@@ -100,6 +100,8 @@ int main(int argc, char* argv[])
             cerr << "[-] Unable to read coverage (" << config.CoverageFileName << ")." << endl;
             return -3;
         }
+        for (int i = 0; i < contigs.size(); i++)
+            cout << i << ": " << contigs[i].Comment << endl;
         cerr << "[+] Read coverage (" << config.CoverageFileName << ")." << endl;
         if (!calculateDepth(coverage, contigs, depth))
         {
