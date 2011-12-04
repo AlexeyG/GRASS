@@ -16,10 +16,12 @@
 
 using namespace std;
 
+typedef vector< vector<int> > Depth;
+
 Configuration config;
 auto_ptr<ReadCoverage> coverage;
 vector<FastASequence> contigs;
-vector< vector<int> > depth;
+auto_ptr<Depth> depth;
 
 
 bool readContigs(const string &fileName, vector<FastASequence> &contigs)
@@ -38,7 +40,7 @@ bool readCoverage(const string &fileName, ReadCoverage &coverage)
     return result;
 }
 
-bool calculateDepth(const ReadCoverage &coverage, const vector<FastASequence> &contigs, vector< vector<int> > &depth)
+bool calculateDepth(const ReadCoverage &coverage, const vector<FastASequence> &contigs, Depth &depth)
 {
     int nContigs = coverage.GetContigCount();
     if (nContigs != (int)contigs.size())
@@ -58,7 +60,7 @@ bool calculateDepth(const ReadCoverage &coverage, const vector<FastASequence> &c
     return true;
 }
 
-bool outputMIPSformat(const vector<FastASequence> &contigs, const vector< vector<int> > &depth)
+bool outputMIPSformat(const vector<FastASequence> &contigs, const Depth &depth)
 {
     int nContigs = contigs.size();
     for (int i = 0; i < nContigs; i++)
@@ -86,6 +88,7 @@ int main(int argc, char* argv[])
 {
     srand((unsigned int)time(NULL));
     coverage = auto_ptr<ReadCoverage>(new ReadCoverage());
+    depth = auto_ptr<Depth>(new Depth());
     if (config.ProcessCommandLine(argc, argv))
     {
         if (!readContigs(config.ContigFileName, contigs))
