@@ -94,13 +94,13 @@ int main(int argc, char* argv[])
             return -2;
         }
         cerr << "[+] Read contigs (" << config.ContigFileName << ")." << endl;
-        if (!readCoverage(config.CoverageFileName, coverage))
+        if (!readCoverage(config.CoverageFileName, *coverage))
         {
             cerr << "[-] Unable to read coverage (" << config.CoverageFileName << ")." << endl;
             return -3;
         }
         cerr << "[+] Read coverage (" << config.CoverageFileName << ")." << endl;
-        if (!calculateDepth(coverage, contigs, depth))
+        if (!calculateDepth(*coverage, contigs, depth))
         {
             //clearDepthVector(depth);
             cerr << "[-] Unable to calculate coverage depth." << endl;
