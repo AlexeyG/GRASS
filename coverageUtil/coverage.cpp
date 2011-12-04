@@ -103,14 +103,14 @@ int main(int argc, char* argv[])
             return -3;
         }
         cerr << "[+] Read coverage (" << config.CoverageFileName << ")." << endl;
-        if (!calculateDepth(*coverage, contigs, depth))
+        if (!calculateDepth(*coverage, contigs, *depth))
         {
             //clearDepthVector(depth);
             cerr << "[-] Unable to calculate coverage depth." << endl;
             return -4;
         }
         cerr << "[+] Calculated coverage depth." << endl;
-        if (!outputMIPSformat(contigs, depth))
+        if (!outputMIPSformat(contigs, *depth))
         {
             //clearDepthVector(depth);
             cerr << "[-] Unable to output coverage statistics." << endl;
