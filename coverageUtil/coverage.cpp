@@ -17,7 +17,7 @@
 using namespace std;
 
 Configuration config;
-ReadCoverage coverage;
+auto_ptr<ReadCoverage> coverage;
 vector<FastASequence> contigs;
 vector< vector<int> > depth;
 
@@ -85,6 +85,7 @@ void clearDepthVector(vector<int *> &depth)
 int main(int argc, char* argv[])
 {
     srand((unsigned int)time(NULL));
+    coverage = new ReadCoverage();
     if (config.ProcessCommandLine(argc, argv))
     {
         if (!readContigs(config.ContigFileName, contigs))
@@ -112,7 +113,6 @@ int main(int argc, char* argv[])
             cerr << "[-] Unable to output coverage statistics." << endl;
             return -4;
         }
-        
         //clearDepthVector(depth);
         return 0;
     }
