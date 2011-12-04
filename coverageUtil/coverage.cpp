@@ -60,6 +60,7 @@ bool calculateDepth(const ReadCoverage &coverage, const vector<FastASequence> &c
         {
             int pos = coverage.ReadLocations[i][j];
             for (int k = pos; k < pos + avgReadLength && k < contigLength; k++)
+                if (depth[i][k] < 1000000)
                 depth[i][k]++;
         }
     }
