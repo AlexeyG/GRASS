@@ -54,7 +54,7 @@ bool calculateDepth(const ReadCoverage &coverage, const Sequences &contigs, Dept
         //depth[i].assign(contigLength, 0);
         int *t = new int[contigLength];
         for (int j = 0; j < contigLength; j++)
-            t[j] = 999;
+            t[j] = 'A';
         //cout << "Got " << t << " " << sizeof(t) << " (aiming at " << contigLength << ")" << endl;
         for (vector<int>::const_iterator it = coverage.ReadLocations[i].begin(); it != coverage.ReadLocations[i].end(); it++)
         {
