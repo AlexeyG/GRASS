@@ -1,5 +1,6 @@
 #ifndef _CONFIGURATION_H
 #define _CONFIGURATION_H
+
 #include <string>
 #include <vector>
 #include "AlignerConfiguration.h"
