@@ -8,4 +8,4 @@
 #define DATE "05.12.2011"
 
 // Maximum line length
-#define MAX_LINE (1024)
+#define MaxLine (1024)

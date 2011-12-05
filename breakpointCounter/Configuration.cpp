@@ -57,6 +57,17 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
                     break;
                 }
             }
+            else if (!strcmp("-tmp", argv[i]))
+            {
+                if (argc - i - 1 < 1)
+                {
+                    serr << "[-] Parsing error in -tmp: must have an argument." << endl;
+                    this->Success = false;
+                    break;
+                }
+                i++;
+                MummerConfig.TmpPath = argv[i];
+            }
             else if (i == argc - 2)
                 this->ReferenceFileName = argv[argc - 2];
             else if (i == argc - 1)
@@ -91,5 +102,6 @@ void Configuration::printHelpMessage(stringstream &serr)
     serr << "[i] By " << AUTHOR << endl;
     serr << "[i] Usage: breakpointCounter [arguments] <reference.fasta> <scaffolds.fasta>" << endl;
     serr << "[i] -help                                               Print this message and exit." << endl;
+    serr << "[i] -tmp <path>                                         Define scrap path for temporary files. [/tmp]" << endl;
     serr << "[i] -minbases <number>                                  Minimum number of aligned bases to take into account. [90]" << endl;
 }

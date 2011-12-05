@@ -13,7 +13,7 @@
 #include "Configuration.h"
 #include "Sequence.h"
 #include "Reader.h"
-#include "MummerAligner.h"
+#include "Aligner.h"
 
 using namespace std;
 
@@ -34,8 +34,11 @@ bool readContigs(const string &fileName, Sequences &contigs)
 
 bool alignScaffolds(const string &referenceFileName, const string &scaffoldsFilename)
 {
-    auto_ptr<MummerAligner> aligner(new MummerAligner());
-    //
+    MummerAligner aligner(referenceFileName, scaffoldsFilename, config.MummerConfiguration);
+    if (aligner.Align())
+        cout << "Success: " << aligner.OutputFileName << endl;
+    else
+        cout << "Failure: " << aligner.OutputFileName << endl;
     return false;
 }
 

@@ -19,6 +19,7 @@ public:
 	string ScaffoldFileName;
 	string ReferenceFileName;
         int MinBases;
+        MummerConfiguration MummerConfig;
 	string LastError;
 
 private:
