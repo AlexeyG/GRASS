@@ -51,7 +51,7 @@ public:
     string TmpPath;
     string NucmerCommand;
     string ShowCoordsCommand;
-}
+};
 
 #endif
 
