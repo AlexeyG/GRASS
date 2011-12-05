@@ -29,7 +29,8 @@ vector<int> ReadCoverageRepeatDetecter::Detect(double expectedCoverage, const Re
                 count++, pos++;
             if (*start >= 0) observedMean += count;
         }
-        observedMean /= (double)observedGroups;
+        //observedMean /= (double)observedGroups;
+        observedMean /= (double)contigLength;
         double logRatio = log(2.0) / 2.0 + contigLength * (expectedStarts * expectedStarts - observedMean * observedMean / 2.0) / (2.0 * expectedStarts);
         if (logRatio < uniquenessCutoff)
             repeatContigs.push_back(i);
