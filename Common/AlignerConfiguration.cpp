@@ -27,3 +27,11 @@ SAMToolsConfiguration::SAMToolsConfiguration()
 	TmpPath = "/tmp";
 	ConvertCommand = "samtools view -b -S -o %s %s >& /dev/null";
 }
+
+// Construction with default configuration parameter settings
+MummerConfiguration::MummerConfiguration()
+{
+    TmpPath = "/tmp";
+    NucmerCommand = "nucmer -p %s %s %s >& /dev/null";
+    ShowCoordsCommand = "(show-coords %s > %s) >& /dev/null";
+}

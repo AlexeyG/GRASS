@@ -42,4 +42,15 @@ public:
 	string TmpPath;
 };
 
+class MummerConfiguration
+{
+public:
+    MummerConfiguration();
+    
+public:
+    string TmpPath;
+    string NucmerCommand;
+    string ShowCoordsCommand;
+}
+
 #endif

@@ -5,8 +5,8 @@
 // Base class destructor (removes alignment file).
 Aligner::~Aligner()
 {
-	if (RemoveOutput && OutputFileName.length() > 0)
-		Helpers::RemoveFile(OutputFileName);
+    if (RemoveOutput && OutputFileName.length() > 0)
+        Helpers::RemoveFile(OutputFileName);
 }
 
 // BWA Aligner ctor
@@ -103,4 +103,34 @@ bool NovoAlignAligner::Align(const string &outFile)
 	}
 
 	return success;
+}
+
+// Aligns query to reference using MUMMER package. Returns true if successful.
+bool MummerAligner::Align(const string &outFile)
+{
+    char str[MaxLine];
+    bool success = true;
+    OutputFileName.clear();
+
+    string prefix;
+    prefix = Helpers::TempFile(Configuration.TmpPath);
+    sprintf(str, Configuration.NucmerCommand.c_str(), prefix.c_str(), ReferenceFileName.c_str(), QueryFileName.c_str());
+    if (!Helpers::Execute(str))
+        success = false;
+    if (success)
+    {
+        OutputFileName = (outFile.length() > 0 ? outFile : Helpers::TempFile(Configuration.TmpPath));
+        sprintf(str, Configuration.ShowCoordsCommand.c_str(), prefix.c_str(), OutputFileName.c_str());
+        if (!Helpers::Execute(str))
+            success = false;
+    }
+
+    Helpers::RemoveFile(prefix + ".delta");
+    if (!success)
+    {
+        Helpers::RemoveFile(OutputFileName);
+        OutputFileName.clear();
+    }
+
+    return success;
 }

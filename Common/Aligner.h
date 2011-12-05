@@ -54,4 +54,17 @@ public:
 	NovoAlignConfiguration Configuration;
 };
 
+class MummerAligner : public Aligner
+{
+public:
+    MummerAligner(const string &referenceFile, const string &queryFile, const MummerConfiguration &config)
+            : Aligner(referenceFile, queryFile), Configuration(config) {};
+          
+public:
+    bool Align(const string &outFile = (char *)"");
+        
+public:
+    MummerConfiguration Configuration;
+};
+
 #endif
