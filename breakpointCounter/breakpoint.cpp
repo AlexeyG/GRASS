@@ -34,7 +34,7 @@ bool readContigs(const string &fileName, Sequences &contigs)
 
 bool alignScaffolds(const string &referenceFileName, const string &scaffoldsFilename)
 {
-    MummerAligner aligner(referenceFileName, scaffoldsFilename, config.MummerConfiguration);
+    MummerAligner aligner(referenceFileName, scaffoldsFilename, config.MummerConfig);
     if (aligner.Align())
         cout << "Success: " << aligner.OutputFileName << endl;
     else
