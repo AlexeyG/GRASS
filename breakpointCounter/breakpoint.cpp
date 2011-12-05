@@ -36,6 +36,7 @@ bool alignScaffolds(const string &referenceFileName, const string &scaffoldsFile
 {
     auto_ptr<MummerAligner> aligner(new MummerAligner());
     //
+    return false;
 }
 
 int main(int argc, char* argv[])
