@@ -33,7 +33,7 @@ MummerConfiguration::MummerConfiguration()
 {
     TmpPath = "/tmp";
     NucmerCommand = "nucmer -p %s %s %s >& /dev/null";
-    ShowCoordsCommand = "(show-coords %s > %s) >& /dev/null";
+    ShowCoordsCommand = "(show-coords -q -T -d -H %s > %s) >& /dev/null";
     //NucmerCommand = "nucmer -p %s %s %s";
-    //ShowCoordsCommand = "show-coords %s > %s";
+    //ShowCoordsCommand = "show-coords -q -T -d -H %s > %s";
 }
