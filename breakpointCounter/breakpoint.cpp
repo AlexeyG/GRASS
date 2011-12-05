@@ -11,6 +11,8 @@
 #include <memory>
 #include <boost/shared_array.hpp>
 #include "Configuration.h"
+#include "Sequence.h"
+#include "Reader.h"
 #include "MummerAligner.h"
 
 using namespace std;
