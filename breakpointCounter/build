@@ -1,0 +1,2 @@
+#!/bin/bash
+g++ -O2 -m64 -std=gnu++0x -Wall -I../Common/ -I/data/bio/alexeygritsenk/apps/include/ -L/data/bio/alexeygritsenk/apps/lib/ -lbamtools -o ../bin/breakpointCounter Configuration.cpp ../Common/Helpers.cpp ../Common/DataStore.cpp ../Common/Timers.cpp ../Common/Reader.cpp ../Common/Sequence.cpp ../Common/XATag.cpp ../Common/Aligner.cpp ../Common/AlignerConfiguration.cpp breakpoint.cpp
