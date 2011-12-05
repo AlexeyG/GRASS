@@ -115,6 +115,9 @@ bool MummerAligner::Align(const string &outFile)
     string prefix;
     prefix = Helpers::TempFile(Configuration.TmpPath);
     sprintf(str, Configuration.NucmerCommand.c_str(), prefix.c_str(), ReferenceFileName.c_str(), QueryFileName.c_str());
+    
+    cout << string(str) << endl;
+    
     if (!Helpers::Execute(str))
         success = false;
     if (success)
