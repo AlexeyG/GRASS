@@ -12,8 +12,8 @@ bool MummerAligner::Align(const string& referenceFileName, const string& scaffol
     char buffer[MAX_LINE];
     alignmentString = "";
     sprintf(buffer, "nucmer ", referenceFileName.c_str(), scaffoldsFileName.c_str())
-    FILE *pipe = popen(mummerCommand, "r");
-    if (!pipe)
+    FILE *pipe = popen(buffer, "r");
+    if (pipe == NULL)
         return false;
     while(!feof(pipe))
     {
