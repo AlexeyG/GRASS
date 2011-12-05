@@ -121,7 +121,7 @@ bool MummerAligner::Align(const string &outFile)
     if (success)
     {
         OutputFileName = (outFile.length() > 0 ? outFile : Helpers::TempFile(Configuration.TmpPath));
-        sprintf(str, Configuration.ShowCoordsCommand.c_str(), prefix.c_str(), OutputFileName.c_str());
+        sprintf(str, Configuration.ShowCoordsCommand.c_str(), prefix.c_str() + ".delta", OutputFileName.c_str());
         if (!Helpers::Execute(str))
             success = false;
     }
