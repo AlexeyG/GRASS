@@ -9,11 +9,12 @@ MummerAligner::MummerAligner()
 
 bool MummerAligner::Align(const string& referenceFileName, const string& scaffoldsFileName)
 {
-    FILE *pipe = popen(cmd, "r");
-    if (!pipe)
-        return false;
     char buffer[MAX_LINE];
     alignmentString = "";
+    sprintf(buffer, "nucmer ", referenceFileName.c_str(), scaffoldsFileName.c_str())
+    FILE *pipe = popen(mummerCommand, "r");
+    if (!pipe)
+        return false;
     while(!feof(pipe))
     {
         if(fgets(buffer, MAX_LINE, pipe) != NULL)
