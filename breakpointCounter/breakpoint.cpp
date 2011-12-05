@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
             cerr << "[-] Unable to read scaffolds (" << config.ScaffoldFileName << ")." << endl;
             return -2;
         }
-        cerr << "[+] Read references (" << config.ReferenceFileName << ")." << endl;
+        cerr << "[+] Read scaffolds (" << config.ScaffoldFileName << ")." << endl;
         if (!readContigs(config.ReferenceFileName, *references))
         {
             cerr << "[-] Unable to read references (" << config.ReferenceFileName << ")." << endl;
