@@ -53,6 +53,11 @@ bool MummerCoordReader::Read(MummerCoord &coord)
     if (fgets(line, MaxLine, fin) == NULL)
         return false;
     
+    int len = strlen(line);
+    if (len <= 1)
+        return false;
+    line[--len] = '\0';
+    
     int t;
     stringstream ss(line);
     ss >> coord.ReferencePosition >> t >> coord.QueryPosition >> t >> coord.ReferenceAlignmentLength >> coord.QueryAlignmentLength >> coord.Identity;
