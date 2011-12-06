@@ -1,15 +1,16 @@
 #include "MummerCoordReader.h"
 #include "Globals.h"
-
-#include <iostream>
+#include <sstream>
 
 using namespace std;
 
-MummerCoordReader::MummerCoordReader()
+MummerCoordReader::MummerCoordReader(const vector<FastASequence> &references, const vector<FastASequence> &scaffolds)
 {
     fin = NULL;
     line = new char[MaxLine];
     numCoords = -1;
+    createMap(referenceIds, references);
+    createMap(scaffoldsIds, scaffolds);
 }
 
 MummerCoordReader::~MummerCoordReader()
@@ -49,7 +50,16 @@ bool MummerCoordReader::Read(MummerCoord &coord)
 {
     if (fgets(line, MaxLine, fin) == NULL)
         return false;
-    cout << "Read: " << line << endl;
+    
+    int t;
+    stringstream ss(line);
+    ss >> coord.ReferencePosition >> t >> coord.QueryPosition >> t >> coord.ReferenceAlignmentLength >> coord.QueryAlignmentLength >> coord.Identity;
+    coord.Identity /= 100;
+    ss >> t;
+    coord.IsReferenceReverse = t > 0;
+    ss >> t;
+    coord.IsQueryReverse = t > 0;
+    
     return true;
 }
 
@@ -68,20 +78,21 @@ long long MummerCoordReader::NumCoords()
         return 0;
     long long index = ftell(fin);
     
-    cout << "Currently at position: " << index << endl;
-    
     if (numCoords >= 0)
         return numCoords;
 
-    cout << "Pre coords: " << numCoords << endl;
-    
     fseek(fin, 0, SEEK_SET);
     long long num = 0;
     while (fgets(line, MaxLine, fin) != NULL)
         ++num;
-
-    cout << "Count coords: " << num << endl;
     
     fseek(fin, index, SEEK_SET);
     return numCoords = num;
+}
+
+void createMap(map<string, int> &store, const vector<FastASequence> &seq)
+{
+    int nSeq = seq.size();
+    for (int i = 0; i < nSeq; i++)
+        store[seq[i].Name()] = i;
 }
