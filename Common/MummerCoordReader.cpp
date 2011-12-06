@@ -56,7 +56,6 @@ bool MummerCoordReader::Read(MummerCoord &coord)
 long long MummerCoordReader::Read(vector<MummerCoord> &coords)
 {
     coords.resize(NumCoords());
-    cout << "Have " << NumCoords() << " coords" << endl;
     for (unsigned i = 0; i < coords.size(); ++i)
         Read(coords[i]);
 
@@ -68,15 +67,21 @@ long long MummerCoordReader::NumCoords()
     if (!IsOpen())
         return 0;
     long long index = ftell(fin);
-    fseek(fin, 0, SEEK_SET);
+    
+    cout << "Currently at position: " << index << endl;
     
     if (numCoords >= 0)
         return numCoords;
 
+    cout << "Pre coords: " << numCoords << endl;
+    
+    fseek(fin, 0, SEEK_SET);
     long long num = 0;
     while (fgets(line, MaxLine, fin) != NULL)
         ++num;
 
+    cout << "Count coords: " << num << endl;
+    
     fseek(fin, index, SEEK_SET);
     return numCoords = num;
 }
