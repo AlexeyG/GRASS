@@ -30,6 +30,7 @@ int BreakpointCount::ProcessAlignments(const vector<MummerCoord> &coords, const 
         while (it != coords.end() && it->QueryID == start->QueryID)
             it++;
         count += processAlignmentGroup(start, it);
+        it++;
     }
     return count;
 }
