@@ -62,7 +62,8 @@ bool MummerCoordReader::Read(MummerCoord &coord)
     ss >> t;
     coord.IsQueryReverse = t > 0;
     
-    string referenceName, queryName;
+    string tStr, referenceName, queryName;
+    getline(ss, tStr, '\t');
     getline(ss, referenceName, '\t');
     getline(ss, queryName, '\t');
     cout << referenceName << "-and-" << queryName << endl;
