@@ -12,7 +12,7 @@ MummerCoordReader::MummerCoordReader(const vector<FastASequence> &references, co
     line = new char[MaxLine];
     numCoords = -1;
     createMap(referenceIds, references);
-    createMap(scaffoldsIds, scaffolds);
+    createMap(scaffoldIds, scaffolds);
 }
 
 MummerCoordReader::~MummerCoordReader()
