@@ -11,6 +11,7 @@
 #include <vector>
 #include <cstdio>
 #include <string>
+#include "MummerCoord.h"
 
 using namespace std;
 
