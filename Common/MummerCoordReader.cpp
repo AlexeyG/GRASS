@@ -78,7 +78,7 @@ bool MummerCoordReader::Read(MummerCoord &coord)
     
     // Turning to 0-based
     coord.ReferencePosition--;
-    coord.QuereyPosition--;
+    coord.QueryPosition--;
     
     // Lets use SamTools convention, no need to reverse coordinates
     if (coord.IsReferenceReverse)
