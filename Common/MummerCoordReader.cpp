@@ -22,9 +22,7 @@ bool MummerCoordReader::Open(const string &fileName, const string &mode)
 {
     if (fin != NULL)
         return false;
-    cout << "Want to open: " << fileName << endl;
     fin = fopen(fileName.c_str(), mode.c_str());
-    cout << "Got: " << fin << endl;
     if (fin == NULL)
         return false;
     return true;
@@ -58,6 +56,7 @@ bool MummerCoordReader::Read(MummerCoord &coord)
 long long MummerCoordReader::Read(vector<MummerCoord> &coords)
 {
     coords.resize(NumCoords());
+    cout << "Have " << NumCoords() << " coords" << endl;
     for (unsigned i = 0; i < coords.size(); ++i)
         Read(coords[i]);
 
