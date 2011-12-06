@@ -45,6 +45,7 @@ bool alignScaffolds(const string &referenceFileName, const string &scaffoldsFile
         cerr << "[-] Unable to align scaffolds to reference (" << scaffoldsFileName << " -> " << referenceFileName << ")." << endl;
         return false;
     }
+    aligner.RemoveOutput = false;
     if (!reader.Open(aligner.OutputFileName) || reader.Read(coords) == 0)
     {
         cerr << "[-] Unable to read MUMMER alignment (" << aligner.OutputFileName << ")." << endl;
