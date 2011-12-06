@@ -36,9 +36,9 @@ bool readContigs(const string &fileName, Sequences &contigs)
     return result;
 }
 
-bool alignScaffolds(const string &referenceFileName, const string &scaffoldsFilename, Coords &coords)
+bool alignScaffolds(const string &referenceFileName, const string &scaffoldsFileName, Coords &coords)
 {
-    MummerAligner aligner(referenceFileName, scaffoldsFilename, config.MummerConfig);
+    MummerAligner aligner(referenceFileName, scaffoldsFileName, config.MummerConfig);
     MummerCoordReader reader;
     if (!aligner.Align())
     {
