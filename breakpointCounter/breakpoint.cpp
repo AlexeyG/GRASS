@@ -54,6 +54,19 @@ bool alignScaffolds(const string &referenceFileName, const string &scaffoldsFile
     return true;
 }
 
+int filterAlignments(Coords &coords, double minBases)
+{
+    int count = 0;
+    Coords newCoords;
+    for (auto it = coords.begin(); it != coords.end(); it++)
+        if (it->Identity * it->ReferenceAlignmentLength > minBases)
+            newCoords.push_back(*it);
+        else
+            count++;
+    coords.swap(newCoords);
+    return count;
+}
+
 int main(int argc, char* argv[])
 {
     srand((unsigned int)time(NULL));
@@ -77,7 +90,7 @@ int main(int argc, char* argv[])
         if (!alignScaffolds(config.ReferenceFileName, config.ScaffoldFileName, *references, *scaffolds, *coords))
             return -4;
         cerr << "[+] Aligned scaffolds to reference (" << config.ScaffoldFileName << " -> " << config.ReferenceFileName << ")." << endl;
-        
+        cerr << "[i] Filtered " << filterAlignments(*coords, config.MinBases) << " alignments." << endl;
         /*if (!calculateDepth(*coverage, *contigs, *depth))
         {
             cerr << "[-] Unable to calculate coverage depth." << endl;
