@@ -72,7 +72,6 @@ bool MummerCoordReader::Read(MummerCoord &coord)
     getline(ss, tStr, '\t');
     getline(ss, referenceName, '\t');
     getline(ss, queryName, '\t');
-    cout << referenceName << "-and-" << queryName << endl;
     
     auto it = referenceIds.find(referenceName); coord.ReferenceID = (it == referenceIds.end() ? -1 : it->second);
     it = scaffoldIds.find(queryName); coord.QueryID = (it == scaffoldIds.end() ? -1 : it->second);
