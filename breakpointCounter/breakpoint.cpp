@@ -36,10 +36,10 @@ bool readContigs(const string &fileName, Sequences &contigs)
     return result;
 }
 
-bool alignScaffolds(const string &referenceFileName, const string &scaffoldsFileName, Coords &coords)
+bool alignScaffolds(const string &referenceFileName, const string &scaffoldsFileName, const Sequences &references, const Sequences &scaffolds, Coords &coords)
 {
     MummerAligner aligner(referenceFileName, scaffoldsFileName, config.MummerConfig);
-    MummerCoordReader reader;
+    MummerCoordReader reader(references, scaffolds);
     if (!aligner.Align())
     {
         cerr << "[-] Unable to align scaffolds to reference (" << scaffoldsFileName << " -> " << referenceFileName << ")." << endl;
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
             return -3;
         }
         cerr << "[+] Read references (" << config.ReferenceFileName << ")." << endl;
-        if (!alignScaffolds(config.ReferenceFileName, config.ScaffoldFileName, *coords))
+        if (!alignScaffolds(config.ReferenceFileName, config.ScaffoldFileName, *references, *scaffolds, *coords))
             return -4;
         cerr << "[+] Aligned scaffolds to reference (" << config.ScaffoldFileName << " -> " << config.ReferenceFileName << ")." << endl;
         
