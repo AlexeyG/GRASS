@@ -92,7 +92,7 @@ bool NovoAlignAligner::Align(const string &outFile)
 		OutputFileName = (outFile.length() > 0 ? outFile : Helpers::TempFile(Configuration.TmpPath));
 		sprintf(str, Configuration.AlignSingleEndCommand.c_str(), prefix.c_str(), QueryFileName.c_str(), OutputFileName.c_str());
 		if (!Helpers::Execute(str))
-			success = false;
+                    success = false;
 	}
 
 	Helpers::RemoveFile(prefix);
