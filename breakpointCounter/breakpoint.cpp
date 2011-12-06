@@ -90,7 +90,7 @@ int main(int argc, char* argv[])
         if (!alignScaffolds(config.ReferenceFileName, config.ScaffoldFileName, *references, *scaffolds, *coords))
             return -4;
         cerr << "[+] Aligned scaffolds to reference (" << config.ScaffoldFileName << " -> " << config.ReferenceFileName << ")." << endl;
-        cerr << "[i] Filtered " << filterAlignments(*coords, config.MinBases) << " alignments." << endl;
+        cerr << "[i] Filtered out " << filterAlignments(*coords, config.MinBases) << " alignments." << endl;
         /*if (!calculateDepth(*coverage, *contigs, *depth))
         {
             cerr << "[-] Unable to calculate coverage depth." << endl;
