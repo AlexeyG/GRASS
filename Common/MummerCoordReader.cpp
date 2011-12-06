@@ -94,7 +94,7 @@ long long MummerCoordReader::NumCoords()
     return numCoords = num;
 }
 
-void createMap(map<string, int> &store, const vector<FastASequence> &seq)
+void MummerCoordReader::createMap(map<string, int> &store, const vector<FastASequence> &seq)
 {
     int nSeq = seq.size();
     for (int i = 0; i < nSeq; i++)
