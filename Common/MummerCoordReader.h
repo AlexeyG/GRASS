@@ -22,7 +22,7 @@ public:
     ~MummerCoordReader();
     
 public:
-    bool Open(const string &fileName, const string &mode = "wb");
+    bool Open(const string &fileName, const string &mode = "rb");
     bool Close();
     bool IsOpen() const;
     bool Read(MummerCoord &coord);
