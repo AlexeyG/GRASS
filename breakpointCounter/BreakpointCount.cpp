@@ -46,6 +46,8 @@ int BreakpointCount::processAlignmentGroup(vector<MummerCoord>::const_iterator s
         if (j != finish)
             if (IsBreakpoint(*i, *j))
                 count++;
+        i = j;
+        j++;
     }
     return count;
 }
