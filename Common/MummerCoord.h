@@ -11,7 +11,7 @@
 class MummerCoord
 {
 public:
-    MummerCoord(int referenceID = 0, int queryID = 0, int referencePosition = 0, int queryPosition = 0, int referenceAlignmentLength = 0, int queryAlignmentLength, bool isReferenceReverse, bool isQueryReverse, double identity)
+    MummerCoord(int referenceID = 0, int queryID = 0, int referencePosition = 0, int queryPosition = 0, int referenceAlignmentLength = 0, int queryAlignmentLength = 0, bool isReferenceReverse = false, bool isQueryReverse = false, double identity = 1)
     : ReferenceID(referenceID), QueryID(queryID), ReferencePosition(referencePosition), QueryPosition(queryPosition),
       ReferenceAlignmentLength(referenceAlignmentLength), QueryAlignmentLength(queryAlignmentLength),
       IsReferenceReverse(isReferenceReverse), IsQueryReverse(isQueryReverse) {};
