@@ -14,7 +14,7 @@ MummerCoordReader::~MummerCoordReader()
     delete [] line;
 }
 
-bool MummerCoordReader::Open(const string &fileName, const string &mode = "rb")
+bool MummerCoordReader::Open(const string &fileName, const string &mode)
 {
     if (fin != NULL)
         return false;

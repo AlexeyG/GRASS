@@ -20,7 +20,7 @@ public:
     ~MummerCoordReader();
     
 public:
-    bool Open(const string &fileName, const string &mode);
+    bool Open(const string &fileName, const string &mode = "wb");
     bool Close();
     bool IsOpen() const;
     bool Read(MummerCoord &coord);
