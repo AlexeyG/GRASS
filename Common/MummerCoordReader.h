@@ -32,7 +32,7 @@ public:
 private:
     FILE *fin;
     char *line;
-    int numCoords;
+    long long numCoords;
 };
 
 #endif	/* _MUMMERCOORDREADER_H */

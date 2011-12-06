@@ -120,11 +120,11 @@ long long FastAReader::NumReads()
     if (!IsOpen())
         return 0;
     long long index = ftell(fin);
+
+    if (num_reads >= 0)
+        return num_reads;
+
     fseek(fin, 0, SEEK_SET);
-
-	if (num_reads >= 0)
-		return num_reads;
-
     long long num = 0;
     while (fgets(line, MaxLine, fin) != NULL)
     {
@@ -202,12 +202,12 @@ bool FastQReader::Read(string &seq, string &comment, string &quality)
 
 bool FastQReader::Read(FastASequence &seq)
 {
-	return Read(seq.Nucleotides, seq.Comment);
+    return Read(seq.Nucleotides, seq.Comment);
 }
 
 bool FastQReader::Read(FastQSequence &seq)
 {
-	return Read(seq.Nucleotides, seq.Comment, seq.Quality);
+    return Read(seq.Nucleotides, seq.Comment, seq.Quality);
 }
 
 long long FastQReader::Read(vector<FastASequence> &sequences)
@@ -244,11 +244,11 @@ long long FastQReader::NumReads()
     if (!IsOpen())
         return 0;
     long long index = ftell(fin);
+
+    if (num_reads >= 0)
+        return num_reads;
+
     fseek(fin, 0, SEEK_SET);
-
-	if (num_reads >= 0)
-		return num_reads;
-
     long long num = 0;
     while (fgets(line, MaxLine, fin) != NULL)
     {
