@@ -14,14 +14,18 @@
 #include "Sequence.h"
 #include "Reader.h"
 #include "Aligner.h"
+#include "MummerCoord.h"
+#include "MummerCoordReader.h"
 
 using namespace std;
 
 typedef vector<FastASequence> Sequences;
+typedef vector<MummerCoord> Coords;
 
 Configuration config;
 auto_ptr<Sequences> scaffolds;
 auto_ptr<Sequences> references;
+auto_ptr<Coords> coords;
 
 
 bool readContigs(const string &fileName, Sequences &contigs)
@@ -32,14 +36,21 @@ bool readContigs(const string &fileName, Sequences &contigs)
     return result;
 }
 
-bool alignScaffolds(const string &referenceFileName, const string &scaffoldsFilename)
+bool alignScaffolds(const string &referenceFileName, const string &scaffoldsFilename, Coords &coords)
 {
     MummerAligner aligner(referenceFileName, scaffoldsFilename, config.MummerConfig);
-    if (aligner.Align())
-        cout << "Success: " << aligner.OutputFileName << endl;
-    else
-        cout << "Failure: " << aligner.OutputFileName << endl;
-    return false;
+    MummerCoordReader reader;
+    if (!aligner.Align(referenceFileName, scaffoldsFilename, config.MummerConfig))
+    {
+        cerr << "[-] Unable to align scaffolds to reference (" << scaffoldsFileName << " -> " << referenceFileName << ")." << endl;
+        return false;
+    }
+    if (!reader.Open(aligner.OutputFileName) || reader.Read(coords) == 0)
+    {
+        cerr << "[-] Unable to read MUMMER alignment (" << aligner.OutputFileName << ")." << endl;
+        return false;
+    }
+    return true;
 }
 
 int main(int argc, char* argv[])
