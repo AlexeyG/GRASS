@@ -24,7 +24,7 @@ bool MummerCoordReader::Open(const string &fileName, const string &mode)
         return false;
     cout << "Want to open: " << fileName << endl;
     fin = fopen(fileName.c_str(), mode.c_str());
-    cout << "Got: " << (int)fin << endl;
+    cout << "Got: " << fin << endl;
     if (fin == NULL)
         return false;
     return true;
