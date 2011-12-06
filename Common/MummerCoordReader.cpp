@@ -1,6 +1,7 @@
 #include "MummerCoordReader.h"
 #include "Globals.h"
 #include <sstream>
+#include <cstring>
 
 #include <iostream>
 
