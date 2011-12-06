@@ -40,7 +40,7 @@ bool alignScaffolds(const string &referenceFileName, const string &scaffoldsFile
 {
     MummerAligner aligner(referenceFileName, scaffoldsFilename, config.MummerConfig);
     MummerCoordReader reader;
-    if (!aligner.Align(referenceFileName, scaffoldsFilename, config.MummerConfig))
+    if (!aligner.Align())
     {
         cerr << "[-] Unable to align scaffolds to reference (" << scaffoldsFileName << " -> " << referenceFileName << ")." << endl;
         return false;
