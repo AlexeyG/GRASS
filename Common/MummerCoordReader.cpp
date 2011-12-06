@@ -68,7 +68,7 @@ bool MummerCoordReader::Read(MummerCoord &coord)
     cout << referenceName << "-and-" << queryName << endl;
     
     auto it = referenceIds.find(referenceName); coord.ReferenceID = (it == referenceIds.end() ? -1 : it->second);
-    it = queryIds.find(queryName); coord.QueryID = (it == queryIds.end() ? -1 : it->second);
+    it = scaffoldIds.find(queryName); coord.QueryID = (it == scaffoldIds.end() ? -1 : it->second);
     
     return true;
 }
