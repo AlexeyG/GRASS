@@ -6,7 +6,6 @@ using namespace std;
 
 bool BreakpointCount::IsBreakpoint(const MummerCoord &a, const MummerCoord &b)
 {
-    cout << "In bp" << endl;
     if (a.ReferenceID != b.ReferenceID)
     {
         Total++, Joins++;
@@ -31,7 +30,6 @@ int BreakpointCount::ProcessAlignments(const vector<MummerCoord> &coords, const 
     vector<MummerCoord>::const_iterator it = coords.begin();
     while (it != coords.end())
     {
-        cout << "In while loop" << endl;
         auto start = it;
         while (it != coords.end() && it->QueryID == start->QueryID)
             it++;
@@ -42,7 +40,6 @@ int BreakpointCount::ProcessAlignments(const vector<MummerCoord> &coords, const 
 
 int BreakpointCount::processAlignmentGroup(vector<MummerCoord>::const_iterator start, vector<MummerCoord>::const_iterator finish)
 {
-    cout << "In group" << endl;
     int count = 0;
     auto i = start;
     auto j = start + 1;
