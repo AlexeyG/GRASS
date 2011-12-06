@@ -15,20 +15,20 @@ using namespace std;
 class Reader
 {
 public:
-	Reader();
+    Reader();
     virtual ~Reader();
 
-	virtual bool Read(FastASequence &seq) = 0;
+    virtual bool Read(FastASequence &seq) = 0;
     virtual bool Read(string &seq, string &comment) = 0;
     virtual long long NumReads() = 0;
     virtual long long Read(vector<FastASequence> &sequences) = 0;
-	bool Open(const string &filename, const string &mode = "rb");
-	bool Close();
-	bool IsOpen() const;
+    bool Open(const string &filename, const string &mode = "rb");
+    bool Close();
+    bool IsOpen() const;
     void Rewind() { fseek(fin, 0, SEEK_SET); }
 
 protected:
-	long long num_reads;
+    long long num_reads;
     FILE *fin;
     char *line;
     char *buf;
@@ -37,12 +37,12 @@ protected:
 class FastAReader: public Reader
 {
 public:
-	FastAReader() : Reader() {}
+    FastAReader() : Reader() {}
     virtual ~FastAReader() {}
 
     bool Read(string &seq, string &comment);
-	bool Read(FastASequence &seq);
-	long long Read(vector<FastASequence> &sequences);
+    bool Read(FastASequence &seq);
+    long long Read(vector<FastASequence> &sequences);
     long long NumReads();
 };
 

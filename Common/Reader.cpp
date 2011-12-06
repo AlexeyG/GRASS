@@ -11,29 +11,29 @@ Reader::Reader()
     fin = NULL;
     line = new char[MaxLine];
     buf = new char[MaxLine];
-	num_reads = -1;
+    num_reads = -1;
 }
 
 bool Reader::Open(const string &filename, const string &mode)
 {
-	if (fin != NULL)
-		return false;
-	fin = fopen(filename.c_str(), mode.c_str());
+    if (fin != NULL)
+        return false;
+    fin = fopen(filename.c_str(), mode.c_str());
     if (fin == NULL)
-		return false;
-	return true;
+        return false;
+    return true;
 }
 
 bool Reader::Close()
 {
-	if (fin != NULL)
-	{
+    if (fin != NULL)
+    {
         fclose(fin);
-		fin = NULL;
-		num_reads = -1;
-		return true;
-	}
-	return false;
+        fin = NULL;
+        num_reads = -1;
+        return true;
+    }
+    return false;
 }
 
 bool Reader::IsOpen() const
@@ -98,7 +98,7 @@ bool FastAReader::Read(string &seq, string &comment)
 
 bool FastAReader::Read(FastASequence &seq)
 {
-	return Read(seq.Nucleotides, seq.Comment);
+    return Read(seq.Nucleotides, seq.Comment);
 }
 
 long long FastAReader::Read(vector<FastASequence> &sequences)
@@ -109,7 +109,7 @@ long long FastAReader::Read(vector<FastASequence> &sequences)
     for (unsigned i = 0; i < sequences.size(); ++i)
     {
         Read(seq, comment);
-		sequences[i] = FastASequence(seq, comment);
+	sequences[i] = FastASequence(seq, comment);
     }
 
     return sequences.size();
@@ -117,6 +117,8 @@ long long FastAReader::Read(vector<FastASequence> &sequences)
 
 long long FastAReader::NumReads()
 {
+    if (!IsOpen())
+        return 0;
     long long index = ftell(fin);
     fseek(fin, 0, SEEK_SET);
 
@@ -239,6 +241,8 @@ long long FastQReader::Read(vector<FastQSequence> &sequences)
 
 long long FastQReader::NumReads()
 {
+    if (!IsOpen())
+        return 0;
     long long index = ftell(fin);
     fseek(fin, 0, SEEK_SET);
 
