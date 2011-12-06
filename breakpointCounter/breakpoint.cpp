@@ -16,6 +16,7 @@
 #include "Aligner.h"
 #include "MummerCoord.h"
 #include "MummerCoordReader.h"
+#include "BreakpointCount.h"
 
 using namespace std;
 
@@ -26,6 +27,7 @@ Configuration config;
 auto_ptr<Sequences> scaffolds;
 auto_ptr<Sequences> references;
 auto_ptr<Coords> coords;
+BreakpointCount breakpoints;
 
 
 bool readContigs(const string &fileName, Sequences &contigs)
@@ -91,12 +93,7 @@ int main(int argc, char* argv[])
             return -4;
         cerr << "[+] Aligned scaffolds to reference (" << config.ScaffoldFileName << " -> " << config.ReferenceFileName << ")." << endl;
         cerr << "[i] Filtered out " << filterAlignments(*coords, config.MinBases) << " alignments." << endl;
-        /*if (!calculateDepth(*coverage, *contigs, *depth))
-        {
-            cerr << "[-] Unable to calculate coverage depth." << endl;
-            return -4;
-        }*/
-        //
+        cerr << "[i] Found " << breakpoints.ProcessAlignments(*coords, *references) << " breakpoints:" << endl;
         return 0;
     }
     cerr << config.LastError;
