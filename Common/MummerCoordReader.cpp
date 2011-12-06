@@ -2,6 +2,8 @@
 #include "Globals.h"
 #include <sstream>
 
+#include <iostream>
+
 using namespace std;
 
 MummerCoordReader::MummerCoordReader(const vector<FastASequence> &references, const vector<FastASequence> &scaffolds)
@@ -59,6 +61,8 @@ bool MummerCoordReader::Read(MummerCoord &coord)
     coord.IsReferenceReverse = t > 0;
     ss >> t;
     coord.IsQueryReverse = t > 0;
+    
+    cout << "LEFT WITH:" << ss.str() << endl;
     
     return true;
 }
