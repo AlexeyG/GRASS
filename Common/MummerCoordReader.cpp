@@ -1,6 +1,10 @@
 #include "MummerCoordReader.h"
 #include "Globals.h"
 
+#include <iostream>
+
+using namespace std;
+
 MummerCoordReader::MummerCoordReader()
 {
     fin = NULL;
