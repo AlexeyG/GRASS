@@ -62,7 +62,13 @@ bool MummerCoordReader::Read(MummerCoord &coord)
     ss >> t;
     coord.IsQueryReverse = t > 0;
     
-    cout << "LEFT WITH:" << ss.str() << endl;
+    string referenceName, queryName;
+    getline(ss, referenceName, '\t');
+    getline(ss, queryName, '\t');
+    cout << referenceName << "-and-" << queryName << endl;
+    
+    auto it = referenceIds.find(referenceName); coord.ReferenceID = (it == referenceIds.end() ? -1 : it->second);
+    it = queryIds.find(queryName); coord.QueryID = (it == queryIds.end() ? -1 : it->second);
     
     return true;
 }
