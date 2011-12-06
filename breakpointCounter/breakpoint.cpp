@@ -58,6 +58,7 @@ int main(int argc, char* argv[])
     srand((unsigned int)time(NULL));
     scaffolds = auto_ptr<Sequences>(new Sequences());
     references = auto_ptr<Sequences>(new Sequences());
+    coords = auto_ptr<Coords>(new Coords());
     if (config.ProcessCommandLine(argc, argv))
     {
         if (!readContigs(config.ScaffoldFileName, *scaffolds))
@@ -72,7 +73,7 @@ int main(int argc, char* argv[])
             return -3;
         }
         cerr << "[+] Read references (" << config.ReferenceFileName << ")." << endl;
-        if (!alignScaffolds(config.ReferenceFileName, config.ScaffoldFileName))
+        if (!alignScaffolds(config.ReferenceFileName, config.ScaffoldFileName, *coords))
             return -4;
         cerr << "[+] Aligned scaffolds to reference (" << config.ScaffoldFileName << " -> " << config.ReferenceFileName << ")." << endl;
         
