@@ -87,13 +87,13 @@ double BreakpointCount::GetScaffoldCoverage() const
 {
     long long total = 0;
     long long covered = 0;
-    int nSeq = scaffoldsCoverage->size();
+    int nSeq = scaffoldCoverage->size();
     for (int i = 0; i < nSeq; i++)
     {
-        int seqLen = scaffoldsCoverage->at(i).size();
+        int seqLen = scaffoldCoverage->at(i).size();
         total += seqLen;
         for (int j = 0; j < seqLen; j++)
-            if ((scaffoldsCoverage->at(i)).[j])
+            if ((scaffoldCoverage->at(i)).[j])
                 covered++;
     }
     return (double)covered / (double)total;
