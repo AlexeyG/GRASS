@@ -108,5 +108,5 @@ void BreakpointCount::resizeCoverageVector(Depth &depth, const vector<FastASeque
     int nSeq = seq.size();
     depth.resize(nSeq, vector<bool>());
     for (int i = 0; i < nSeq; i++)
-        depth[i].resize(seq[i].size());
+        depth[i].resize(seq[i].length());
 }
