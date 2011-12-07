@@ -31,6 +31,7 @@ bool BreakpointCount::IsBreakpoint(const MummerCoord &a, const MummerCoord &b)
     {
         Total++, Distance++;
         cout << "Distance: " << a.QueryID << endl;
+        cout << "(" << abs(distA - distB) << ")" << endl;
         cout << "       " << a.ReferencePosition << " - " << b.ReferencePosition << endl;
         return true;
     }
