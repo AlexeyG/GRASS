@@ -14,11 +14,13 @@ bool BreakpointCount::IsBreakpoint(const MummerCoord &a, const MummerCoord &b)
     if ((a.IsReferenceReverse ^ b.IsReferenceReverse) != (a.IsQueryReverse ^ b.IsQueryReverse))
     {
         Total++, Orientation++;
+        cout << "Orientation: " << a.ReferencePosition << " - " << b.ReferencePosition << endl;
         return true;
     }
     if ((a.ReferencePosition >= b.ReferencePosition) && (a.IsReferenceReverse == a.IsQueryReverse))
     {
         Total++, Order++;
+        cout << "Order: " << a.ReferencePosition << " - " << b.ReferencePosition << endl;
         return true;
     }
     return false;
