@@ -75,7 +75,7 @@ bool BreakpointCount::isDistanceBreakpoint(int distA, int distB) const
     return abs(distA - distB) > DistanceThreshold;
 }
 
-static void BreakpointCount::Sort(vector<MummerCoord> &coords)
+void BreakpointCount::Sort(vector<MummerCoord> &coords)
 {
     sort(coords.begin(), coords.end());
 }
