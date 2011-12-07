@@ -134,9 +134,9 @@ bool MummerAligner::Align(const string &outFile)
     }
 
     Helpers::RemoveFile(prefix + ".delta");
-    //Helpers::RemoveFile(delta);
+    Helpers::RemoveFile(delta);
     //cout << "Delta: " << prefix + ".delta" << endl;
-    cout << "Delta-filtered: " << delta << endl;
+    //cout << "Delta-filtered: " << delta << endl;
     if (!success)
     {
         Helpers::RemoveFile(OutputFileName);
