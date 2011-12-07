@@ -36,6 +36,9 @@ public:
 private:
     int processAlignmentGroup(vector<MummerCoord>::const_iterator start, vector<MummerCoord>::const_iterator finish);
     bool isDistanceBreakpoint(int distA, int distB) const;
+    
+public:
+    static void Sort(vector<MummerCoord> &coords);
 };
 
 #endif	/* _BREAKPOINTCOUNT_H */
