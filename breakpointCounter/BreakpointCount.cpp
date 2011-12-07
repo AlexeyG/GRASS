@@ -5,6 +5,17 @@
 
 using namespace std;
 
+BreakpointCount::BreakpointCount(int distanceThreshold = 10000)
+        : DistanceThreshold(distanceThreshold), Joins(0), Order(0), Orientation(0), Distance(0), Total(0)
+{
+    scaffoldCoverage = auto_ptr<Depth>(new Depth());
+    referenceCoverage = auto_ptr<Depth>(new Depth());
+}
+
+BreakpointCount::~BreakpointCount()
+{
+}
+
 bool BreakpointCount::IsBreakpoint(const MummerCoord &a, const MummerCoord &b)
 {
     if (a.ReferenceID != b.ReferenceID)
@@ -39,8 +50,10 @@ bool BreakpointCount::IsBreakpoint(const MummerCoord &a, const MummerCoord &b)
     return false;
 }
 
-int BreakpointCount::ProcessAlignments(const vector<MummerCoord> &coords, const vector<FastASequence> &references)
+int BreakpointCount::ProcessAlignments(const vector<MummerCoord> &coords, const vector<FastASequence> &references, const vector<FastASequence> &scaffolds)
 {
+    resizeCoverageVector(*referenceCoverage, references);
+    resizeCoverageVector(*scaffoldsCoverage, scaffolds);
     int count = 0;
     vector<MummerCoord>::const_iterator it = coords.begin();
     while (it != coords.end())
@@ -88,4 +101,12 @@ int BreakpointCount::getQueryDistance(const MummerCoord &a, const MummerCoord &b
 int BreakpointCount::getReferenceDistance(const MummerCoord &a, const MummerCoord &b)
 {
     return (a.IsQueryReverse == a.IsReferenceReverse ? b.ReferencePosition - a.ReferencePosition - a.ReferenceAlignmentLength : a.ReferencePosition - b.ReferencePosition - b.ReferenceAlignmentLength);
+}
+
+void BreakpointCount::resizeCoverageVector(Depth &depth, const vector<FastASequence> &seq)
+{
+    int nSeq = seq.size();
+    depth.resize(nSeq, vector<bool>());
+    for (int i = 0; i < nSeq; i++)
+        depth[i].resize(seq[i].size());
 }

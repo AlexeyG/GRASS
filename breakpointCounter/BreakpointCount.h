@@ -11,17 +11,24 @@
 #include "MummerCoord.h"
 #include "Sequence.h"
 #include <vector>
+#include <memory>
 
 using namespace std;
+
+typedef vector< vector<bool> > Depth;
 
 class BreakpointCount
 {
 public:
-    BreakpointCount(int distanceThreshold = 10000) : DistanceThreshold(distanceThreshold), Joins(0), Order(0), Orientation(0), Distance(0), Total(0) {}
+    BreakpointCount(int distanceThreshold = 10000);
+    ~BreakpointCount();
     
 public:
     bool IsBreakpoint(const MummerCoord &a, const MummerCoord &b);
-    int ProcessAlignments(const vector<MummerCoord> &coords, const vector<FastASequence> &references);
+    int ProcessAlignments(const vector<MummerCoord> &coords, const vector<FastASequence> &references, , const vector<FastASequence> &scaffolds);
+    
+public:
+    static void Sort(vector<MummerCoord> &coords);
     
 public:
     int DistanceThreshold;
@@ -37,12 +44,14 @@ private:
     int processAlignmentGroup(vector<MummerCoord>::const_iterator start, vector<MummerCoord>::const_iterator finish);
     bool isDistanceBreakpoint(int distA, int distB) const;
     
-public:
-    static void Sort(vector<MummerCoord> &coords);
-    
 private:
     static int getQueryDistance(const MummerCoord &a, const MummerCoord &b);
     static int getReferenceDistance(const MummerCoord &a, const MummerCoord &b);
+    static void resizeCoverageVector(Depth &depth, const vector<FastASequence> &seq);
+    
+private:
+    auto_ptr<Depth> scaffoldCoverage;
+    auto_ptr<Depth> referenceCoverage;
 };
 
 #endif	/* _BREAKPOINTCOUNT_H */

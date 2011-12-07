@@ -97,10 +97,8 @@ int main(int argc, char* argv[])
         cerr << "[+] Read references (" << config.ReferenceFileName << ")." << endl;
         if (!alignScaffolds(config.ReferenceFileName, config.ScaffoldFileName, *references, *scaffolds, *coords))
             return -4;
-        //output(*coords);
         BreakpointCount::Sort(*coords);
         cerr << "[+] Sorted MUMMER alignments." << endl;
-        //output(*coords);
         breakpoints.DistanceThreshold = config.DistanceThreshold;
         cerr << "[+] Aligned scaffolds to reference (" << config.ScaffoldFileName << " -> " << config.ReferenceFileName << ")." << endl;
         cerr << "[i] Filtered out " << filterAlignments(*coords, config.MinBases) << " alignments." << endl;
