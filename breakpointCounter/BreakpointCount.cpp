@@ -71,13 +71,13 @@ double BreakpointCount::GetReferenceCoverage() const
 {
     long long total = 0;
     long long covered = 0;
-    int nSeq = referenceCoverage.size();
+    int nSeq = referenceCoverage->size();
     for (int i = 0; i < nSeq; i++)
     {
-        int seqLen = referenceCoverage[i].size();
+        int seqLen = referenceCoverage->at(i).size();
         total += seqLen;
         for (int j = 0; j < seqLen; j++)
-            if (referenceCoverage[i][j])
+            if ((referenceCoverage->at(i))[j])
                 covered++;
     }
     return (double)covered / (double)total;
@@ -87,13 +87,13 @@ double BreakpointCount::GetScaffoldCoverage() const
 {
     long long total = 0;
     long long covered = 0;
-    int nSeq = scaffoldsCoverage.size();
+    int nSeq = scaffoldsCoverage->size();
     for (int i = 0; i < nSeq; i++)
     {
-        int seqLen = scaffoldsCoverage[i].size();
+        int seqLen = scaffoldsCoverage->at(i).size();
         total += seqLen;
         for (int j = 0; j < seqLen; j++)
-            if (scaffoldsCoverage[i][j])
+            if ((scaffoldsCoverage->at(i)).[j])
                 covered++;
     }
     return (double)covered / (double)total;
