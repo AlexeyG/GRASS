@@ -26,7 +26,7 @@ bool BreakpointCount::IsBreakpoint(const MummerCoord &a, const MummerCoord &b)
         cout << "       " << a.ReferencePosition << " - " << b.ReferencePosition << endl;
         return true;
     }
-    int distanceReference = b.ReferencePosition - a.ReferencePosition + a.ReferenceAlignmentLength;
+    int distanceReference = (a.IsReferenceReverse == a.IsQueryReverse ? b.ReferencePosition - a.ReferencePosition + a.ReferenceAlignmentLength : a.ReferencePosition - b.ReferencePosition + b.ReferenceAlignmentLength);
     int distanceQuery = b.QueryPosition - a.QueryPosition + a.QueryAlignmentLength;
     if (isDistanceBreakpoint(distanceReference, distanceQuery))
     {
