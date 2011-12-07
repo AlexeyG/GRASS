@@ -64,9 +64,9 @@ bool MummerCoordReader::Read(MummerCoord &coord)
     ss >> coord.ReferencePosition >> t >> coord.QueryPosition >> t >> coord.ReferenceAlignmentLength >> coord.QueryAlignmentLength >> coord.Identity;
     coord.Identity /= 100;
     ss >> t;
-    coord.IsReferenceReverse = t > 0;
+    coord.IsReferenceReverse = t < 0;
     ss >> t;
-    coord.IsQueryReverse = t > 0;
+    coord.IsQueryReverse = t < 0;
     
     string tStr, referenceName, queryName;
     getline(ss, tStr, '\t');
