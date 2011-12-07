@@ -97,6 +97,7 @@ int main(int argc, char* argv[])
         cerr << "    [i] Joins: \t" << breakpoints.Joins << endl;
         cerr << "    [i] Order: \t" << breakpoints.Order << endl;
         cerr << "    [i] Orientation: \t" << breakpoints.Orientation << endl;
+        cerr << "    [i] Distance: \t" << breakpoints.Distance << endl;
         return 0;
     }
     cerr << config.LastError;
