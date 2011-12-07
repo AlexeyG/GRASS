@@ -26,8 +26,8 @@ bool BreakpointCount::IsBreakpoint(const MummerCoord &a, const MummerCoord &b)
         cout << "       " << a.ReferencePosition << " - " << b.ReferencePosition << endl;
         return true;
     }
-    int distanceReference = (a.IsReferenceReverse == a.IsQueryReverse ? b.ReferencePosition - a.ReferencePosition + a.ReferenceAlignmentLength : a.ReferencePosition - b.ReferencePosition + b.ReferenceAlignmentLength);
-    int distanceQuery = b.QueryPosition - a.QueryPosition + a.QueryAlignmentLength;
+    int distanceReference = getQueryDistance(a, b);
+    int distanceQuery = getReferenceDistance(a,b);
     if (isDistanceBreakpoint(distanceReference, distanceQuery))
     {
         Total++, Distance++;
@@ -78,4 +78,14 @@ bool BreakpointCount::isDistanceBreakpoint(int distA, int distB) const
 void BreakpointCount::Sort(vector<MummerCoord> &coords)
 {
     sort(coords.begin(), coords.end());
+}
+
+static void BreakpointCount::getQueryDistance(const MummerCoord &a, const MummerCoord &b)
+{
+    return b.QueryPosition - a.QueryPosition - a.QueryAlignmentLength;
+}
+
+static void BreakpointCount::getReferenceDistance(const MummerCoord &a, const MummerCoord &b)
+{
+    return (a.IsQueryReverse == a.IsReferenceReverse ? b.ReferencePosition - a.ReferencePosition - a.ReferenceAlignmentLength : a.ReferencePosition - b.ReferencePosition - b.ReferenceAlignmentLength);
 }
