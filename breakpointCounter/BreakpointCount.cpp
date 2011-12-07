@@ -68,7 +68,7 @@ int BreakpointCount::processAlignmentGroup(vector<MummerCoord>::const_iterator s
     return count;
 }
 
-bool BreakpointCount::isDistanceBreakpoint(int distA, int distB)
+bool BreakpointCount::isDistanceBreakpoint(int distA, int distB) const
 {
     return abs(distA - distB) > DistanceThreshold;
 }
