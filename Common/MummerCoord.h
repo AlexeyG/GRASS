@@ -17,7 +17,7 @@ public:
       IsReferenceReverse(isReferenceReverse), IsQueryReverse(isQueryReverse) {};
     
 public:
-    bool operator< (const MummerCoord &b)
+    bool operator< (const MummerCoord &b) const
     {
         if (QueryID < b.QueryID)
             return true;
