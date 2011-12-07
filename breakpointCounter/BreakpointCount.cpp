@@ -1,6 +1,6 @@
 #include "BreakpointCount.h"
 
-#include <iostream>
+//#include <iostream>
 #include <algorithm>
 
 using namespace std;
@@ -15,15 +15,15 @@ bool BreakpointCount::IsBreakpoint(const MummerCoord &a, const MummerCoord &b)
     if ((a.IsReferenceReverse ^ b.IsReferenceReverse) != (a.IsQueryReverse ^ b.IsQueryReverse))
     {
         Total++, Orientation++;
-        cout << "Orientation: " << a.QueryID << endl;
-        cout << "             " << a.ReferencePosition << " - " << b.ReferencePosition << endl;
+        //cout << "Orientation: " << a.QueryID << endl;
+        //cout << "             " << a.ReferencePosition << " - " << b.ReferencePosition << endl;
         return true;
     }
     if ((a.ReferencePosition >= b.ReferencePosition) && (a.IsReferenceReverse == a.IsQueryReverse))
     {
         Total++, Order++;
-        cout << "Order: " << a.QueryID << endl;
-        cout << "       " << a.ReferencePosition << " - " << b.ReferencePosition << endl;
+        //cout << "Order: " << a.QueryID << endl;
+        //cout << "       " << a.ReferencePosition << " - " << b.ReferencePosition << endl;
         return true;
     }
     int distanceReference = getQueryDistance(a, b);
@@ -31,9 +31,9 @@ bool BreakpointCount::IsBreakpoint(const MummerCoord &a, const MummerCoord &b)
     if (isDistanceBreakpoint(distanceReference, distanceQuery))
     {
         Total++, Distance++;
-        cout << "Distance: " << a.QueryID << endl;
-        cout << "(" << abs(distanceReference - distanceQuery) << "): " << distanceReference << " - " << distanceQuery << endl;
-        cout << "       " << a.ReferencePosition << " - " << b.ReferencePosition << endl;
+        //cout << "Distance: " << a.QueryID << endl;
+        //cout << "(" << abs(distanceReference - distanceQuery) << "): " << distanceReference << " - " << distanceQuery << endl;
+        //cout << "       " << a.ReferencePosition << " - " << b.ReferencePosition << endl;
         return true;
     }
     return false;
