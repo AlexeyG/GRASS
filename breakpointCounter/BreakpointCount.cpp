@@ -1,4 +1,5 @@
 #include "BreakpointCount.h"
+#include "Configuration.h"
 
 //#include <iostream>
 #include <algorithm>
@@ -66,6 +67,38 @@ int BreakpointCount::ProcessAlignments(const vector<MummerCoord> &coords, const 
     return count;
 }
 
+double BreakpointCount::GetReferenceCoverage() const
+{
+    long long total = 0;
+    long long covered = 0;
+    int nSeq = referenceCoverage.size();
+    for (int i = 0; i < nSeq; i++)
+    {
+        int seqLen = referenceCoverage[i].size();
+        total += seqLen;
+        for (int j = 0; j < seqLen; j++)
+            if (referenceCoverage[i][j])
+                covered++;
+    }
+    return (double)covered / (double)total;
+}
+
+double BreakpointCount::GetScaffoldsCoverage() const
+{
+    long long total = 0;
+    long long covered = 0;
+    int nSeq = scaffoldsCoverage.size();
+    for (int i = 0; i < nSeq; i++)
+    {
+        int seqLen = scaffoldsCoverage[i].size();
+        total += seqLen;
+        for (int j = 0; j < seqLen; j++)
+            if (scaffoldsCoverage[i][j])
+                covered++;
+    }
+    return (double)covered / (double)total;
+}
+
 int BreakpointCount::processAlignmentGroup(vector<MummerCoord>::const_iterator start, vector<MummerCoord>::const_iterator finish)
 {
     int count = 0;
@@ -86,6 +119,19 @@ int BreakpointCount::processAlignmentGroup(vector<MummerCoord>::const_iterator s
 bool BreakpointCount::isDistanceBreakpoint(int distA, int distB) const
 {
     return abs(distA - distB) > DistanceThreshold;
+}
+
+void BreakpointCount::coverSequences(const MummerCoord &c)
+{
+    if (c.ReferenceID >= referenceCoverage->size())
+        return;
+    if (c.QueryID >= scaffoldCoverage->size())
+        return;
+    
+    for (int i = 0; i < c.ReferenceAlignmentLength; i++)
+        referenceCoverage[c.ReferenceID][c.ReferencePosition + i] = true;
+    for (int i = 0; i < c.QueryAlignmentLength; i++)
+        scaffoldCoverage[c.QueryID][c.QueryPosition + i] = true;
 }
 
 void BreakpointCount::Sort(vector<MummerCoord> &coords)

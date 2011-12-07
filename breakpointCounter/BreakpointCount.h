@@ -26,6 +26,8 @@ public:
 public:
     bool IsBreakpoint(const MummerCoord &a, const MummerCoord &b);
     int ProcessAlignments(const vector<MummerCoord> &coords, const vector<FastASequence> &references, const vector<FastASequence> &scaffolds);
+    double GetReferenceCoverage() const;
+    double GetScaffoldsCoverage() const;
     
 public:
     static void Sort(vector<MummerCoord> &coords);
@@ -43,6 +45,7 @@ public:
 private:
     int processAlignmentGroup(vector<MummerCoord>::const_iterator start, vector<MummerCoord>::const_iterator finish);
     bool isDistanceBreakpoint(int distA, int distB) const;
+    void coverSequences(const MummerCoord &c);
     
 private:
     static int getQueryDistance(const MummerCoord &a, const MummerCoord &b);
