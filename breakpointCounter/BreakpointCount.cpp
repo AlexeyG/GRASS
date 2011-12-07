@@ -5,7 +5,7 @@
 
 using namespace std;
 
-BreakpointCount::BreakpointCount(int distanceThreshold = 10000)
+BreakpointCount::BreakpointCount(int distanceThreshold)
         : DistanceThreshold(distanceThreshold), Joins(0), Order(0), Orientation(0), Distance(0), Total(0)
 {
     scaffoldCoverage = auto_ptr<Depth>(new Depth());
