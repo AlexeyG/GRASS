@@ -33,5 +33,6 @@ MummerConfiguration::MummerConfiguration()
 {
     TmpPath = "/tmp";
     NucmerCommand = "nucmer -p %s %s %s >& /dev/null";
+    DeltaFilterCommand = "(delta-filter -q %s > %s) >& /dev/null";
     ShowCoordsCommand = "(show-coords -q -T -d -H %s > %s) >& /dev/null";
 }

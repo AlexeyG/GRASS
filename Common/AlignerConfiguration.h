@@ -50,6 +50,7 @@ public:
 public:
     string TmpPath;
     string NucmerCommand;
+    string DeltaFilterCommand;
     string ShowCoordsCommand;
 };
 
