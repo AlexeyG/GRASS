@@ -1,6 +1,7 @@
 #include "BreakpointCount.h"
 
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -72,4 +73,9 @@ int BreakpointCount::processAlignmentGroup(vector<MummerCoord>::const_iterator s
 bool BreakpointCount::isDistanceBreakpoint(int distA, int distB) const
 {
     return abs(distA - distB) > DistanceThreshold;
+}
+
+static void BreakpointCount::Sort(vector<MummerCoord> &coords)
+{
+    sort(coords.begin(), coords.end());
 }
