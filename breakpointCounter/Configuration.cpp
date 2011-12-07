@@ -15,7 +15,7 @@ Configuration::Configuration()
 	ScaffoldFileName = "";
         ReferenceFileName = "";
         MinBases = 90;
-        DistanceThreshold = 1000;
+        DistanceThreshold = 10000;
 }
 
 // Parses command line arguments. Returns true if successful.
@@ -125,5 +125,5 @@ void Configuration::printHelpMessage(stringstream &serr)
     serr << "[i] -help                                               Print this message and exit." << endl;
     serr << "[i] -tmp <path>                                         Define scrap path for temporary files. [/tmp]" << endl;
     serr << "[i] -minbases <number>                                  Minimum number of aligned bases to take into account. [90]" << endl;
-    serr << "[i] -distance-threshold <number>                        Maximum allowed absolute difference between scaffold and reference distances. [1000]" << endl;
+    serr << "[i] -distance-threshold <number>                        Maximum allowed absolute difference between scaffold and reference distances. [10000]" << endl;
 }
