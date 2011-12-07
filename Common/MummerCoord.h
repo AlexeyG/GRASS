@@ -17,6 +17,18 @@ public:
       IsReferenceReverse(isReferenceReverse), IsQueryReverse(isQueryReverse) {};
     
 public:
+    bool operator< (const MummerCoord &b)
+    {
+        if (QueryID < b.QueryID)
+            return true;
+        if (QueryID > b.QueryID)
+            return false;
+        if (QueryPosition < b.QueryPosition)
+            return false;
+        return true;
+    }
+      
+public:
     // 0-based reference sequence ID
     int ReferenceID;
     // 0-based query sequence ID
