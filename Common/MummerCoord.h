@@ -19,11 +19,11 @@ public:
 public:
     bool operator< (const MummerCoord &b) const
     {
-        if (QueryID < b.QueryID)
+        if (this->QueryID < b.QueryID)
             return true;
-        if (QueryID > b.QueryID)
+        if (this->QueryID > b.QueryID)
             return false;
-        if (QueryPosition < b.QueryPosition)
+        if (this->QueryPosition < b.QueryPosition)
             return false;
         return true;
     }
