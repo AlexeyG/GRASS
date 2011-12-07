@@ -91,6 +91,7 @@ int main(int argc, char* argv[])
         cerr << "[+] Read references (" << config.ReferenceFileName << ")." << endl;
         if (!alignScaffolds(config.ReferenceFileName, config.ScaffoldFileName, *references, *scaffolds, *coords))
             return -4;
+        breakpoints.DistanceThreshold = config.DistanceThreshold;
         cerr << "[+] Aligned scaffolds to reference (" << config.ScaffoldFileName << " -> " << config.ReferenceFileName << ")." << endl;
         cerr << "[i] Filtered out " << filterAlignments(*coords, config.MinBases) << " alignments." << endl;
         cerr << "[i] Found " << breakpoints.ProcessAlignments(*coords, *references) << " breakpoints:" << endl;
