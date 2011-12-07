@@ -41,8 +41,8 @@ public:
     static void Sort(vector<MummerCoord> &coords);
     
 private:
-    static void getQueryDistance(const MummerCoord &a, const MummerCoord &b);
-    static void getReferenceDistance(const MummerCoord &a, const MummerCoord &b);
+    static int getQueryDistance(const MummerCoord &a, const MummerCoord &b);
+    static int getReferenceDistance(const MummerCoord &a, const MummerCoord &b);
 };
 
 #endif	/* _BREAKPOINTCOUNT_H */
