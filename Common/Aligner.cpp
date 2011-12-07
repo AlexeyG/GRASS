@@ -126,7 +126,8 @@ bool MummerAligner::Align(const string &outFile)
             success = false;
     }
 
-    Helpers::RemoveFile(prefix + ".delta");
+    //Helpers::RemoveFile(prefix + ".delta");
+    cout << "Delta: " << prefix + ".delta" << endl;
     if (!success)
     {
         Helpers::RemoveFile(OutputFileName);
