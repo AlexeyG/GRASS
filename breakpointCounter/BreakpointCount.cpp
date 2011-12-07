@@ -53,7 +53,7 @@ bool BreakpointCount::IsBreakpoint(const MummerCoord &a, const MummerCoord &b)
 int BreakpointCount::ProcessAlignments(const vector<MummerCoord> &coords, const vector<FastASequence> &references, const vector<FastASequence> &scaffolds)
 {
     resizeCoverageVector(*referenceCoverage, references);
-    resizeCoverageVector(*scaffoldsCoverage, scaffolds);
+    resizeCoverageVector(*scaffoldCoverage, scaffolds);
     int count = 0;
     vector<MummerCoord>::const_iterator it = coords.begin();
     while (it != coords.end())
