@@ -6,6 +6,7 @@
  */
 
 #include <cstdlib>
+#include <cstdio>
 #include <iostream>
 #include <vector>
 #include <memory>
@@ -107,6 +108,8 @@ int main(int argc, char* argv[])
         cerr << "    [i] Order: \t" << breakpoints.Order << endl;
         cerr << "    [i] Orientation: \t" << breakpoints.Orientation << endl;
         cerr << "    [i] Distance: \t" << breakpoints.Distance << endl;
+        fprintf(stderr, "[i] Reference covered: \t%.3lf\n", breakpoints.GetReferenceCoverage());
+        fprintf(stderr, "[i] Scaffold covered: \t%.3lf\n", breakpoints.GetScaffoldCoverage());
         return 0;
     }
     cerr << config.LastError;

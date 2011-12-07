@@ -83,7 +83,7 @@ double BreakpointCount::GetReferenceCoverage() const
     return (double)covered / (double)total;
 }
 
-double BreakpointCount::GetScaffoldsCoverage() const
+double BreakpointCount::GetScaffoldCoverage() const
 {
     long long total = 0;
     long long covered = 0;
