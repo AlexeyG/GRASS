@@ -23,7 +23,7 @@ public:
             return true;
         if (this->QueryID > b.QueryID)
             return false;
-        if (this->QueryPosition < b.QueryPosition)
+        if (this->QueryPosition > b.QueryPosition)
             return false;
         return true;
     }
