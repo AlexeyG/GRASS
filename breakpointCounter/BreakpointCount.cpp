@@ -129,9 +129,9 @@ void BreakpointCount::coverSequences(const MummerCoord &c)
         return;
     
     for (int i = 0; i < c.ReferenceAlignmentLength; i++)
-        referenceCoverage[c.ReferenceID][c.ReferencePosition + i] = true;
+        (referenceCoverage->at(c.ReferenceID))[c.ReferencePosition + i] = true;
     for (int i = 0; i < c.QueryAlignmentLength; i++)
-        scaffoldCoverage[c.QueryID][c.QueryPosition + i] = true;
+        (scaffoldCoverage->at(c.QueryID)[c.QueryPosition + i] = true;
 }
 
 void BreakpointCount::Sort(vector<MummerCoord> &coords)
