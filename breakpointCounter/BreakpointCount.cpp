@@ -123,9 +123,9 @@ bool BreakpointCount::isDistanceBreakpoint(int distA, int distB) const
 
 void BreakpointCount::coverSequences(const MummerCoord &c)
 {
-    if (c.ReferenceID >= referenceCoverage->size())
+    if (c.ReferenceID >= (int)referenceCoverage->size())
         return;
-    if (c.QueryID >= scaffoldCoverage->size())
+    if (c.QueryID >= (int)scaffoldCoverage->size())
         return;
     
     for (int i = 0; i < c.ReferenceAlignmentLength; i++)
