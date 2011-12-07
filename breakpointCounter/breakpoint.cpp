@@ -109,7 +109,7 @@ int main(int argc, char* argv[])
         cerr << "    [i] Orientation: \t" << breakpoints.Orientation << endl;
         cerr << "    [i] Distance: \t" << breakpoints.Distance << endl;
         fprintf(stderr, "[i] Reference coverage: \t%.3lf %%\n", breakpoints.GetReferenceCoverage() * 100);
-        fprintf(stderr, "[i] Scaffold coverage: \t%.3lf% %\n", breakpoints.GetScaffoldCoverage() * 100);
+        fprintf(stderr, "[i] Scaffold  coverage: \t%.3lf% %\n", breakpoints.GetScaffoldCoverage() * 100);
         return 0;
     }
     cerr << config.LastError;
