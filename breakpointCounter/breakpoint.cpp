@@ -104,12 +104,12 @@ int main(int argc, char* argv[])
         cerr << "[+] Aligned scaffolds to reference (" << config.ScaffoldFileName << " -> " << config.ReferenceFileName << ")." << endl;
         cerr << "[i] Filtered out " << filterAlignments(*coords, config.MinBases) << " alignments." << endl;
         cerr << "[i] Found a total of " << breakpoints.ProcessAlignments(*coords, *references, *scaffolds) << " breakpoints:" << endl;
-        cerr << "    [i] Joins: \t" << breakpoints.Joins << endl;
-        cerr << "    [i] Order: \t" << breakpoints.Order << endl;
-        cerr << "    [i] Orientation: \t" << breakpoints.Orientation << endl;
-        cerr << "    [i] Distance: \t" << breakpoints.Distance << endl;
-        fprintf(stderr, "[i] Reference coverage: \t%.3lf %%\n", breakpoints.GetReferenceCoverage() * 100);
-        fprintf(stderr, "[i] Scaffold  coverage: \t%.3lf% %\n", breakpoints.GetScaffoldCoverage() * 100);
+        cerr << "    [i] Joins:\t" << breakpoints.Joins << endl;
+        cerr << "    [i] Order:\t" << breakpoints.Order << endl;
+        cerr << "    [i] Orientation:\t" << breakpoints.Orientation << endl;
+        cerr << "    [i] Distance:\t" << breakpoints.Distance << endl;
+        fprintf(stderr, "[i] Reference coverage:\t%.2lf %%\n", breakpoints.GetReferenceCoverage() * 100);
+        fprintf(stderr, "[i] Scaffold coverage:\t%.2lf %%\n", breakpoints.GetScaffoldCoverage() * 100);
         return 0;
     }
     cerr << config.LastError;
