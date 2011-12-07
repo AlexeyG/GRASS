@@ -25,7 +25,7 @@ public:
             return false;
         if (this->QueryPosition < b.QueryPosition)
             return true;
-        return true;
+        return false;
     }
       
 public:
