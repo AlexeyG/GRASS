@@ -17,7 +17,7 @@ using namespace std;
 class BreakpointCount
 {
 public:
-    BreakpointCount(int distanceThreshold = 1000) : Joins(0), Order(0), Orientation(0), Distance(0), Total(0), DistanceThreshold(distanceThreshold) {}
+    BreakpointCount(int distanceThreshold = 1000) : DistanceThreshold(distanceThreshold), Joins(0), Order(0), Orientation(0), Distance(0), Total(0) {}
     
 public:
     bool IsBreakpoint(const MummerCoord &a, const MummerCoord &b);
