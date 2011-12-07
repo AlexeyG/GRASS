@@ -76,15 +76,15 @@ bool MummerCoordReader::Read(MummerCoord &coord)
     auto it = referenceIds.find(referenceName); coord.ReferenceID = (it == referenceIds.end() ? -1 : it->second);
     it = scaffoldIds.find(queryName); coord.QueryID = (it == scaffoldIds.end() ? -1 : it->second);
     
+    // Lets use SamTools convention, no need to reverse coordinates
+    if (coord.IsReferenceReverse)
+        coord.ReferencePosition -= coord.ReferenceAlignmentLength - 1;
+    if (coord.IsQueryReverse)
+        coord.QueryPosition -= coord.QueryAlignmentLength - 1;
+    
     // Turning to 0-based
     coord.ReferencePosition--;
     coord.QueryPosition--;
-    
-    // Lets use SamTools convention, no need to reverse coordinates
-    if (coord.IsReferenceReverse)
-        coord.ReferencePosition -= coord.ReferenceAlignmentLength;
-    if (coord.IsQueryReverse)
-        coord.QueryPosition -= coord.QueryAlignmentLength;
     
     return true;
 }
