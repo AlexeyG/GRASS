@@ -102,7 +102,7 @@ int main(int argc, char* argv[])
         breakpoints.DistanceThreshold = config.DistanceThreshold;
         cerr << "[+] Aligned scaffolds to reference (" << config.ScaffoldFileName << " -> " << config.ReferenceFileName << ")." << endl;
         cerr << "[i] Filtered out " << filterAlignments(*coords, config.MinBases) << " alignments." << endl;
-        cerr << "[i] Found " << breakpoints.ProcessAlignments(*coords, *references, *scaffolds) << " breakpoints:" << endl;
+        cerr << "[i] Found a total of " << breakpoints.ProcessAlignments(*coords, *references, *scaffolds) << " breakpoints:" << endl;
         cerr << "    [i] Joins: \t" << breakpoints.Joins << endl;
         cerr << "    [i] Order: \t" << breakpoints.Order << endl;
         cerr << "    [i] Orientation: \t" << breakpoints.Orientation << endl;
