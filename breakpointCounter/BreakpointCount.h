@@ -25,7 +25,7 @@ public:
     
 public:
     bool IsBreakpoint(const MummerCoord &a, const MummerCoord &b);
-    int ProcessAlignments(const vector<MummerCoord> &coords, const vector<FastASequence> &references, , const vector<FastASequence> &scaffolds);
+    int ProcessAlignments(const vector<MummerCoord> &coords, const vector<FastASequence> &references, const vector<FastASequence> &scaffolds);
     
 public:
     static void Sort(vector<MummerCoord> &coords);
