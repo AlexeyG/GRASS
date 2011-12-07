@@ -20,6 +20,7 @@ public:
 	string ScaffoldFileName;
 	string ReferenceFileName;
         int MinBases;
+        int DistanceThreshold;
         MummerConfiguration MummerConfig;
 	string LastError;
 

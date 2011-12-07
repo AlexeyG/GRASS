@@ -25,6 +25,15 @@ bool BreakpointCount::IsBreakpoint(const MummerCoord &a, const MummerCoord &b)
         cout << "       " << a.ReferencePosition << " - " << b.ReferencePosition << endl;
         return true;
     }
+    int distanceReference = b.ReferencePosition - a.ReferencePosition + a.ReferenceAlignmentLength;
+    int distanceQuery = b.QueryPosition - a.QueryPosition + a.QueryAlignmentLength;
+    if (isDistanceBreakpoint(distanceReference, distanceQuery))
+    {
+        Total++, Distance++;
+        cout << "Distance: " << a.QueryID << endl;
+        cout << "       " << a.ReferencePosition << " - " << b.ReferencePosition << endl;
+        return true;
+    }
     return false;
 }
 
@@ -57,4 +66,9 @@ int BreakpointCount::processAlignmentGroup(vector<MummerCoord>::const_iterator s
         j++;
     }
     return count;
+}
+
+bool BreakpointCount::isDistanceBreakpoint(int distA, int distB)
+{
+    return abs(distA - distB) > DistanceThreshold;
 }

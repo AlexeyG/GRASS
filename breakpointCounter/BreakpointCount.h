@@ -17,11 +17,14 @@ using namespace std;
 class BreakpointCount
 {
 public:
-    BreakpointCount() : Joins(0), Order(0), Orientation(0), Distance(0), Total(0) {}
+    BreakpointCount(int distanceThreshold = 1000) : Joins(0), Order(0), Orientation(0), Distance(0), Total(0), DistanceThreshold(distanceThreshold) {}
     
 public:
     bool IsBreakpoint(const MummerCoord &a, const MummerCoord &b);
     int ProcessAlignments(const vector<MummerCoord> &coords, const vector<FastASequence> &references);
+    
+public:
+    int DistanceThreshold;
     
 public:
     int Joins;
@@ -32,6 +35,7 @@ public:
     
 private:
     int processAlignmentGroup(vector<MummerCoord>::const_iterator start, vector<MummerCoord>::const_iterator finish);
+    bool isDistanceBreakpoint(int distA, int distB) const;
 };
 
 #endif	/* _BREAKPOINTCOUNT_H */

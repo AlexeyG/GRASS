@@ -15,6 +15,7 @@ Configuration::Configuration()
 	ScaffoldFileName = "";
         ReferenceFileName = "";
         MinBases = 90;
+        DistanceThreshold = 1000;
 }
 
 // Parses command line arguments. Returns true if successful.
@@ -56,6 +57,26 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
                     this->Success = false;
                     break;
                 }
+                MinBases = minBases;
+            }
+            else if (!strcmp("-distance-threshold", argv[i]))
+            {
+                if (argc - i - 1 < 1)
+                {
+                    serr << "[-] Parsing error in -distance-threshold: must have an argument." << endl;
+                    this->Success = false;
+                    break;
+                }
+                i++;
+                bool distanceThresholdSuccess;
+                int distanceThreshold = Helpers::ParseInt(argv[i], distanceThresholdSuccess);
+                if (!distanceThresholdSuccess || distanceThreshold < 0)
+                {
+                    cerr << "[-] Parsing error in -distance-threshold: number of bases must be a non-negative number." << endl;
+                    this->Success = false;
+                    break;
+                }
+                DistanceThreshold = distanceThreshold;
             }
             else if (!strcmp("-tmp", argv[i]))
             {
@@ -104,4 +125,5 @@ void Configuration::printHelpMessage(stringstream &serr)
     serr << "[i] -help                                               Print this message and exit." << endl;
     serr << "[i] -tmp <path>                                         Define scrap path for temporary files. [/tmp]" << endl;
     serr << "[i] -minbases <number>                                  Minimum number of aligned bases to take into account. [90]" << endl;
+    serr << "[i] -distance-threshold <number>                        Maximum allowed absolute difference between scaffold and reference distances. [1000]" << endl;
 }
