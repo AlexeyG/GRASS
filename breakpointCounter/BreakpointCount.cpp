@@ -106,7 +106,7 @@ int BreakpointCount::processAlignmentGroup(vector<MummerCoord>::const_iterator s
     auto j = start + 1;
     while (i != finish)
     {
-        // mark coverage
+        coverSequences(*i);
         if (j != finish)
             if (IsBreakpoint(*i, *j))
                 count++;
