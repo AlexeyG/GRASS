@@ -127,16 +127,16 @@ bool MummerAligner::Align(const string &outFile)
     if (success)
     {
         OutputFileName = (outFile.length() > 0 ? outFile : Helpers::TempFile(Configuration.TmpPath));
-        //sprintf(str, Configuration.ShowCoordsCommand.c_str(), delta.c_str(), OutputFileName.c_str());
-        sprintf(str, Configuration.ShowCoordsCommand.c_str(), (prefix + ".delta").c_str(), OutputFileName.c_str());
+        sprintf(str, Configuration.ShowCoordsCommand.c_str(), delta.c_str(), OutputFileName.c_str());
+        //sprintf(str, Configuration.ShowCoordsCommand.c_str(), (prefix + ".delta").c_str(), OutputFileName.c_str());
         if (!Helpers::Execute(str))
             success = false;
     }
 
-    //Helpers::RemoveFile(prefix + ".delta");
-    //Helpers::RemoveFile(delta);
-    cout << "Delta: " << prefix + ".delta" << endl;
-    cout << "Delta-filtered: " << delta << endl;
+    Helpers::RemoveFile(prefix + ".delta");
+    Helpers::RemoveFile(delta);
+    //cout << "Delta: " << prefix + ".delta" << endl;
+    //cout << "Delta-filtered: " << delta << endl;
     if (!success)
     {
         Helpers::RemoveFile(OutputFileName);
