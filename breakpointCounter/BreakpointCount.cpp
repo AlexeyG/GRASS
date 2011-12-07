@@ -80,12 +80,12 @@ void BreakpointCount::Sort(vector<MummerCoord> &coords)
     sort(coords.begin(), coords.end());
 }
 
-static void BreakpointCount::getQueryDistance(const MummerCoord &a, const MummerCoord &b)
+int BreakpointCount::getQueryDistance(const MummerCoord &a, const MummerCoord &b)
 {
     return b.QueryPosition - a.QueryPosition - a.QueryAlignmentLength;
 }
 
-static void BreakpointCount::getReferenceDistance(const MummerCoord &a, const MummerCoord &b)
+int BreakpointCount::getReferenceDistance(const MummerCoord &a, const MummerCoord &b)
 {
     return (a.IsQueryReverse == a.IsReferenceReverse ? b.ReferencePosition - a.ReferencePosition - a.ReferenceAlignmentLength : a.ReferencePosition - b.ReferencePosition - b.ReferenceAlignmentLength);
 }
