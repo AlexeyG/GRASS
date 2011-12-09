@@ -1,8 +1,8 @@
 #include "ScaffoldConverter.h"
 #include <string>
 #include "Helpers.h"
-#include "MinMax.h"
 #include "NWAligner.h"
+#include "MinMax.h"
 
 using namespace std;
 
