@@ -30,8 +30,8 @@ FastASequence NWAligner::GetAlignment() const
     if (!aligned)
         return FastASequence();
     string alignment;
-    ncbi::CNWFormatter formatter(*aligner);
-    formatter.AsText(&alignment, CNWFormatter::eFormatFastA, seqA.Nucleotides.length() + seqB.Nucleotides.length());
+    ncbi::objects::CNWFormatter formatter(*aligner);
+    formatter.AsText(&alignment, ncbi::objects::CNWFormatter::eFormatFastA, seqA.Nucleotides.length() + seqB.Nucleotides.length());
     return FastASequence(alignment, "NW|" + seqA.Name() + "|" + seqB.Name());
 }
 
