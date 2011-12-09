@@ -30,7 +30,7 @@ FastASequence ScaffoldConverter::ToFasta(const DataStore &store, const Scaffold 
                 FastASequence seqB = FastASequence(contigSeq.Nucleotides.substr(0, overlapLength), "current");
                 NWAligner aligner(seqA, seqB);
                 //int score = aligner.Align();
-                cout << "Overlap: " << overlapLength << " | " << (overlapLength  <= 500 ? Helpers::ItoStr(aligner.Align())) : "?") << endl;
+                cout << "Overlap: " << overlapLength << " | " << (overlapLength  <= 500 ? Helpers::ItoStr(aligner.Align()) : "?") << endl;
             }
             sequence = sequence + spacer + contigSeq.Nucleotides;
             actualEnd += spacer.length() + contigLen;
@@ -49,7 +49,7 @@ FastASequence ScaffoldConverter::ToFasta(const DataStore &store, const Scaffold 
                 FastASequence seqB = FastASequence(contigSeq.Nucleotides.substr(0, overlapLength), "current");
                 NWAligner aligner(seqA, seqB);
                 //int score = aligner.Align();
-                cout << "Overlap: " << overlapLength << " | " << (overlapLength  <= 500 ? Helpers::ItoStr(aligner.Align())) : "?") << endl;
+                cout << "Overlap: " << overlapLength << " | " << (overlapLength  <= 500 ? Helpers::ItoStr(aligner.Align()) : "?") << endl;
             }
             
             sequence = sequence + spacer + contigSeq.Nucleotides;
