@@ -13,6 +13,7 @@ NWAligner::NWAligner(const FastASequence &a, const FastASequence &b, int matchSc
     aligner = auto_ptr<ncbi::CNWAligner>(new ncbi::CMMAligner(a.Nucleotides, b.Nucleotides));
     aligner->SetWm(matchScore);
     aligner->SetWms(mismatchScore);
+    aligner->SetScoreMatrix();
 }
 
 int NWAligner::Align()
