@@ -36,6 +36,7 @@ FastASequence NWAligner::GetAlignment() const
     string alignment;
     ncbi::CNWFormatter formatter(*aligner);
     formatter.AsText(&alignment, ncbi::CNWFormatter::eFormatFastA, seqA.Nucleotides.length() + seqB.Nucleotides.length());
+    cout << "Alg: " << alignment << endl;
     return FastASequence(alignment, "NW|" + seqA.Name() + "|" + seqB.Name());
 }
 
