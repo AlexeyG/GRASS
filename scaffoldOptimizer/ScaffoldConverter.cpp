@@ -56,7 +56,7 @@ FastASequence ScaffoldConverter::ToFasta(const DataStore &store, const Scaffold 
             actualEnd += spacer.length() + contigLen;
             solutionEnd += spacer.length() + contigLen;
         }
-        string sign = (!contig.T ? '-' : '+');
+        string sign = (!contig.T ? "-" : "+);
         name = (!name.empty() ? name + "|" + sign : sign) + Helpers::ItoStr(contig.Id);
     }
 
