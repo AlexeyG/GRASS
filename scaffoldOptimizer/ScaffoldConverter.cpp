@@ -2,6 +2,7 @@
 #include <string>
 #include "Helpers.h"
 #include "MinMax.h"
+#include "NWAligner.h"
 
 using namespace std;
 
