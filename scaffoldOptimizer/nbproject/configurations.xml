@@ -84,9 +84,52 @@
           <incDir>
             <pElem>../Common</pElem>
             <pElem>/Users/alexeyg/apps/include</pElem>
+            <pElem>/Users/alexeyg/apps/include/ncbi-tools++</pElem>
           </incDir>
         </ccTool>
       </compileType>
+      <item path="BranchAndBound.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="Configuration.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="DPGraph.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="DPSolver.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="EMSolver.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="ExtendedFixedMIQPSolver.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="FixedMIQPSolver.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="GAIndividual.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="GAMatrix.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="GASolver.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="GraphViz.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="IterativeSolver.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="MIQPSolver.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="RandomizedGreedyInitializer.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="RelaxedFixedMIQPSolver.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="ScaffoldComparer.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="ScaffoldConverter.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="ScaffoldExtractor.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="Solver.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="SolverConfiguration.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="optimizer.cpp" ex="false" tool="1" flavor="0">
+      </item>
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
@@ -107,6 +150,48 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="BranchAndBound.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="Configuration.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="DPGraph.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="DPSolver.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="EMSolver.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="ExtendedFixedMIQPSolver.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="FixedMIQPSolver.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="GAIndividual.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="GAMatrix.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="GASolver.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="GraphViz.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="IterativeSolver.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="MIQPSolver.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="RandomizedGreedyInitializer.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="RelaxedFixedMIQPSolver.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="ScaffoldComparer.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="ScaffoldConverter.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="ScaffoldExtractor.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="Solver.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="SolverConfiguration.cpp" ex="false" tool="1" flavor="0">
+      </item>
+      <item path="optimizer.cpp" ex="false" tool="1" flavor="0">
+      </item>
     </conf>
   </confs>
 </configurationDescriptor>
