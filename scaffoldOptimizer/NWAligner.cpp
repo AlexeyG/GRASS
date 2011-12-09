@@ -22,7 +22,7 @@ int NWAligner::Align()
         return score;
     aligned = true;
     score = aligner->Run();
-    aligner->GetAlignment();
+    GetAlignment();
     return score;
 }
 
