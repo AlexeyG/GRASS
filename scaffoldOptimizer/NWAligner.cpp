@@ -61,7 +61,7 @@ FastASequence NWAligner::GetAlignmentB() const
     return FastASequence(alignment, "NW|" + seqB.Name());
 }
 
-FastASequence NWAligner::GetConsensusAlignment() const
+FastASequence NWAligner::GetConsensus() const
 {
     if (!aligned)
         return FastASequence();
