@@ -21,7 +21,9 @@ int NWAligner::Align()
     if (aligned)
         return score;
     aligned = true;
-    return score = aligner->Run();
+    score = aligner->Run();
+    aligner->GetAlignment();
+    return score;
 }
 
 int NWAligner::GetAlignmentScore()
