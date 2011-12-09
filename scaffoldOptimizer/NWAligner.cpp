@@ -9,7 +9,7 @@ NWAligner::NWAligner(const FastASequence &a, const FastASequence &b)
 {
     aligned = false;
     score = 0;
-    aligner = auto_ptr<ncbi::CNWAligner>(ncbi::CMMAligner(a.Nucleotides, b.Nucleotides, &NCBISM_Blosum62));
+    aligner = auto_ptr<ncbi::CNWAligner>(new ncbi::CMMAligner(a.Nucleotides, b.Nucleotides, &NCBISM_Blosum62));
 }
 
 int NWAligner::Align()
