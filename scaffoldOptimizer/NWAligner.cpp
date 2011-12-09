@@ -5,7 +5,7 @@
 
 using namespace std;
 
-NWAligner::NWAligner(const FastASequence &a, const FastASequence &b, int matchScore, int mismatchScore)
+NWAligner::NWAligner(const FastASequence &a, const FastASequence &b, int matchScore, int mismatchScore, const string &endSpace)
     : seqA(a), seqB(b)
 {
     aligned = false;
@@ -14,6 +14,8 @@ NWAligner::NWAligner(const FastASequence &a, const FastASequence &b, int matchSc
     aligner = auto_ptr<ncbi::CNWAligner>(new ncbi::CMMAligner(a.Nucleotides, b.Nucleotides));
     aligner->SetWm(matchScore);
     aligner->SetWms(mismatchScore);
+    if (endSpace.length() == 4)
+        aligner->SetEndSpaceFree(endSpace[0] == 'z', endSpace[1] == 'z', endSpace[2] == 'z', endSpace[3] == 'z');
     aligner->SetScoreMatrix(NULL);
 }
 
