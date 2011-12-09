@@ -4,12 +4,15 @@
 
 using namespace std;
 
-NWAligner::NWAligner(const FastASequence &a, const FastASequence &b)
+NWAligner::NWAligner(const FastASequence &a, const FastASequence &b, int matchScore, int mismatchScore)
     : seqA(a), seqB(b)
 {
     aligned = false;
     score = 0;
-    aligner = auto_ptr<ncbi::CNWAligner>(new ncbi::CMMAligner(a.Nucleotides, b.Nucleotides, &NCBISM_Blosum62));
+    //&NCBISM_Blosum62
+    aligner = auto_ptr<ncbi::CNWAligner>(new ncbi::CMMAligner(a.Nucleotides, b.Nucleotides));
+    aligner->SetWm(matchScore);
+    aligner->SetWms(mismatchScore);
 }
 
 int NWAligner::Align()

@@ -17,7 +17,7 @@ using namespace std;
 class NWAligner
 {
 public:
-    NWAligner(const FastASequence &a, const FastASequence &b);
+    NWAligner(const FastASequence &a, const FastASequence &b, int matchScore = 2, int mismatchScore = -3);
     
 public:
     int Align();
