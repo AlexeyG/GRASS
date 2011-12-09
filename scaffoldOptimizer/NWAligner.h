@@ -22,9 +22,14 @@ public:
 public:
     int Align();
     int GetAlignmentScore();
-    FastASequence GetAlignment() const;
+    FastASequence GetAlignmentA() const;
+    FastASequence GetAlignmentB() const;
+    FastASequence GetConsensus() const;
     const FastASequence &GetSequenceA() const;
     const FastASequence &GetSequenceB() const;
+
+private:
+    string getFormattedAlignment() const;
     
 private:
     bool aligned;
