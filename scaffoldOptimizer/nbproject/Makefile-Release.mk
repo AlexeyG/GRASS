@@ -47,6 +47,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/BranchAndBound.o \
 	${OBJECTDIR}/optimizer.o \
 	${OBJECTDIR}/ScaffoldExtractor.o \
+	${OBJECTDIR}/_ext/740233504/NWAligner.o \
 	${OBJECTDIR}/ScaffoldComparer.o \
 	${OBJECTDIR}/DPSolver.o \
 	${OBJECTDIR}/GASolver.o \
@@ -145,6 +146,11 @@ ${OBJECTDIR}/ScaffoldExtractor.o: ScaffoldExtractor.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/ScaffoldExtractor.o ScaffoldExtractor.cpp
+
+${OBJECTDIR}/_ext/740233504/NWAligner.o: /Users/alexeyg/Documents/src/tud-scaffolding/scaffoldOptimizer/NWAligner.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/740233504
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/740233504/NWAligner.o /Users/alexeyg/Documents/src/tud-scaffolding/scaffoldOptimizer/NWAligner.cpp
 
 ${OBJECTDIR}/ScaffoldComparer.o: ScaffoldComparer.cpp 
 	${MKDIR} -p ${OBJECTDIR}

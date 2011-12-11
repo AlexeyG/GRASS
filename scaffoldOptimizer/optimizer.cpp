@@ -480,10 +480,10 @@ bool outputScaffolds(const string &fileName, const vector<Scaffold> &scaffolds)
 	return true;
 }
 
-bool outputFastaScaffolds(const string &fileName, const vector<Scaffold> &scaffolds)
+bool outputFastaScaffolds(const string &fileName, const vector<Scaffold> &scaffolds, const OverlapperConfiguration &config)
 {
 	FastAWriter writer;
-	bool result = writer.Open(fileName) && writer.Write(ScaffoldConverter::ToFasta(store, scaffolds));
+	bool result = writer.Open(fileName) && writer.Write(ScaffoldConverter::ToFasta(store, scaffolds, config));
 	writer.Close();
 	return result;
 }
@@ -547,7 +547,7 @@ int main(int argc, char *argv[])
             return -3;
         }
         cerr << "[+] Solved the optimization problem." << endl;
-        if (!outputFastaScaffolds(config.OutputFileName, ScaffoldExtractor::Extract(solver)))
+        if (!outputFastaScaffolds(config.OutputFileName, ScaffoldExtractor::Extract(solver), config.OverlapperOptions))
         {
             cerr << "[-] Unable to output scaffolds (FastA)." << endl;
             return -4;

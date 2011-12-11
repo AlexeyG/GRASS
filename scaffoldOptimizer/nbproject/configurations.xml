@@ -18,6 +18,7 @@
       <itemPath>GraphViz.h</itemPath>
       <itemPath>IterativeSolver.h</itemPath>
       <itemPath>MIQPSolver.h</itemPath>
+      <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/scaffoldOptimizer/NWAligner.h</itemPath>
       <itemPath>RandomizedGreedyInitializer.h</itemPath>
       <itemPath>RelaxedFixedMIQPSolver.h</itemPath>
       <itemPath>ScaffoldComparer.h</itemPath>
@@ -46,6 +47,7 @@
       <itemPath>GraphViz.cpp</itemPath>
       <itemPath>IterativeSolver.cpp</itemPath>
       <itemPath>MIQPSolver.cpp</itemPath>
+      <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/scaffoldOptimizer/NWAligner.cpp</itemPath>
       <itemPath>RandomizedGreedyInitializer.cpp</itemPath>
       <itemPath>RelaxedFixedMIQPSolver.cpp</itemPath>
       <itemPath>ScaffoldComparer.cpp</itemPath>
@@ -85,6 +87,7 @@
             <pElem>../Common</pElem>
             <pElem>/Users/alexeyg/apps/include</pElem>
             <pElem>/Users/alexeyg/apps/include/ncbi-tools++</pElem>
+            <pElem>/Users/alexeyg/apps/ILOG/cplex/include</pElem>
           </incDir>
         </ccTool>
       </compileType>

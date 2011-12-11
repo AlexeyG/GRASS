@@ -4,6 +4,7 @@
 #include <vector>
 #include <sstream>
 #include "SolverConfiguration.h"
+#include "OverlapperConfiguration.h"
 
 using namespace std;
 
@@ -28,6 +29,7 @@ public:
         double ExpectedCoverage;
         double UniquenessFCutoff;
 	bool PrintMatrix;
+        OverlapperConfiguration OverlapperOptions;
 	SolverConfiguration Options;
 	string InputFileName;
         string ReadCoverageFileName;

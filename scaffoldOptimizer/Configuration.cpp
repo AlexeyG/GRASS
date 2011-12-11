@@ -232,6 +232,63 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
 				}
 				Erosion = erosion;
 			}
+                        else if (!strcmp("-overlap-deviation", argv[i]))
+			{
+				if (argc - i - 1 < 1)
+				{
+					cerr << "[-] Parsing error in -overlap-deviation: must have an argument." << endl;
+					this->Success = false;
+					break;
+				}
+				i++;
+				bool deviationSuccess;
+				int deviation = Helpers::ParseInt(argv[i], deviationSuccess);
+				if (!deviationSuccess || deviation < 0)
+				{
+					cerr << "[-] Parsing error in -overlap-deviation: length must be a non-negative number." << endl;
+					this->Success = false;
+					break;
+				}
+				OverlapperOptions.InitialOverlapDeviation = deviation;
+			}
+                        else if (!strcmp("-max-alignment", argv[i]))
+			{
+				if (argc - i - 1 < 1)
+				{
+					cerr << "[-] Parsing error in -max-alignment: must have an argument." << endl;
+					this->Success = false;
+					break;
+				}
+				i++;
+				bool maxAlignemntSuccess;
+				int maxAlignemnt = Helpers::ParseInt(argv[i], maxAlignemntSuccess);
+				if (!maxAlignemntSuccess || maxAlignemnt < 0)
+				{
+					cerr << "[-] Parsing error in -max-alignment: length must be a non-negative number." << endl;
+					this->Success = false;
+					break;
+				}
+				OverlapperOptions.MaximumAlignmentLength = maxAlignemnt;
+			}
+                        else if (!strcmp("-no-split", argv[i]))
+			{
+				if (argc - i - 1 < 1)
+				{
+					cerr << "[-] Parsing error in -no-split: must have an argument." << endl;
+					this->Success = false;
+					break;
+				}
+				i++;
+				bool noSplitSuccess;
+				int noSplit = Helpers::ParseInt(argv[i], noSplitSuccess);
+				if (!noSplitSuccess || noSplit < 0)
+				{
+					cerr << "[-] Parsing error in -no-split: length must be a non-negative number." << endl;
+					this->Success = false;
+					break;
+				}
+				OverlapperOptions.NoSplitOverlapLength = noSplit;
+			}
 			else if (!strcmp("-output", argv[i]))
 			{
 				if (argc - i - 1 < 1)
@@ -534,6 +591,10 @@ void Configuration::printHelpMessage(stringstream &serr)
 	serr << "[i] -bundle-distance <distance>                         Bundle contig links withing <distance> standard deviation from the median. [3]" << endl;
         serr << "[i] -repeat-coverage <exp. cov.> <cov. filename> [F]    Detect repeats using expected coverage and read coverage provided in a file. [5]" << endl;
 	serr << "[i] -erosion <weight>                                   Remove contig links with weight smaller than <weigth> (should be used only with link bundling). [5]" << endl;
+        serr << endl;
+        serr << "[i] -overlap-deviation <length>                         Length by which contig distance is reduced to find better overlaps. [100]" << endl;
+        serr << "[i] -max-alignment <length>                             Maximum contig overlap to perform global alignment on. Overlap deviation is not taken into account. [1500]" << endl;
+        serr << "[i] -no-split <length>                                  Maximum predicted overlap length that is not confirmed by alignment, which does not cause scaffold splitting. [50]" << endl;
         serr << endl;
 	serr << "[i] -time-limit <seconds>                               Time limit for a single run of CPLEX or GA in seconds. [infinite]" << endl;
 	serr << "[i] -threads <n>                                        Number of threads a solver can use. [automatic]" << endl;
