@@ -17,13 +17,13 @@ int ContigOverlapper::FindEndOverlap(const string &left, const string &right, in
         if (offset - config.InitialOverlapDeviation > config.MaximumAlignmentLength) // Too long to perform global alignment
             return -1;
         
-        cout << "A" << endl;
         string leftSequence = left.substr(left.length() - offset, offset);
+        cout << "Left: " << left << " -> " << leftSequence << endl;
+        cout << "Right: " << right << " -> " << rightSequence << endl;
         string rightSequence = right.substr(0, offset);
         NWAligner aligner(FastASequence(leftSequence, "left"), FastASequence(rightSequence, "right"));
         aligner.Align();
         
-        cout << "B" << endl;
         string leftAlignment = aligner.GetAlignmentA().Nucleotides;
         string rightAlignment = aligner.GetAlignmentB().Nucleotides;
         int leftPointer = leftAlignment.length() - 1;
@@ -37,14 +37,11 @@ int ContigOverlapper::FindEndOverlap(const string &left, const string &right, in
         if (offset <= 0) // we should not actually overlap
             return 0;
         
-        cout << "C" << endl;
         leftSequence = left.substr(left.length() - offset, offset);
         rightSequence = right.substr(0, offset);
         NWAligner aligner2(FastASequence(leftSequence, "left"), FastASequence(rightSequence, "right"));
         score = aligner2.Align();
-        cout << "D" << endl;
         consensus = aligner2.GetConsensus().Nucleotides;
-        cout << "E" << endl;
         return offset;
     }
 }
