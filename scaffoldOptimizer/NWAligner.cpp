@@ -10,12 +10,11 @@ NWAligner::NWAligner(const FastASequence &a, const FastASequence &b, int matchSc
 {
     aligned = false;
     score = 0;
-    //&NCBISM_Blosum62
     aligner = auto_ptr<ncbi::CNWAligner>(new ncbi::CMMAligner(a.Nucleotides, b.Nucleotides));
     aligner->SetWm(matchScore);
     aligner->SetWms(mismatchScore);
-    if (endSpace.length() == 4)
-        aligner->SetEndSpaceFree(endSpace[0] == 'z', endSpace[1] == 'z', endSpace[2] == 'z', endSpace[3] == 'z');
+    //if (endSpace.length() == 4)
+    //    aligner->SetEndSpaceFree(endSpace[0] == 'z', endSpace[1] == 'z', endSpace[2] == 'z', endSpace[3] == 'z');
     aligner->SetScoreMatrix(NULL);
 }
 
