@@ -18,9 +18,9 @@ int ContigOverlapper::FindEndOverlap(const string &left, const string &right, in
             return -1;
         
         string leftSequence = left.substr(left.length() - offset, offset);
+        string rightSequence = right.substr(0, offset);
         cout << "Left: " << left << " -> " << leftSequence << endl;
         cout << "Right: " << right << " -> " << rightSequence << endl;
-        string rightSequence = right.substr(0, offset);
         NWAligner aligner(FastASequence(leftSequence, "left"), FastASequence(rightSequence, "right"));
         aligner.Align();
         
