@@ -10,7 +10,7 @@ int ContigOverlapper::FindEndOverlap(const string &left, const string &right, in
     if (left.empty() || right.empty()) // empty sequences do not overlap
         return 0;
     
-    if (distance == -13464)
+    if (distance == -13464 || distance == -12721)
     {
         cout << "Traced" << endl;
     }
