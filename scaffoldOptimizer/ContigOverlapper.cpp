@@ -45,6 +45,12 @@ int ContigOverlapper::FindEndOverlap(const string &left, const string &right, in
         NWAligner aligner2(FastASequence(leftSequence, "left"), FastASequence(rightSequence, "right"));
         score = aligner2.Align();
         consensus = aligner2.GetConsensus().Nucleotides;
+        
+        cout << "Got score: " << score << endl;
+        cout << "Got length: " << offset << endl;
+        cout << leftAlignment << endl;
+        cout << rightAlignment << endl;
+        
         return offset;
     }
 }
