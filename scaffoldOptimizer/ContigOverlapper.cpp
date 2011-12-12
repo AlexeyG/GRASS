@@ -47,7 +47,7 @@ int ContigOverlapper::FindEndOverlap(const string &left, const string &right, in
         consensus = aligner2.GetConsensus().Nucleotides;
         
         cout << "Got score: " << score << endl;
-        cout << "Got length: " << offset << endl;
+        cout << "Got length: " << offset << " : " << consensus << endl;
         cout << leftAlignment << endl;
         cout << rightAlignment << endl;
         
