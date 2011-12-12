@@ -35,8 +35,10 @@ g++ -c $CCCFLAGS $CCCINC -o BranchAndBound.o BranchAndBound.cpp
 g++ -c $CCCFLAGS $CCCINC -o IterativeSolver.o IterativeSolver.cpp
 g++ -c $CCCFLAGS $CCCINC -o EMSolver.o EMSolver.cpp
 g++ -c $CCCFLAGS $CCCINC -o NWAligner.o NWAligner.cpp
+g++ -c $CCCFLAGS $CCCINC -o ContigOverlapper.o ContigOverlapper.cpp
+g++ -c $CCCFLAGS $CCCINC -o OverlapperConfiguration.o OverlapperConfiguration.cpp
 g++ -c $CCCFLAGS $CCCINC -o optimizer.o optimizer.cpp
 
-g++ $CCCFLAGS $CCCINC -o ../bin/scaffoldOptimizer Configuration.o Helpers.o Sequence.o DataStore.o DataStoreReader.o Reader.o Writer.o ReadCoverage.o ReadCoverageReader.o ReadCoverageRepeatDetecter.o DPGraph.o DPSolver.o MIQPSolver.o GAIndividual.o GASolver.o FixedMIQPSolver.o ExtendedFixedMIQPSolver.o RelaxedFixedMIQPSolver.o Timers.o SolverConfiguration.o Solver.o RandomizedGreedyInitializer.o GAMatrix.o BranchAndBound.o IterativeSolver.o EMSolver.o ScaffoldExtractor.o ScaffoldComparer.o ScaffoldConverter.o GraphViz.o NWAligner.o optimizer.o $CCCLIB
+g++ $CCCFLAGS $CCCINC -o ../bin/scaffoldOptimizer Configuration.o Helpers.o Sequence.o DataStore.o DataStoreReader.o Reader.o Writer.o ReadCoverage.o ReadCoverageReader.o ReadCoverageRepeatDetecter.o DPGraph.o DPSolver.o MIQPSolver.o GAIndividual.o GASolver.o FixedMIQPSolver.o ExtendedFixedMIQPSolver.o RelaxedFixedMIQPSolver.o Timers.o SolverConfiguration.o Solver.o RandomizedGreedyInitializer.o GAMatrix.o BranchAndBound.o IterativeSolver.o EMSolver.o ScaffoldExtractor.o ScaffoldComparer.o ScaffoldConverter.o GraphViz.o NWAligner.o OverlapperConfiguration.o ContigOverlapper.o optimizer.o $CCCLIB
 
 rm -f *.o
