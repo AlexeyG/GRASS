@@ -54,7 +54,7 @@ FastASequence ScaffoldConverter::ToFasta(const DataStore &store, const Scaffold 
                 actualEnd += contigLen;
                 solutionEnd += solutionDistance + contigLen;
             }
-            else // predicted overlap was too long!
+            else if (!sequence.empty()) // predicted overlap was too long!
             {
                 cout << "Predicted overlap of " << -solutionDistance << " but didn't find it -> have to split!" << endl;
                 shouldBreak = true;
