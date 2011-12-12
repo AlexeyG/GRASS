@@ -7,6 +7,9 @@ using namespace std;
 
 int ContigOverlapper::FindEndOverlap(const string &left, const string &right, int distance, const OverlapperConfiguration &config, int &score, string &consensus)
 {
+    if (left.empty() || right.empty()) // empty sequences do not overlap
+        return 0;
+    
     if (distance >= 0 && distance - config.InitialOverlapDeviation >= 0) // Sequences don't overlap even with offset
         return 0;
     else
@@ -19,8 +22,8 @@ int ContigOverlapper::FindEndOverlap(const string &left, const string &right, in
         
         string leftSequence = left.substr(left.length() - offset, offset);
         string rightSequence = right.substr(0, offset);
-        cout << "Left: " << left << " -> " << leftSequence << endl;
-        cout << "Right: " << right << " -> " << rightSequence << endl;
+//        cout << "Left: " << left << " -> " << leftSequence << endl;
+//        cout << "Right: " << right << " -> " << rightSequence << endl;
         NWAligner aligner(FastASequence(leftSequence, "left"), FastASequence(rightSequence, "right"));
         aligner.Align();
         
