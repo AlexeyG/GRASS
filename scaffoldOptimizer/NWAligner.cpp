@@ -20,15 +20,10 @@ NWAligner::NWAligner(const FastASequence &a, const FastASequence &b, int matchSc
 
 int NWAligner::Align()
 {
-    cout << "Trying A: " << seqA.Nucleotides << endl;
-    cout << "Trying B: " << seqB.Nucleotides << endl;
     if (aligned)
         return score;
     aligned = true;
     score = aligner->Run();
-    cout << "Got score: " << score << endl;
-    cout << GetAlignmentA().Nucleotides << endl;
-    cout << GetAlignmentB().Nucleotides << endl;
     return score;
 }
 
