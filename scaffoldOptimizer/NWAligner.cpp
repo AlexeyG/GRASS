@@ -25,6 +25,7 @@ int NWAligner::Align()
         return score;
     aligned = true;
     score = aligner->Run();
+    cout << "Got score: " << score << endl;
     cout << GetAlignmentA().Nucleotides << endl;
     cout << GetAlignmentB().Nucleotides << endl;
     return score;
