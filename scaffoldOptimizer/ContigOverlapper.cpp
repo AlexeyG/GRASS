@@ -10,11 +10,6 @@ int ContigOverlapper::FindEndOverlap(const string &left, const string &right, in
     if (left.empty() || right.empty()) // empty sequences do not overlap
         return 0;
     
-    if (distance < -10000)
-    {
-        cout << "Traced" << endl;
-    }
-    
     if (distance >= 0 && distance - config.InitialOverlapDeviation >= 0) // Sequences don't overlap even with offset
         return 0;
     else
@@ -22,6 +17,12 @@ int ContigOverlapper::FindEndOverlap(const string &left, const string &right, in
         int lenLeft = left.length();
         int lenRight = right.length();
         int offset = min(min(lenLeft, lenRight), config.InitialOverlapDeviation - distance);
+        if (distance < -10000)
+        {
+            cout << "Traced" << endl;
+            cout << "L1: " << lenLeft << " | L2: " << lenRight << endl;
+            cout << "Offset: " << offset << endl;
+        }
         if (offset - config.InitialOverlapDeviation > config.MaximumAlignmentLength) // Too long to perform global alignment
             return -1;
         
