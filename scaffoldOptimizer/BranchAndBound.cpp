@@ -288,45 +288,45 @@ bool BranchAndBound::addOrderConstraint(int a, int b, bool e, bool r)
 		{
 			if (!T[a])
 				//constraints.add(x[a] - x[b] + delta_l * len[b] >= -len[b]);
-				//constraints.add(x[a] - x[b] + delta_l * len[b] >= 0); // single weight
-				constraints.add(x[a] - x[b] + delta_l * (len[b] + len[a]) / 2.0 >= 0);
+				constraints.add(x[a] - x[b] + delta_l * len[b] >= 0); // single weight
+				//constraints.add(x[a] - x[b] + delta_l * (len[b] + len[a]) / 2.0 >= 0);
 			else
 				//constraints.add(x[b] - x[a] + delta_l * len[a] >= -len[a]);
-				//constraints.add(x[b] - x[a] + delta_l * len[a] >= 0); // single weight
-				constraints.add(x[b] - x[a] + delta_l * (len[a] + len[b]) / 2.0 >= 0);
+				constraints.add(x[b] - x[a] + delta_l * len[a] >= 0); // single weight
+				//constraints.add(x[b] - x[a] + delta_l * (len[a] + len[b]) / 2.0 >= 0);
 		}
 		else if (!e && r)
 		{
 			if (!T[a])
 				//constraints.add(x[b] - x[a] + delta_l * len[a] >= len[b]);
-				//constraints.add(x[b] - len[b] - x[a] - len[a] + delta_l * len[a] >= 0); // single weight
-				constraints.add(x[b] - len[b] - x[a] - len[a] + delta_l * (len[a] + len[b]) / 2.0 >= 0);
+				constraints.add(x[b] - len[b] - x[a] - len[a] + delta_l * len[a] >= 0); // single weight
+				//constraints.add(x[b] - len[b] - x[a] - len[a] + delta_l * (len[a] + len[b]) / 2.0 >= 0);
 			else
 				//constraints.add(x[a] - x[b] + delta_l * len[b] >= len[a]);
-				//constraints.add(x[a] - len[a] - x[b] - len[b] + delta_l * len[b] >= 0); // single weight
-				constraints.add(x[a] - len[a] - x[b] - len[b] + delta_l * (len[b] + len[a]) / 2.0 >= 0);
+				constraints.add(x[a] - len[a] - x[b] - len[b] + delta_l * len[b] >= 0); // single weight
+				//constraints.add(x[a] - len[a] - x[b] - len[b] + delta_l * (len[b] + len[a]) / 2.0 >= 0);
 		}
 		else if (e && !r)
 		{
 			if (!T[a])
 				//constraints.add(x[a] - x[b] + delta_l * len[b] >= 0);
-				//constraints.add(x[a] - x[b] - len[b] + delta_l * len[b] >= 0); // single weight
-				constraints.add(x[a] - x[b] - len[b] + delta_l * (len[b] + len[a]) / 2.0 >= 0);
+				constraints.add(x[a] - x[b] - len[b] + delta_l * len[b] >= 0); // single weight
+				//constraints.add(x[a] - x[b] - len[b] + delta_l * (len[b] + len[a]) / 2.0 >= 0);
 			else
 				//constraints.add(x[b] - x[a] + delta_l * len[a] >= len[b] - len[a]);
-				//constraints.add(x[b] - len[b] - x[a] + delta_l * len[a] >= 0); // single weight
-				constraints.add(x[b] - len[b] - x[a] + delta_l * (len[a] + len[b]) / 2.0 >= 0);
+				constraints.add(x[b] - len[b] - x[a] + delta_l * len[a] >= 0); // single weight
+				//constraints.add(x[b] - len[b] - x[a] + delta_l * (len[a] + len[b]) / 2.0 >= 0);
 		}
 		else if (e && r)
 		{
 			if (!T[a])
 				//constraints.add(x[b] - x[a] + delta_l * len[a] >= 0);
-				//constraints.add(x[b] - x[a] - len[a] + delta_l * len[a] >= 0); // single weight
-				constraints.add(x[b] - x[a] - len[a] + delta_l * (len[a] + len[b]) / 2.0 >= 0);
+				constraints.add(x[b] - x[a] - len[a] + delta_l * len[a] >= 0); // single weight
+				//constraints.add(x[b] - x[a] - len[a] + delta_l * (len[a] + len[b]) / 2.0 >= 0);
 			else
 				//constraints.add(x[a] - x[b] + delta_l * len[b] >= len[a] - len[b]);
-				//constraints.add(x[a] - len[a] - x[b] + delta_l * len[b] >= 0); // single weight
-				constraints.add(x[a] - len[a] - x[b] + delta_l * (len[b] + len[a]) / 2.0 >= 0);
+				constraints.add(x[a] - len[a] - x[b] + delta_l * len[b] >= 0); // single weight
+				//constraints.add(x[a] - len[a] - x[b] + delta_l * (len[b] + len[a]) / 2.0 >= 0);
 		}
 	}
 	catch (...)
