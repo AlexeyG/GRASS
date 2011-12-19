@@ -34,7 +34,7 @@ int ContigOverlapper::FindBestOverlap(const std::string &left, const std::string
     
     for (int offset = minOffset; offset <= maxOffset; offset++)
     {
-        double distanceScore = (maxDeviation - abs(predictedGap - offset)) / (double) (2 * maxDeviation);
+        double distanceScore = (maxDeviation - abs(predictedGap - offset)) / (double) maxDeviation;
         std::string leftSequence, rightSequence;
         int overlapLen = GetOverlapSequences(offset, left, right, leftSequence, rightSequence);
         // check if overlapLen is too large to align!
