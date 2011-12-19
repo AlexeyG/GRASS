@@ -47,9 +47,74 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
         double overlapScore;
         int overlapOffset = ContigOverlapper::FindBestOverlap(sequence, contigSeq.Nucleotides, solutionDistance, config, overlapScore, overlapConsensus);
         cout << "Got offset: " << overlapOffset << " of Q: " << overlapScore << endl;
+        int leftLen = actualEnd, rightLen = contigLen, overlapLen = 0;
         if (overlapScore * 100 > config.OverlapQuality) // we have a good overlap
         {
-            //
+            if (leftLen <= rightLen)
+            {
+                /*
+                 *        ----  L
+                 * ----------   R
+                 */
+                if (overlapOffset < -rightLen) // right overhang
+                {
+                    overlapLen = leftLen + rightLen + overlapOffset; // 4 + 10 - 1199
+                    sequence = contigSeq.Nucleotides.substr(0, contigLen - overlapLen) + overlapConsensus + sequence.substr(overlapLen, actualEnd - overlapLen);
+                }
+                /*
+                 * ----        L
+                 * ----------  R
+                 */
+                else if (overlapOffset <= -leftLen) // left inside
+                {
+                    overlapLen = leftLen;
+                    sequence = contigSeq.Nucleotides.substr(0, -overlapOffset - leftLen) + overlapConsensus + contigSeq.Nucleotides.substr(-overlapOffset, contigLen + overlapOffset);
+                }
+                /*
+                 * ----         L
+                 *  ----------  R
+                 */
+                else // left overhang
+                {
+                    overlapLen = -overlapOffset;
+                    sequence = sequence.substr(0, actualEnd - overlapLen) + overlapConsensus + contigSeq.Nucleotides.substr(overlapLen, contigLen - overlapLen);
+                }
+            }
+            /*
+             * ----------
+             *         -----
+             */
+            else
+            {
+                /*
+                 * ----------   L
+                 *        ----  R
+                 */
+                if (overlapOffset > -rightLen) // right overhang
+                {
+                    overlapLen = -overlapOffset;
+                    sequence = sequence.substr(0, actualEnd - overlapLen) + overlapConsensus + contigSeq.Nucleotides(overlapLen, contigLen - overlapLen);
+                }
+                /*
+                 * ----------  L
+                 * ----        R
+                 */
+                else if (overlapOffset > -leftLen) // right inside
+                {
+                    overlapLen = rightLen;;
+                    // leftSequence = left.substr(leftLen + offset, overlapLen);
+                    sequence = sequence.substr(0, actualEnd + overlapOffset) + overlapConsensus + sequence.substr(-overlapOffset, -overlapOffset - contigLen);
+                }
+                /*
+                 *  ----------  L
+                 * ----         R
+                 */
+                else // left overhang
+                {
+                    overlapLen = leftLen + rightLen + overlapOffset;
+                    sequence = contigSeq.Nucleotides.substr(0, contigLen - overlapLen) + overlapConsensus + sequence.substr(overlapLen, actualEnd - overlapLen);
+                }
+            }
         }
         else // we don't have a good overlap
         {
@@ -57,12 +122,10 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
             {
                 string spacer(solutionDistance, 'N');
                 sequence = sequence + spacer + contigSeq.Nucleotides;
-                actualEnd += solutionDistance + contigLen;
             }
             else if (solutionDistance < config.NoSplitOverlapLength) // the predicted overlap is short
             {
                 sequence = sequence + contigSeq.Nucleotides;
-                actualEnd += contigLen;
             }
             else // we predicted a long overlap
             {
@@ -71,12 +134,12 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
                 sequence = contigSeq.Nucleotides;
                 name.clear();
                 // update coords
-                actualEnd = contigLen;
                 scaffoldOffset = (!contig.T ? contig.X : contig.X - contigLen + 1);
             }
-            name = (!name.empty() ? name + "|" + sign : sign) + Helpers::ItoStr(contig.Id);
-            solutionEnd = max(solutionEnd, contigEnd - scaffoldOffset);
         }
+        name = (!name.empty() ? name + "|" + sign : sign) + Helpers::ItoStr(contig.Id);
+        actualEnd = sequence.length();
+        solutionEnd = max(solutionEnd, contigEnd - scaffoldOffset);
     }
 
     if (!sequence.empty())
