@@ -43,6 +43,8 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
             sign = "-";
         }
         
+#ifdef _OVERLAP
+        
         string overlapConsensus;
         double overlapScore;
         int overlapOffset = ContigOverlapper::FindBestOverlap(sequence, contigSeq.Nucleotides, solutionDistance, config, overlapScore, overlapConsensus);
@@ -143,6 +145,33 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
         solutionEnd = max(solutionEnd, contigEnd - scaffoldOffset);
     }
 
+#else
+    for (int i = 0; i < count; i++)
+    {
+        ScaffoldContig contig = scaffold[i];
+        FastASequence contigSeq = store[contig.Id].Sequence;
+        int contigLen = contigSeq.Nucleotides.length();
+        if (!contig.T)
+        {
+            //cout << i << " Forward: " << contig.X << " - " << end << " = " << contig.X - end << endl;
+            string spacer(max(contig.X - solutionEnd, 0), 'N');
+            sequence = sequence + spacer + contigSeq.Nucleotides;
+            name = (!name.empty() ? name + "|+" : "+") + Helpers::ItoStr(contig.Id);
+            solutionEnd += spacer.length() + contigLen;
+        }
+        else
+        {
+            //cout << i << " Reverse: " << contig.X << " - " << contigLen << " + 1 -" << end << " = " << contig.X - contigLen + 1 - end << endl;
+            contigSeq.ReverseCompelement();
+            string spacer(max(contig.X - contigLen + 1 - solutionEnd, 0), 'N');
+            sequence = sequence + spacer + contigSeq.Nucleotides;
+            name = (!name.empty() ? name + "|-" : "-") + Helpers::ItoStr(contig.Id);
+            solutionEnd += spacer.length() + contigLen;
+        }
+    }
+    
+#endif
+    
     if (!sequence.empty())
         ans.push_back(FastASequence(sequence, name));
     
