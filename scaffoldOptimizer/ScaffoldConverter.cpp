@@ -129,6 +129,7 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
             }
             else // we predicted a long overlap
             {
+                cout << "SPLITTING!" << endl;
                 // split
                 ans.push_back(FastASequence(sequence, name));
                 sequence = contigSeq.Nucleotides;
