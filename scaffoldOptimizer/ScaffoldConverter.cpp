@@ -154,7 +154,7 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
         if (!contig.T)
         {
             //cout << i << " Forward: " << contig.X << " - " << end << " = " << contig.X - end << endl;
-            string spacer(max(contig.X - solutionEnd, 0), 'N');
+            string spacer(max((int)contig.X - solutionEnd, 0), 'N');
             sequence = sequence + spacer + contigSeq.Nucleotides;
             name = (!name.empty() ? name + "|+" : "+") + Helpers::ItoStr(contig.Id);
             solutionEnd += spacer.length() + contigLen;
@@ -163,7 +163,7 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
         {
             //cout << i << " Reverse: " << contig.X << " - " << contigLen << " + 1 -" << end << " = " << contig.X - contigLen + 1 - end << endl;
             contigSeq.ReverseCompelement();
-            string spacer(max(contig.X - contigLen + 1 - solutionEnd, 0), 'N');
+            string spacer(max((int)contig.X - contigLen + 1 - solutionEnd, 0), 'N');
             sequence = sequence + spacer + contigSeq.Nucleotides;
             name = (!name.empty() ? name + "|-" : "-") + Helpers::ItoStr(contig.Id);
             solutionEnd += spacer.length() + contigLen;
