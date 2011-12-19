@@ -8,8 +8,6 @@
 
 #include <iostream>
 
-#define _OVERLAP
-
 using namespace std;
 
 vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const Scaffold &scaffold, const OverlapperConfiguration &config)
