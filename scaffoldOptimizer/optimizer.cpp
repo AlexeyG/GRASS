@@ -491,9 +491,7 @@ bool outputFastaScaffolds(const string &fileName, const vector<Scaffold> &scaffo
 int main(int argc, char *argv[])
 {
     Helpers::ElapsedTimers.AddTimer();
-    //srand((unsigned int)time(NULL));
-    srand(1322933272);
-    cout << time(NULL) << endl;
+    srand((unsigned int)time(NULL));
     if (config.ProcessCommandLine(argc, argv))
     {
         solver.Options = config.Options;
