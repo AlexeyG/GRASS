@@ -55,7 +55,7 @@ int ContigOverlapper::FindBestOverlap(const std::string &left, const std::string
     return bestOffset;
 }
 
-static int ContigOverlapper::GetOverlapSequences(int offset, const std::string &left, const std::string &right, std::string &leftSequence, std::string &rightSequence)
+int ContigOverlapper::GetOverlapSequences(int offset, const std::string &left, const std::string &right, std::string &leftSequence, std::string &rightSequence)
 {
     int leftLen = left.length(), rightLen = right.length();
     leftSequence.clear(); rightSequence.clear();
@@ -149,13 +149,13 @@ static int ContigOverlapper::GetOverlapSequences(int offset, const std::string &
     return overlapLen;
 }
 
-static int ContigOverlapper::GetAlignmentScore(const std::string &left, const std::string &right)
+int ContigOverlapper::GetAlignmentScore(const std::string &left, const std::string &right)
 {
     NWAligner aligner(FastASequence(left, "l"), FastASequence(right, "r"));
     return aligner.Align();
 }
 
-static std::string ContigOverlapper::GetConsensus(const std::string &left, const std::string &right)
+std::string ContigOverlapper::GetConsensus(const std::string &left, const std::string &right)
 {
     NWAligner aligner(FastASequence(left, "l"), FastASequence(right, "r"));
     aligner.Align();
