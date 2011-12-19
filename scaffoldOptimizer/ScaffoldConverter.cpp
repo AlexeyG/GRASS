@@ -80,7 +80,10 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
         }
     }
 
-    return FastASequence(sequence, name);
+    if (s!equence.empty())
+        ans.pop_back(FastASequence(sequence, name));
+    
+    return ans;
 }
 
 vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const vector<Scaffold> &scaffold, const OverlapperConfiguration &config)
