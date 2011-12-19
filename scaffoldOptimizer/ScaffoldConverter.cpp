@@ -81,7 +81,7 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
     }
 
     if (!sequence.empty())
-        ans.pop_back(FastASequence(sequence, name));
+        ans.push_back(FastASequence(sequence, name));
     
     return ans;
 }
