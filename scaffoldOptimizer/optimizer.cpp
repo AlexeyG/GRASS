@@ -492,6 +492,7 @@ int main(int argc, char *argv[])
 {
     Helpers::ElapsedTimers.AddTimer();
     srand((unsigned int)time(NULL));
+    cout << time(NULL) << endl;
     if (config.ProcessCommandLine(argc, argv))
     {
         solver.Options = config.Options;
