@@ -3,6 +3,7 @@
 #include "Configuration.h"
 
 #include <iostream>
+#include <cstdio>
 
 using namespace std;
 
@@ -34,7 +35,6 @@ int ContigOverlapper::FindBestOverlap(const std::string &left, const std::string
         std::string leftSequence, rightSequence;
         int overlapLen = GetOverlapSequences(offset, left, right, leftSequence, rightSequence);
         // check if overlapLen is too large to align!
-        cout << "Need to align: " << overlapLen << endl;
         if (overlapLen <= config.MaximumAlignmentLength)
         {
             cout << "Aligning: " << leftSequence << endl;
@@ -46,6 +46,7 @@ int ContigOverlapper::FindBestOverlap(const std::string &left, const std::string
                 bestScore = score;
                 bestOffset = offset;
             }
+            printf("Score: %.6lf\n", score);
         }
     }
     
