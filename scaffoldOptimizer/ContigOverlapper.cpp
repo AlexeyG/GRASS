@@ -21,7 +21,7 @@ int ContigOverlapper::FindBestOverlap(const std::string &left, const std::string
     if (minOffset >= 0) // the furthest we are allowed to go does not overlap
     {
         score = -1;
-        return 0;
+        return predictedGap;
     }
     
     if (maxOffset >= 0)
