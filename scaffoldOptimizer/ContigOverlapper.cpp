@@ -34,8 +34,11 @@ int ContigOverlapper::FindBestOverlap(const std::string &left, const std::string
         std::string leftSequence, rightSequence;
         int overlapLen = GetOverlapSequences(offset, left, right, leftSequence, rightSequence);
         // check if overlapLen is too large to align!
+        cout << "Need to align: " << overlapLen << endl;
         if (overlapLen > config.MaximumAlignmentLength)
         {
+            cout << "Aligning: " << leftSequence << endl;
+            cout << "Aligning: " << rightSequence << endl;
             double alignmentScore = (double)GetAlignmentScore(leftSequence, rightSequence) / (double)(2 * overlapLen); // [-0.75; 1] alignment score
             double score = alignmentScore * distanceScore;
             if (score > bestScore)
