@@ -19,6 +19,8 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
     int actualEnd = 0;
     int scaffoldOffset = 0;
 
+#ifdef _OVERLAP
+    
     for (int i = 0; i < count; i++)
     {
         ScaffoldContig contig = scaffold[i];
@@ -42,8 +44,6 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
             solutionDistance = contig.X - contigLen + 1 - solutionEnd;
             sign = "-";
         }
-        
-#ifdef _OVERLAP
         
         string overlapConsensus;
         double overlapScore;
