@@ -16,10 +16,10 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
     string name, sequence;
     int count = scaffold.ContigCount();
     int solutionEnd = 0;
-    int actualEnd = 0;
-    int scaffoldOffset = 0;
 
 #ifdef _OVERLAP
+    int actualEnd = 0;
+    int scaffoldOffset = 0;
     
     for (int i = 0; i < count; i++)
     {
