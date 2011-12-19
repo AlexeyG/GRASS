@@ -93,7 +93,7 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
                 if (overlapOffset > -rightLen) // right overhang
                 {
                     overlapLen = -overlapOffset;
-                    sequence = sequence.substr(0, actualEnd - overlapLen) + overlapConsensus + contigSeq.Nucleotides(overlapLen, contigLen - overlapLen);
+                    sequence = sequence.substr(0, actualEnd - overlapLen) + overlapConsensus + contigSeq.Nucleotides.substr(overlapLen, contigLen - overlapLen);
                 }
                 /*
                  * ----------  L
