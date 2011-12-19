@@ -281,7 +281,7 @@ bool ExtendedFixedMIQPSolver::addOrderConstraint(int a, int b, bool e, bool r, I
 	{
 		delta_l = IloNumVar(environment, 0, SlackMax);
 		delta.add(delta_l);
-		if (!e && !r)
+		/*if (!e && !r)
 		{
 			if (!T[a])
                             //constraints.add(x[a] - x[b] + delta_l * len[b] >= 0);
@@ -316,7 +316,36 @@ bool ExtendedFixedMIQPSolver::addOrderConstraint(int a, int b, bool e, bool r, I
 			else
                             //constraints.add(x[a] - len[a] - x[b] + delta_l * len[b] >= 0);
 				constraints.add(x[a] - len[a] - x[b] + delta_l * (len[b] + len[a]) / 2.0 >= 0);
-		}
+		}*/
+                if (!e && !r)
+                {
+                        if (!T[a])
+                                constraints.add(x[a] - x[b] + delta_l * (len[b] + len[a]) / 2.0 >= 0);
+                        else
+                                constraints.add(x[b] - x[a] + delta_l * (len[a] + len[b]) / 2.0 >= 0);
+                }
+                else if (!e && r)
+                {
+                        if (!T[a])
+                                constraints.add(x[b] - len[b] - x[a] - len[a] + delta_l * (len[a] + len[b]) / 2.0 >= 0);
+                        else
+                                constraints.add(x[a] - len[a] - x[b] - len[b] + delta_l * (len[b] + len[a]) / 2.0 >= 0);
+                }
+                else if (e && !r)
+                {
+                        if (!T[a])
+                                constraints.add(x[a] - x[b] - len[b] + delta_l * (len[b] + len[a]) / 2.0 >= 0);
+                        else
+                                constraints.add(x[b] - len[b] - x[a] + delta_l * (len[a] + len[b]) / 2.0 >= 0);
+                }
+                else if (e && r)
+                {
+                        if (!T[a])
+                                constraints.add(x[b] - x[a] - len[a] + delta_l * (len[a] + len[b]) / 2.0 >= 0);
+                        else
+                                constraints.add(x[a] - len[a] - x[b] + delta_l * (len[b] + len[a]) / 2.0 >= 0);
+                }
+                        
 	}
 	catch (...)
 	{
