@@ -1,8 +1,7 @@
 #!/bin/bash
 CCCFLAGS='-O2 -Wall -m64 -fPIC -fexceptions -fopenmp -DNDEBUG -DIL_STD'
-#CCCFLAGS='-O2 -Wall -m64 -fPIC -fexceptions -fopenmp -g -DIL_STD'
-CCCINC='-I../Common/ -I/data/bio/alexeygritsenk/apps/include -I/data/bio/alexeygritsenk/apps/ILOG/cplex/include -I/data/bio/alexeygritsenk/apps/ILOG/concert/include -I/data/bio/alexeygritsenk/apps/include/ncbi-tools++'
-CCCLIB='-L/data/bio/alexeygritsenk/apps/lib -lbamtools -lxalgoalignnw -lxobjmgr -lgenome_collection -lseqset -lseqedit -lseq -lseqcode -lsequtil -lpub -lmedline -lbiblio -lgeneral -lxser -lxutil -lxncbi -ltables -L/data/bio/alexeygritsenk/apps/ILOG/cplex/lib/x86-64_sles10_4.1/static_pic -lilocplex -lcplex -L/data/bio/alexeygritsenk/apps/ILOG/concert/lib/x86-64_sles10_4.1/static_pic -lconcert -lm -pthread'
+CCCINC='-I../Common/ -I/Users/alexeyg/apps/include -I/Users/alexeyg/apps/ILOG/cplex/include -I/Users/alexeyg/apps/ILOG/concert/include -I/Users/alexeyg/apps/include/ncbi-tools++'
+CCCLIB='-L/Users/alexeyg/apps/lib -lbamtools -lxalgoalignnw -lxobjmgr -lgenome_collection -lseqset -lseqedit -lseq -lseqcode -lsequtil -lpub -lmedline -lbiblio -lgeneral -lxser -lxutil -lxncbi -ltables -L/Users/alexeyg/apps/ILOG/cplex/lib/x86-64_darwin9_gcc4.0/static_pic -lilocplex -lcplex -L/Users/alexeyg/apps/ILOG/concert/lib/x86-64_darwin9_gcc4.0/static_pic -lconcert -lm -pthread'
 
 g++ -c $CCCFLAGS $CCCINC -o Configuration.o Configuration.cpp
 g++ -c $CCCFLAGS $CCCINC -o Helpers.o ../Common/Helpers.cpp

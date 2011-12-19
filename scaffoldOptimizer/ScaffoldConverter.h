@@ -12,7 +12,7 @@ using namespace std;
 class ScaffoldConverter
 {
 public:
-	static FastASequence ToFasta(const DataStore &store, const Scaffold &scaffold, const OverlapperConfiguration &config);
+	static vector<FastASequence> ToFasta(const DataStore &store, const Scaffold &scaffold, const OverlapperConfiguration &config);
 	static vector<FastASequence> ToFasta(const DataStore &store, const vector<Scaffold> &scaffold, const OverlapperConfiguration &config);
 };
 

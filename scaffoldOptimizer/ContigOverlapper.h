@@ -16,7 +16,12 @@ using namespace std;
 class ContigOverlapper
 {
 public:
-    static int FindEndOverlap(const std::string &left, const std::string &right, int distance, const OverlapperConfiguration &config, int &score, std::string &consensus);
+    static int FindBestOverlap(const std::string &left, const std::string &right, int distance, const OverlapperConfiguration &config, double &score, std::string &consensus);
+    static int GetOverlapSequences(int offset, const std::string &left, const std::string &right, std::string &leftSequence, std::string &rightSequence);
+    
+private:
+    static int GetAlignmentScore(const std::string &left, const std::string &right);
+    static std::string GetConsensus(const std::string &left, const std::string &right);
 };
 
 #endif	/* _CONTIGOVERLAPPER_H */
