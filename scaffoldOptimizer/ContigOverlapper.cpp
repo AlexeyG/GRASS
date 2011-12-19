@@ -47,7 +47,7 @@ int ContigOverlapper::FindBestOverlap(const std::string &left, const std::string
                 bestScore = score;
                 bestOffset = offset;
             }
-            printf("Offset: %i Score: %.6lf\n", offset, score);
+            printf("Offset: %i Score: %.6lf (%i)\n", offset, score, overlapLen);
         }
     }
     
