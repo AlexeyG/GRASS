@@ -123,7 +123,7 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
                 string spacer(solutionDistance, 'N');
                 sequence = sequence + spacer + contigSeq.Nucleotides;
             }
-            else if (solutionDistance < config.NoSplitOverlapLength) // the predicted overlap is short
+            else if (-solutionDistance < config.NoSplitOverlapLength) // the predicted overlap is short
             {
                 sequence = sequence + contigSeq.Nucleotides;
             }
