@@ -29,7 +29,6 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
         if (i == 0)
         {
             scaffoldOffset = (!contig.T ? contig.X : contig.X - contigLen + 1);
-            cout << "Offset: " << scaffoldOffset << endl;
         }
         int solutionDistance;
         if (!contig.T)
@@ -74,7 +73,6 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
                 // update coords
                 actualEnd = contigLen;
                 scaffoldOffset = (!contig.T ? contig.X : contig.X - contigLen + 1);
-                cout << "Offset: " << scaffoldOffset << endl;
             }
             name = (!name.empty() ? name + "|" + sign : sign) + Helpers::ItoStr(contig.Id);
             solutionEnd = max(solutionEnd, contigEnd - scaffoldOffset);
