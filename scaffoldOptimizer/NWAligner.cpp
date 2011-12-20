@@ -80,11 +80,6 @@ FastASequence NWAligner::GetConsensus() const
             str[i] = 'N'; // could to a better job here
     }
     
-    cout << "L: " << a.Nucleotides << endl;
-    cout << "R: " << b.Nucleotides << endl;
-    cout << "C: " << str << endl;
-    cout << endl;
-    
     return FastASequence(str, a.Name() + "|" + b.Name());
 }
 
