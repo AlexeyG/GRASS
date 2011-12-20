@@ -25,8 +25,15 @@ vector<int> ReadCoverageRepeatDetecter::Detect(double expectedCoverage, const Re
             int count = 1;
             while (pos != readPositions.end() && *pos == *start)
                 count++, pos++;
-            if (*start >= 0) observedMean += count;
+            if (*start >= 0)
+            {
+                if (*start >= coverage.AverageReadLength && *start <= contigLength - coverage.AverageReadLength)
+                observedMean += count;
+            }
         }
+        contigLength -= 2 * (int)coverage.AverageReadLength;
+        if (contigLength <= 0)
+            continue;
         observedMean /= (double)contigLength;
         double logRatio = log(2.0) / 2.0 + contigLength * (expectedStarts * expectedStarts - observedMean * observedMean / 2.0) / (2.0 * expectedStarts);
         if (logRatio < uniquenessCutoff)
