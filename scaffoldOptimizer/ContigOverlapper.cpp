@@ -54,7 +54,8 @@ int ContigOverlapper::FindBestOverlap(const std::string &left, const std::string
     if (bestScore != -1) // actually should get consensus
     {
         std::string leftSequence, rightSequence;
-        consensus = GetOverlapSequences(bestOffset, left, right, leftSequence, rightSequence);
+        GetOverlapSequences(bestOffset, left, right, leftSequence, rightSequence);
+        consensus = GetConsensus(leftSequence, rightSequence);
     }
     score = bestScore;
     return bestOffset;
