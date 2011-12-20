@@ -3,6 +3,8 @@
 #include <string>
 #include <sstream>
 
+#include <iostream>
+
 using namespace std;
 
 NWAligner::NWAligner(const FastASequence &a, const FastASequence &b, int matchScore, int mismatchScore, const string &endSpace)
