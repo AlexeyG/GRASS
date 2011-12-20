@@ -51,6 +51,10 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
         double overlapScore;
         int overlapOffset = ContigOverlapper::FindBestOverlap(sequence, contigSeq.Nucleotides, solutionDistance, config, overlapScore, overlapConsensus);
         cout << "Got offset: " << overlapOffset << " of Q: " << overlapScore << " | Predicted: " << solutionDistance << endl;
+        if (overlapConsensus.find(':') != string::npos)
+        {
+            cout << "WTF consensus!" << endl;
+        }
         int leftLen = actualEnd, rightLen = contigLen, overlapLen = 0;
         if (overlapScore * 100 > config.OverlapQuality) // we have a good overlap
         {
