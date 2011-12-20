@@ -156,9 +156,9 @@ int ContigOverlapper::GetOverlapSequences(int offset, const std::string &left, c
 
 int ContigOverlapper::GetAlignmentScore(const std::string &left, const std::string &right)
 {
-    cout << left << endl;
-    cout << right << endl;
-    cout << "-----" << endl;
+    //cout << left << endl;
+    //cout << right << endl;
+    //cout << "-----" << endl;
     NWAligner aligner(FastASequence(left, "l"), FastASequence(right, "r"));
     return aligner.Align();
 }
