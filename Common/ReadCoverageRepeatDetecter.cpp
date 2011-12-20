@@ -27,7 +27,7 @@ vector<int> ReadCoverageRepeatDetecter::Detect(double expectedCoverage, const Re
                 count++, pos++;
             if (*start >= 0)
             {
-                if (start <= contigLength - coverage.AverageReadLength)
+                if (*start <= contigLength - coverage.AverageReadLength)
                     observedMean += count;
             }
         }
