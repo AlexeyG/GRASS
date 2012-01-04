@@ -38,10 +38,10 @@ vector<int> ReadCoverageRepeatDetecter::Detect(double expectedCoverage, const Re
         double logRatio = log(2.0) / 2.0 + contigLength * (expectedStarts * expectedStarts - observedMean * observedMean / 2.0) / (2.0 * expectedStarts);
         if (logRatio < uniquenessCutoff)
             repeatContigs.push_back(i);
-        if (logRatio < uniquenessCutoff)
+        /*if (logRatio < uniquenessCutoff)
             printf("n = %7i, x = %10.2lf, %10.2lf <  %10.2lf -> 0\n", contigLength, observedMean, logRatio, uniquenessCutoff);
         else
-            printf("n = %7i, x = %10.2lf, %10.2lf >= %10.2lf -> 1\n", contigLength, observedMean, logRatio, uniquenessCutoff);
+            printf("n = %7i, x = %10.2lf, %10.2lf >= %10.2lf -> 1\n", contigLength, observedMean, logRatio, uniquenessCutoff);*/
     }
     
     return repeatContigs;
