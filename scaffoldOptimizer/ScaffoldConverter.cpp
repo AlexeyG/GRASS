@@ -10,8 +10,6 @@
 
 using namespace std;
 
-#define _OVERLAP
-
 vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const Scaffold &scaffold, const OverlapperConfiguration &config)
 {
     vector<FastASequence> ans;
