@@ -156,6 +156,7 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
         //cout << "Left: " << sequence << endl;
         name = (!name.empty() ? name + "|" + sign : sign) + Helpers::ItoStr(contig.Id);
         actualEnd = sequence.length();
+        cout << "max of " << solutionEnd << " and " << contigEnd - scaffoldOffset << endl;
         solutionEnd = max(solutionEnd, contigEnd - scaffoldOffset);
     }
 
