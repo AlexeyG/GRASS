@@ -37,13 +37,11 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
         int solutionDistance;
         if (!contig.T)
         {
-            cout << "+" << endl;
             solutionDistance = contig.X - solutionEnd;
             sign = "+";
         }
         else
         {
-            cout << "-" << endl;
             contigSeq.ReverseCompelement();
             solutionDistance = contig.X - contigLen + 1 - solutionEnd;
             sign = "-";
@@ -66,7 +64,7 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
                 {
                     overlapLen = leftLen + rightLen + overlapOffset; // 4 + 10 - 1199
                     sequence = contigSeq.Nucleotides.substr(0, contigLen - overlapLen) + overlapConsensus + sequence.substr(overlapLen, actualEnd - overlapLen);
-                    cout << "A: " << leftLen << " + " << rightLen << " = " << sequence.length() << endl;
+                    //cout << "A: " << leftLen << " + " << rightLen << " = " << sequence.length() << endl;
                 }
                 /*
                  * ----        L
@@ -76,7 +74,7 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
                 {
                     overlapLen = leftLen;
                     sequence = contigSeq.Nucleotides.substr(0, -overlapOffset - leftLen) + overlapConsensus + contigSeq.Nucleotides.substr(-overlapOffset, contigLen + overlapOffset);
-                    cout << "B: " << leftLen << " + " << rightLen << " = " << sequence.length() << endl;
+                    //cout << "B: " << leftLen << " + " << rightLen << " = " << sequence.length() << endl;
                 }
                 /*
                  * ----         L
@@ -86,7 +84,7 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
                 {
                     overlapLen = -overlapOffset;
                     sequence = sequence.substr(0, actualEnd - overlapLen) + overlapConsensus + contigSeq.Nucleotides.substr(overlapLen, contigLen - overlapLen);
-                    cout << "C: " << leftLen << " + " << rightLen << " = " << sequence.length() << endl;
+                    //cout << "C: " << leftLen << " + " << rightLen << " = " << sequence.length() << endl;
                 }
             }
             /*
@@ -103,7 +101,7 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
                 {
                     overlapLen = -overlapOffset;
                     sequence = sequence.substr(0, actualEnd - overlapLen) + overlapConsensus + contigSeq.Nucleotides.substr(overlapLen, contigLen - overlapLen);
-                    cout << "D: " << leftLen << " + " << rightLen << " = " << sequence.length() << endl;
+                    //cout << "D: " << leftLen << " + " << rightLen << " = " << sequence.length() << endl;
                 }
                 /*
                  * ----------  L
@@ -114,7 +112,7 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
                     overlapLen = rightLen;;
                     // leftSequence = left.substr(leftLen + offset, overlapLen);
                     sequence = sequence.substr(0, actualEnd + overlapOffset) + overlapConsensus + sequence.substr(-overlapOffset, -overlapOffset - contigLen);
-                    cout << "E: " << leftLen << " + " << rightLen << " = " << sequence.length() << endl;
+                    //cout << "E: " << leftLen << " + " << rightLen << " = " << sequence.length() << endl;
                 }
                 /*
                  *  ----------  L
@@ -124,7 +122,7 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
                 {
                     overlapLen = leftLen + rightLen + overlapOffset;
                     sequence = contigSeq.Nucleotides.substr(0, contigLen - overlapLen) + overlapConsensus + sequence.substr(overlapLen, actualEnd - overlapLen);
-                    cout << "F: " << leftLen << " + " << rightLen << " = " << sequence.length() << endl;
+                    //cout << "F: " << leftLen << " + " << rightLen << " = " << sequence.length() << endl;
                 }
             }
         }
@@ -134,16 +132,16 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
             {
                 string spacer(solutionDistance, 'N');
                 sequence = sequence + spacer + contigSeq.Nucleotides;
-                cout << "G: " << leftLen << " + " << rightLen << " = " << sequence.length() << " (" << solutionDistance << ")" << endl;
+                //cout << "G: " << leftLen << " + " << rightLen << " = " << sequence.length() << " (" << solutionDistance << ")" << endl;
             }
             else if (-solutionDistance <= config.NoSplitOverlapLength) // the predicted overlap is short
             {
                 sequence = sequence + contigSeq.Nucleotides;
-                cout << "H: " << leftLen << " + " << rightLen << " = " << sequence.length() << endl;
+                //cout << "H: " << leftLen << " + " << rightLen << " = " << sequence.length() << endl;
             }
             else // we predicted a long overlap
             {
-                cout << "SPLITTING!" << endl;
+                //cout << "SPLITTING!" << endl;
                 // split
                 ans.push_back(FastASequence(sequence, name));
                 sequence = contigSeq.Nucleotides;
@@ -151,13 +149,13 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
                 // update coords
                 scaffoldOffset = (!contig.T ? contig.X : contig.X - contigLen + 1);
                 solutionEnd = 0;
-                cout << "I: " << leftLen << " + " << rightLen << " = " << sequence.length() << endl;
+                //cout << "I: " << leftLen << " + " << rightLen << " = " << sequence.length() << endl;
             }
         }
         //cout << "Left: " << sequence << endl;
         name = (!name.empty() ? name + "|" + sign : sign) + Helpers::ItoStr(contig.Id);
         actualEnd = sequence.length();
-        cout << "max of " << solutionEnd << " and " << contigEnd << endl;
+        //cout << "max of " << solutionEnd << " and " << contigEnd << endl;
         solutionEnd = max(solutionEnd, contigEnd);
     }
 
