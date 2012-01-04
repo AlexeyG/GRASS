@@ -37,11 +37,13 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
         int solutionDistance;
         if (!contig.T)
         {
+            cout << "+" << endl;
             solutionDistance = contig.X - solutionEnd;
             sign = "+";
         }
         else
         {
+            cout << "-" << endl;
             contigSeq.ReverseCompelement();
             solutionDistance = contig.X - contigLen + 1 - solutionEnd;
             sign = "-";
