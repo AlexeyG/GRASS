@@ -150,7 +150,7 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
                 name.clear();
                 // update coords
                 scaffoldOffset = (!contig.T ? contig.X : contig.X - contigLen + 1);
-                solutionEnd = contigEnd - scaffoldOffset;
+                solutionEnd = contigEnd - scaffoldOffset + 1;
                 cout << "I: " << leftLen << " + " << rightLen << " = " << sequence.length() << endl;
             }
         }
@@ -158,7 +158,7 @@ vector<FastASequence> ScaffoldConverter::ToFasta(const DataStore &store, const S
         name = (!name.empty() ? name + "|" + sign : sign) + Helpers::ItoStr(contig.Id);
         actualEnd = sequence.length();
         cout << "max of " << solutionEnd << " and " << contigEnd - scaffoldOffset << endl;
-        solutionEnd = max(solutionEnd, contigEnd - scaffoldOffset);
+        solutionEnd = max(solutionEnd, contigEnd - scaffoldOffset + 1);
     }
 
 #else
