@@ -217,6 +217,26 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
 				}
 				this->PairedReadInputs.push_back(PairedInput(leftFileName, rightFileName, mu, sigma, true, weight, mapQ, minReadLength, maxEditDistance));
 			}
+                        else if (!strcmp("-seq", argv[i]))
+			{
+				if (argc - i - 1 < 2)
+				{
+					serr << "[-] Parsing error in -seq: must have 2 arguments." << endl;
+					this->Success = false;
+					break;
+				}
+				i++;
+				string fileName = argv[i]; i++;
+				bool sigmaSuccess;
+				int sigma = Helpers::ParseInt(argv[i], sigmaSuccess);
+				if (!sigmaSuccess || sigma < 0)
+				{
+					serr << "[-] Parsing error in -seq: sigma must be a non-negative number." << endl;
+					this->Success = false;
+					break;
+				}
+				this->SequenceInputs.push_back(SequenceInput(fileName, sigma, weight, minReadLength));
+			}
 			else if (!strcmp("-output", argv[i]))
 			{
 				if (argc - i - 1 < 1)
@@ -336,13 +356,17 @@ void Configuration::printHelpMessage(stringstream &serr)
 	serr << "[i] Usage: dataLinker [arguments] <sequence.fasta>" << endl;
 	serr << "[i] -help                                               Print this message and exit." << endl;
 	serr << "[i] -weight <weight>                                    Set weight for information sources coming after the switch. [1]" << endl;
+        serr << "[i] -minlength <length>                                 Set minimum length cutoff for information sources coming after the switch. [0]" << endl;
+        serr << endl;
 	serr << "[i] -mapq <score>                                       Set MapQ cutoff for information sources coming after the switch. [0]" << endl;
-	serr << "[i] -minlength <length>                                 Set minimum length cutoff for information sources coming after the switch. [0]" << endl;
 	serr << "[i] -maxedit <distance>                                 Set maximum edit distance cutoff for information sources coming after the switch. [10000]" << endl;
 	serr << "[i] -maxhits <num>                                      Maximum number of allowed link hits. If a link has more hits, it is disregarded. [5]" << endl;
 	serr << "[i] -nooverlapdeviation <num>                           Maximum allowed deviation from mean insert size when no overlaps are allowed. [disabled]" << endl;
 	serr << "[i] -454 <left.fq> <right.fq> <mu> <sigma>              Process 454 paired reads with insert size <mu>+/-<sigma> into linking information." << endl;
 	serr << "[i] -illumina <left.fq> <right.fq> <mu> <sigma>         Process Illumina paired reads with insert size <mu>+/-<sigma> into linking information." << endl;
+        serr << endl;
+        serr << "[i] -seq <reference.fa> <sigma>                         Process related sequences into linking information with <sigma> as standard deviation." << endl;
+        serr << endl;
         serr << "[i] -readcoverage <filename>                            Produce contig read coverage data and output it to file <filename>. [disabled]" << endl;
 	serr << "[i] -output <filename>                                  Output filename for optimzation information. [output.opt]" << endl;
 	serr << "[i] -tmp <path>                                         Define scrap path for temporary files. [/tmp]" << endl;
@@ -350,4 +374,5 @@ void Configuration::printHelpMessage(stringstream &serr)
 	serr << "[i] -bwathreads <n>                                     Number of threads used in BWA alignment. [8]" << endl;
 	serr << "[i] -bwahits <n>                                        Maximum number of alignment hits BWA should report. [1000]" << endl;
 	serr << "[i] -bwaexact <yes/no>                                  Use exact matching in BWA? [no]";
+        serr << endl;
 }

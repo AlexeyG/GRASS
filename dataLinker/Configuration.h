@@ -23,6 +23,19 @@ public:
 	int MaxEditDistance;
 };
 
+class SequenceInput
+{
+public:
+	SequenceInput(const string &fileName, double std, double weight = 1, int minAlignmentLength = 0)
+                : FileName(fileName), Std(std), Weight(weight), MinAlignmentLength(minAlignmentLength) {};
+
+public:
+	string FileName;
+	double Std;
+	double Weight;
+	int MinAlignmentLength;
+};
+
 class Configuration
 {
 public:
@@ -42,6 +55,7 @@ public:
 	NovoAlignConfiguration NovoAlignConfig;
 	SAMToolsConfiguration SAMToolsConfig;
 	vector<PairedInput> PairedReadInputs;
+        vector<SequenceInput> SequenceInputs;
 	string LastError;
 
 private:
