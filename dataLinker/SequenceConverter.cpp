@@ -29,7 +29,7 @@ SequenceConverter::SequenceConverterResult SequenceConverter::Process(const Conf
     return result;
 }
 
-static SequenceConverter::SequenceConverterResult SequenceConverter::alignContigs(const string &sequenceFileName, const Configuration &config, Coords &coords)
+SequenceConverter::SequenceConverterResult SequenceConverter::alignContigs(const string &sequenceFileName, const Configuration &config, Coords &coords)
 {
     MummerAligner aligner(sequenceFileName, config.InputFileName, config.MummerConfig);
     std::vector<FastASequence> references;
