@@ -65,7 +65,7 @@ void SequenceConverter::createLinksFromAlignment(int groupID, Coords &coords, co
             bool forwardOrder = prev->IsQueryReverse == prev->IsReferenceReverse;
             double weight = input.Weight * cur->Identity * cur->QueryAlignmentLength / (double) curLength * prev->QueryAlignmentLength / (double) prevLength;
             ContigLink link(prev->QueryID, cur->QueryID, distance, input.Std, equalOrientation, forwardOrder, weight);
-            dataStore.AddLink(link);
+            dataStore.AddLink(groupID, link);
         }
     }
 }
