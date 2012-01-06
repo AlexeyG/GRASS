@@ -79,6 +79,14 @@ const LinkGroup &DataStore::GetGroup(int id) const
 	return groups[id];
 }
 
+vector<FastASequence> DataStore::GetContigs() const
+{
+    vector<FastASequence> faContigs(ContigCount);
+    for (int i = 0; i < ContigCount; i++)
+        faContigs[i] = contigs[i].Sequence;
+    return faContigs;
+}
+
 int DataStore::AddContig(const Contig &contig)
 {
 	contigs.push_back(contig);

@@ -83,6 +83,7 @@ public:
 	LinkMap::iterator Begin();
 	LinkMap::iterator End();
 	const LinkGroup &GetGroup(int id) const;
+        vector<FastASequence> GetContigs() const;
 	int AddContig(const Contig &contig);
 	int AddGroup(const LinkGroup &group);
 	LinkMap::const_iterator AddLink(int groupId, const ContigLink &link);
