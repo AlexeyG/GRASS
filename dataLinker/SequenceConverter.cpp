@@ -3,6 +3,7 @@
 #include "MummerCoordReader.h"
 #include "Reader.h"
 #include <algorithm>
+#include <sstream>
 
 using namespace std;
 
@@ -32,7 +33,9 @@ SequenceConverter::SequenceConverterResult SequenceConverter::Process(const Conf
 
 int SequenceConverter::addLinkGroup(const SequenceInput &input)
 {
-    LinkGroup group("Reference sequence alignment", "Alignment to sequences " + input.FileName " with " << input.Std << " of weight " << input.Weight);
+    stringstream ss;
+    ss << "Alignment to sequences " << input.FileName " with " << input.Std << " of weight " << input.Weight;
+    LinkGroup group("Reference sequence alignment", ss.str());
     return dataStore.AddGroup(group);
 }
 
