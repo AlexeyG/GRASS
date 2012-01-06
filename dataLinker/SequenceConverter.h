@@ -21,6 +21,7 @@ public:
 
 private:
     SequenceConverterResult alignContigs(const std::string &sequenceFileName, const Configuration &config, Coords &coords);
+    int filterAlignmentsOnLength(Coords &coords, double minBases);
     
 private:
     DataStore &dataStore;
