@@ -14,7 +14,7 @@ class SequenceConverter
 {
 public:
     SequenceConverter(DataStore &store);
-    enum SequenceConverterResult { Success, FailedAlignment, FailedReadAlignment, FailedReadSequences, FailedLinkCreation, InconsistentReferenceSets };
+    enum SequenceConverterResult { Success, FailedAlignment, FailedReadAlignment, FailedReadSequences };
 
 public:
     SequenceConverterResult Process(const Configuration &config, const SequenceInput &input);

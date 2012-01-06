@@ -75,12 +75,6 @@ bool processSequences(const Configuration &config, DataStore &store, const vecto
             case SequenceConverter::FailedReadSequences:
                 cerr << "      [-] Unable to read sequences." << endl;
                 return false;
-            case SequenceConverter::FailedLinkCreation:
-                cerr << "      [-] Unable to create contig links from alignment." << endl;
-                return false;
-            case SequenceConverter::InconsistentReferenceSets:
-                cerr << "      [-] Inconsistent reference sets in alignments." << endl;
-                return false;
         }
     }
     return true;
