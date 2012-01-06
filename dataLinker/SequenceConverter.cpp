@@ -20,7 +20,7 @@ SequenceConverter::SequenceConverterResult SequenceConverter::Process(const Conf
         return result;
     filterAlignmentsOnLength(coords, input.MinAlignmentLength);
     sortAlignments(coords);
-    createLinksFromAlignment(addLinkGroup(input), coords);
+    createLinksFromAlignment(addLinkGroup(input), coords, input);
     cout << "Got " << coords.size() << " alignments!" << endl;
     for (int i = 0; i < (int)coords.size(); i++)
     {
