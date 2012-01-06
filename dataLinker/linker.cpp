@@ -53,7 +53,7 @@ bool processPairs(const Configuration &config, DataStore &store, const vector<Pa
 	return true;
 }
 
-bool processSequences(const Configuration &config, DataStore &store, const vector<PairedInput> &sequences)
+bool processSequences(const Configuration &config, DataStore &store, const vector<SequenceInput> &sequences)
 {
     SequenceConverter converter(store);
     int n = (int)sequences.size();
