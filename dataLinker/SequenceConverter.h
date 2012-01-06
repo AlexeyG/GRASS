@@ -20,7 +20,7 @@ public:
     SequenceConverterResult Process(const Configuration &config, const SequenceInput &input);
 
 private:
-    static SequenceConverterResult alignContigs(const std::string &sequenceFileName, const Configuration &config, Coords &coords);
+    SequenceConverterResult alignContigs(const std::string &sequenceFileName, const Configuration &config, Coords &coords);
     static int filterAlignmentsOnLength(Coords &coords, double minBases);
     static void sortAlignments(Coords &coords);
     static bool referencePositionComparator(const MummerCoord &l, const MummerCoord &r);
