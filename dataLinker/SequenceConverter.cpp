@@ -34,7 +34,7 @@ SequenceConverter::SequenceConverterResult SequenceConverter::Process(const Conf
 int SequenceConverter::addLinkGroup(const SequenceInput &input)
 {
     stringstream ss;
-    ss << "Alignment to sequences " << input.FileName " with " << input.Std << " of weight " << input.Weight;
+    ss << "Alignment to sequences " << input.FileName << " with " << input.Std << " of weight " << input.Weight;
     LinkGroup group("Reference sequence alignment", ss.str());
     return dataStore.AddGroup(group);
 }
