@@ -17,7 +17,7 @@ SequenceConverter::SequenceConverterResult SequenceConverter::Process(const Conf
     result = alignContigs(input.FileName, config, coords);
     if (result != Success)
         return result;
-    
+    filterAlignmentsOnLength(coords, input.MinAlignmentLength);
     cout << "Got " << coords.size() << " alignments!" << endl;
     
     return result;
@@ -38,12 +38,12 @@ SequenceConverter::SequenceConverterResult SequenceConverter::alignContigs(const
     return Success;
 }
 
-/*int SequenceConverter::filterAlignments(Coords &coords, double minBases)
+int SequenceConverter::filterAlignmentsOnLength(Coords &coords, double minBases)
 {
     int count = 0;
     Coords newCoords;
     for (auto it = coords.begin(); it != coords.end(); it++)
-        if (it->Identity * it->ReferenceAlignmentLength > minBases)
+        if (it->ReferenceAlignmentLength > minBases && it->QueryAlignmentLenght > minBases)
             newCoords.push_back(*it);
         else
             count++;
@@ -51,7 +51,7 @@ SequenceConverter::SequenceConverterResult SequenceConverter::alignContigs(const
     return count;
 }
 
-int SequenceConverter::filterAlignments(Coords &coords, double minBases)
+/*int SequenceConverter::filterAlignments(Coords &coords, double minBases)
 {
     int count = 0;
     Coords newCoords;
