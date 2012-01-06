@@ -44,7 +44,7 @@ SequenceConverter::SequenceConverterResult SequenceConverter::alignContigs(const
     return Success;
 }
 
-static int SequenceConverter::filterAlignmentsOnLength(Coords &coords, double minBases)
+int SequenceConverter::filterAlignmentsOnLength(Coords &coords, double minBases)
 {
     int count = 0;
     Coords newCoords;
@@ -57,12 +57,12 @@ static int SequenceConverter::filterAlignmentsOnLength(Coords &coords, double mi
     return count;
 }
 
-static void SequenceConverter::sortAlignments(Coords &coords)
+void SequenceConverter::sortAlignments(Coords &coords)
 {
     sort(coords.begin(), coords.end(), referencePositionComparator);
 }
 
-static bool SequenceConverter::referencePositionComparator(const MummerCoord &l, const MummerCoord &r)
+bool SequenceConverter::referencePositionComparator(const MummerCoord &l, const MummerCoord &r)
 {
     if (l.ReferenceID < r.ReferenceID)
         return true;
