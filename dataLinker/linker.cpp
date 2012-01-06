@@ -5,6 +5,7 @@
 #include "Configuration.h"
 #include "DataStore.h"
 #include "PairedReadConverter.h"
+#include "SequenceConverter.h"
 #include "DataStoreWriter.h"
 #include "ReadCoverage.h"
 #include "ReadCoverageWriter.h"
