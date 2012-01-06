@@ -2,6 +2,7 @@
 #include "Aligner.h"
 #include "MummerCoordReader.h"
 #include "Reader.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -18,12 +19,17 @@ SequenceConverter::SequenceConverterResult SequenceConverter::Process(const Conf
     if (result != Success)
         return result;
     filterAlignmentsOnLength(coords, input.MinAlignmentLength);
+    sortAlignments(coords);
     cout << "Got " << coords.size() << " alignments!" << endl;
+    for (int i = 0; i < (int)coords.size(); i++)
+    {
+        cout << coords[i].ReferenceID << "\t" << coords[i].ReferencePosition << "\t" << coords[i].QueryID << "\t" << coords[i].ReferenceAlignmentLength << endl;
+    }
     
     return result;
 }
 
-SequenceConverter::SequenceConverterResult SequenceConverter::alignContigs(const string &sequenceFileName, const Configuration &config, Coords &coords)
+static SequenceConverter::SequenceConverterResult SequenceConverter::alignContigs(const string &sequenceFileName, const Configuration &config, Coords &coords)
 {
     MummerAligner aligner(sequenceFileName, config.InputFileName, config.MummerConfig);
     std::vector<FastASequence> references;
@@ -38,7 +44,7 @@ SequenceConverter::SequenceConverterResult SequenceConverter::alignContigs(const
     return Success;
 }
 
-int SequenceConverter::filterAlignmentsOnLength(Coords &coords, double minBases)
+static int SequenceConverter::filterAlignmentsOnLength(Coords &coords, double minBases)
 {
     int count = 0;
     Coords newCoords;
@@ -51,15 +57,30 @@ int SequenceConverter::filterAlignmentsOnLength(Coords &coords, double minBases)
     return count;
 }
 
-/*int SequenceConverter::filterAlignments(Coords &coords, double minBases)
+static void SequenceConverter::sortAlignments(Coords &coords)
 {
-    int count = 0;
-    Coords newCoords;
-    for (auto it = coords.begin(); it != coords.end(); it++)
-        if (it->Identity * it->ReferenceAlignmentLength > minBases)
-            newCoords.push_back(*it);
-        else
-            count++;
-    coords.swap(newCoords);
-    return count;
-}*/
+    sort(coords.begin(), coords.end(), referencePositionComparator);
+}
+
+static bool SequenceConverter::referencePositionComparator(const MummerCoord &l, const MummerCoord &r)
+{
+    if (l.ReferenceID < r.ReferenceID)
+        return true;
+    if (l.ReferenceID > r.ReferenceID)
+        return false;
+    if (l.ReferencePosition < r.ReferencePosition)
+        return true;
+    if (l.ReferencePosition > r.ReferencePosition)
+        return false;
+    if (l.ReferenceAlignmentLength > r.ReferenceAlignmentLength)
+        return true;
+    if (l.ReferenceAlignmentLength < r.ReferenceAlignmentLength)
+        return false;
+    if (l.QueryAlignmentLength > r.QueryAlignmentLength)
+        return true;
+    if (l.QueryAlignmentLength < r.QueryAlignmentLength)
+        return false;
+    if (l.QueryID < r.QueryID)
+        return true;
+    return false;
+}
