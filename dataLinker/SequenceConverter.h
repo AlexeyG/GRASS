@@ -2,7 +2,7 @@
 #define	_SEQUENCECONVERTER_H
 
 #include "Configuration.h"
-#include "DataStore.h
+#include "DataStore.h"
 #include "MummerCoord.h"
 
 #include <string>
