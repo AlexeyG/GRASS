@@ -44,7 +44,7 @@ bool processPairs(const Configuration &config, DataStore &store, const vector<Pa
 		case PairedReadConverter::FailedLinkCreation:
 			cerr << "      [-] Unable to create contig links from alignment." << endl;
 			return false;
-                    case PairedReadConverter::InconsistentReferenceSets:
+                case PairedReadConverter::InconsistentReferenceSets:
                         cerr << "      [-] Inconsistent reference sets in alignments." << endl;
                         return false;
 		}
@@ -61,6 +61,27 @@ bool processSequences(const Configuration &config, DataStore &store, const vecto
     {
         SequenceInput s = sequences[i];
         cerr << "   [i] Processing sequences (" << s.FileName << ") of weight " << s.Weight << " and deviation " << s.Std << endl;
+        switch (converter.Process(config, s))
+        {
+            case SequenceConverter::Success:
+                cerr << "      [+] Successfully processed sequences." << endl;
+                break;
+            case SequenceConverter::FailedAlignment:
+                cerr << "      [-] Unable to align contigs." << endl;
+                return false;
+            case SequenceConverter::FailedReadAlignment:
+                cerr << "      [-] Unable to read contig alignment." << endl;
+                return false;
+            case SequenceConverter::FailedReadSequences:
+                cerr << "      [-] Unable to read sequences." << endl;
+                return false;
+            case SequenceConverter::FailedLinkCreation:
+                cerr << "      [-] Unable to create contig links from alignment." << endl;
+                return false;
+            case SequenceConverter::InconsistentReferenceSets:
+                cerr << "      [-] Inconsistent reference sets in alignments." << endl;
+                return false;
+        }
     }
     return true;
 }
@@ -103,12 +124,15 @@ int main(int argc, char *argv[])
                     return -5;
 		}
                 cerr << "[+] Output generated link into file (" << config.OutputFileName << ")." << endl;
-                if (!config.ReadCoverageFileName.empty() && !writeCoverage(coverage, config.ReadCoverageFileName))
+                if (!config.ReadCoverageFileName.empty())
                 {
-                    cerr << "[-] Unable to output read coverage statistics into file (" << config.ReadCoverageFileName << ")." << endl;
-                    return -6;
+                    if (!writeCoverage(coverage, config.ReadCoverageFileName))
+                    {
+                        cerr << "[-] Unable to output read coverage statistics into file (" << config.ReadCoverageFileName << ")." << endl;
+                        return -6;
+                    }
+                    cerr << "[+] Output read coverage into file (" << config.ReadCoverageFileName << ")." << endl;
                 }
-                cerr << "[+] Output read coverage into file (" << config.ReadCoverageFileName << ")." << endl;
 		return 0;
 	}
 	cerr << config.LastError;
