@@ -43,7 +43,7 @@ int SequenceConverter::filterAlignmentsOnLength(Coords &coords, double minBases)
     int count = 0;
     Coords newCoords;
     for (auto it = coords.begin(); it != coords.end(); it++)
-        if (it->ReferenceAlignmentLength > minBases && it->QueryAlignmentLenght > minBases)
+        if (it->ReferenceAlignmentLength > minBases && it->QueryAlignmentLength > minBases)
             newCoords.push_back(*it);
         else
             count++;
