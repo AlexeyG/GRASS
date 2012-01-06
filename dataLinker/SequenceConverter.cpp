@@ -34,7 +34,7 @@ SequenceConverter::SequenceConverterResult SequenceConverter::alignContigs(const
     MummerAligner aligner(sequenceFileName, config.InputFileName, config.MummerConfig);
     std::vector<FastASequence> references;
     FastAReader faReader;
-    if (!faReader.Open(config.InputFileName) || faReader.Read(references) <= 0)
+    if (!faReader.Open(sequenceFileName) || faReader.Read(references) <= 0)
         return FailedReadSequences;
     MummerCoordReader reader(references, dataStore.GetContigs());
     if (!aligner.Align())
