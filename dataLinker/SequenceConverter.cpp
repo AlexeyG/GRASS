@@ -10,7 +10,7 @@ SequenceConverter::SequenceConverter(DataStore &store)
 {
 }
 
-SequenceConverterResult SequenceConverter::Process(const Configuration &config, const SequenceInput &input)
+SequenceConverter::SequenceConverterResult SequenceConverter::Process(const Configuration &config, const SequenceInput &input)
 {
     SequenceConverterResult result;
     Coords coords;
@@ -23,7 +23,7 @@ SequenceConverterResult SequenceConverter::Process(const Configuration &config, 
     return result;
 }
 
-SequenceConverterResult SequenceConverter::alignContigs(const string &sequenceFileName, const Configuration &config, Coords &coords)
+SequenceConverter::SequenceConverterResult SequenceConverter::alignContigs(const string &sequenceFileName, const Configuration &config, Coords &coords)
 {
     MummerAligner aligner(sequenceFileName, config.InputFileName, config.MummerConfig);
     std::vector<FastASequence> references;
