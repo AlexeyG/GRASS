@@ -52,6 +52,18 @@ bool processPairs(const Configuration &config, DataStore &store, const vector<Pa
 	return true;
 }
 
+bool processSequences(const Configuration &config, DataStore &store, const vector<PairedInput> &sequences)
+{
+    SequenceConverter converter(store);
+    int n = (int)sequences.size();
+    for (int i = 0; i < n; i++)
+    {
+        SequenceInput s = sequences[i];
+        cerr << "   [i] Processing sequences (" << s.FileName << ") of weight " << s.Weight << " and deviation " << s.Std << endl;
+    }
+    return true;
+}
+
 bool writeStore(const DataStore &store, const string &fileName)
 {
 	DataStoreWriter writer;
@@ -82,16 +94,18 @@ int main(int argc, char *argv[])
 		cerr << "[i] Processing paired reads." << endl;
 		if (!processPairs(config, store, config.PairedReadInputs, coverage))
 			return -3;
+                if (!processSequences(config, store, config.SequenceInputs))
+			return -4;
 		if (!writeStore(store, config.OutputFileName))
 		{
                     cerr << "[-] Unable to output generated links into file (" << config.OutputFileName << ")." << endl;
-                    return -4;
+                    return -5;
 		}
                 cerr << "[+] Output generated link into file (" << config.OutputFileName << ")." << endl;
                 if (!config.ReadCoverageFileName.empty() && !writeCoverage(coverage, config.ReadCoverageFileName))
                 {
                     cerr << "[-] Unable to output read coverage statistics into file (" << config.ReadCoverageFileName << ")." << endl;
-                    return -5;
+                    return -6;
                 }
                 cerr << "[+] Output read coverage into file (" << config.ReadCoverageFileName << ")." << endl;
 		return 0;
