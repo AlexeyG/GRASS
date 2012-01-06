@@ -116,11 +116,6 @@ PairedReadConverter::PairedReadConverterResult PairedReadConverter::createLinksF
 void PairedReadConverter::createLinksForPair(int groupId, const BamAlignment &leftAlg, const vector<XATag> &leftTags, const BamAlignment &rightAlg, const vector<XATag> &rightTags, const PairedInput &input, double noOverlapDeviation, int maxHits)
 {
 	int combinations = leftTags.size() * rightTags.size();
-	/*if (leftAlg.Name == "660005.1|479132" | leftAlg.Name == "660005.2|479603")
-	{
-		cout << leftAlg.IsMapped() << " " << leftAlg.Length << " " << leftAlg.MapQuality << " " << leftAlg.Name << " " << leftAlg.Position << endl;
-		cout << rightAlg.IsMapped() << " " << rightAlg.Length << " " << rightAlg.MapQuality << " " << rightAlg.Name << " " << rightAlg.Position << endl;
-	}*/
 	if (combinations > maxHits || combinations == 0)
 		return;
 	for (vector<XATag>::const_iterator l = leftTags.begin(); l != leftTags.end(); l++)

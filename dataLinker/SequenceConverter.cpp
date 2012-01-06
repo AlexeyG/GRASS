@@ -20,6 +20,7 @@ SequenceConverter::SequenceConverterResult SequenceConverter::Process(const Conf
         return result;
     filterAlignmentsOnLength(coords, input.MinAlignmentLength);
     sortAlignments(coords);
+    createLinksFromAlignment(addLinkGroup(input), coords);
     cout << "Got " << coords.size() << " alignments!" << endl;
     for (int i = 0; i < (int)coords.size(); i++)
     {
@@ -27,6 +28,12 @@ SequenceConverter::SequenceConverterResult SequenceConverter::Process(const Conf
     }
     
     return result;
+}
+
+int SequenceConverter::addLinkGroup(const SequenceInput &input)
+{
+    LinkGroup group("Reference sequence alignment", "Alignment to sequences " + input.FileName " with " << input.Std << " of weight " << input.Weight);
+    return dataStore.AddGroup(group);
 }
 
 SequenceConverter::SequenceConverterResult SequenceConverter::alignContigs(const string &sequenceFileName, const Configuration &config, Coords &coords)
@@ -42,6 +49,25 @@ SequenceConverter::SequenceConverterResult SequenceConverter::alignContigs(const
     if (!reader.Open(aligner.OutputFileName) || reader.Read(coords) == 0)
         return FailedReadAlignment;
     return Success;
+}
+
+void SequenceConverter::createLinksFromAlignment(int groupID, Coords &coords, const SequenceInput &input)
+{
+    auto prev = coords.begin();
+    for (auto cur = prev + 1; cur != coords.end(); prev++, cur++)
+    {
+        if (prev->ReferenceID == cur->ReferenceID && prev->QueryID != cur->QueryID)
+        {
+            int prevLength = dataStore[prev->QueryID].Sequence.Nucleotides.length();
+            int curLength = dataStore[cur->QueryID].Sequence.Nucleotides.length();
+            int distance = prev->QueryPosition + (cur->ReferencePosition - prev->ReferencePosition + 1) + (curLength - cur->QueryPosition - cur->QueryAlignmentLength + 1);
+            bool equalOrientation = (prev->IsQueryReverse ^ prev->IsReferenceReverse) == (cur->IsQueryReverse ^ cur->IsReferenceReverse);
+            bool forwardOrder = prev->IsQueryReverse == prev->IsReferenceReverse;
+            double weight = input.Weight * cur->Identity * cur->QueryAlignmentLengh / (double) curLength * prev->QueryAlignmentLength / (double) prevLength;
+            ContigLink link(prev->QueryID, cur->QueryID, distance, input.Std, equalOrientation, forwardOrder, weight);
+            dataStore.Add(link);
+        }
+    }
 }
 
 int SequenceConverter::filterAlignmentsOnLength(Coords &coords, double minBases)
