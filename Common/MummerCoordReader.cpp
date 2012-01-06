@@ -75,6 +75,7 @@ bool MummerCoordReader::Read(MummerCoord &coord)
     
     auto it = referenceIds.find(referenceName); coord.ReferenceID = (it == referenceIds.end() ? -1 : it->second);
     it = scaffoldIds.find(queryName); coord.QueryID = (it == scaffoldIds.end() ? -1 : it->second);
+    cout << "Trying to get " << queryName << endl;
     
     // Lets use SamTools convention, no need to reverse coordinates
     if (coord.IsReferenceReverse)
