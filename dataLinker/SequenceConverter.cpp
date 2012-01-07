@@ -49,11 +49,6 @@ SequenceConverter::SequenceConverterResult SequenceConverter::Process(const Conf
     filterAlignmentsOnLength(coords, input.MinAlignmentLength);
     sortAlignments(coords);
     createLinksFromAlignment(addLinkGroup(input), coords, input);
-    cout << "Got " << coords.size() << " alignments!" << endl;
-    for (int i = 0; i < (int)coords.size(); i++)
-    {
-        cout << coords[i].ReferenceID << "\t" << coords[i].ReferencePosition << "\t" << coords[i].QueryID << "\t" << coords[i].ReferenceAlignmentLength << endl;
-    }
     
     return result;
 }
@@ -83,9 +78,11 @@ SequenceConverter::SequenceConverterResult SequenceConverter::alignContigs(const
 
 void SequenceConverter::createLinksFromAlignment(int groupID, Coords &coords, const SequenceInput &input)
 {
+    cout << "Got " << coords.size() << " alignments!" << endl;
     auto prev = coords.begin();
     for (auto cur = prev + 1; cur != coords.end(); prev++, cur++)
     {
+        cout << prev->ReferenceID << "\t" << prev->ReferencePosition << "\t" << prev->QueryID << "\t" << prev->ReferenceAlignmentLength << endl;
         if (prev->ReferenceID == cur->ReferenceID && prev->QueryID != cur->QueryID)
         {
             int prevLength = dataStore[prev->QueryID].Sequence.Nucleotides.length();
@@ -96,6 +93,7 @@ void SequenceConverter::createLinksFromAlignment(int groupID, Coords &coords, co
             double weight = input.Weight * cur->Identity * cur->QueryAlignmentLength / (double) curLength * prev->QueryAlignmentLength / (double) prevLength;
             ContigLink link(prev->QueryID, cur->QueryID, distance, input.Std, equalOrientation, forwardOrder, weight);
             dataStore.AddLink(groupID, link);
+            cout << "   added link between " << prev->QueryID << " and " << cur->QueryID << endl;
         }
     }
 }
