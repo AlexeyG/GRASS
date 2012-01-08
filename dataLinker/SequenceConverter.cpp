@@ -75,21 +75,22 @@ SequenceConverter::SequenceConverterResult SequenceConverter::alignContigs(const
     return Success;
 }
 
-void SequenceConverter::createLinksFromAlignment(int groupID, Coords &coords, const SequenceInput &input)
+void SequenceConverter::createLinksFromAlignment(int groupID, Coords &tilings, const SequenceInput &input)
 {
-    cout << "Got " << coords.size() << " alignments!" << endl;
-    auto prev = coords.begin();
-    for (auto cur = prev + 1; cur != coords.end(); prev++, cur++)
+    cout << "Got " << tilings.size() << " alignments!" << endl;
+    MummerTiling t;
+    auto prev = tilings.begin();
+    for (auto cur = prev + 1; cur != tilings.end(); prev++, cur++)
     {
-        cout << prev->ReferenceID << "\t" << prev->ReferencePosition << "\t" << prev->QueryID << "\t" << prev->ReferenceAlignmentLength << endl;
+        cout << prev->ReferenceID << "\t" << prev->ReferencePosition << "\t" << prev->QueryID << "\t" << prev->ReferenceLength << endl;
         if (prev->ReferenceID == cur->ReferenceID && prev->QueryID != cur->QueryID)
         {
             int prevLength = dataStore[prev->QueryID].Sequence.Nucleotides.length();
             int curLength = dataStore[cur->QueryID].Sequence.Nucleotides.length();
-            int distance = prev->QueryPosition + (cur->ReferencePosition - prev->ReferencePosition + 1) + (curLength - cur->QueryPosition - cur->QueryAlignmentLength + 1);
-            bool equalOrientation = (prev->IsQueryReverse ^ prev->IsReferenceReverse) == (cur->IsQueryReverse ^ cur->IsReferenceReverse);
-            bool forwardOrder = prev->IsQueryReverse == prev->IsReferenceReverse;
-            double weight = input.Weight * cur->Identity * cur->QueryAlignmentLength / (double) curLength * prev->QueryAlignmentLength / (double) prevLength;
+            int distance = cur->ReferecePosition - prev->ReferencePosition + cur->QueryLength;
+            bool equalOrientation = !(prev->IsReverse ^ cur->IsReverse);
+            bool forwardOrder = !prev->IsQueryReverse;
+            double weight = input.Weight * cur->Identity * prev->Identity * prev->Coverage * cur->Coverage;
             ContigLink link(prev->QueryID, cur->QueryID, distance, input.Std, equalOrientation, forwardOrder, weight);
             dataStore.AddLink(groupID, link);
             cout << "   added link between " << prev->QueryID << " and " << cur->QueryID << endl;
