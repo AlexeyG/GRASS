@@ -30,12 +30,12 @@
 
 #include "Configuration.h"
 #include "DataStore.h"
-#include "MummerCoord.h"
+#include "MummerTiling.h"
 
 #include <string>
 #include <vector>
 
-typedef std::vector<MummerCoord> Coords;
+typedef std::vector<MummerTiling> Coords;
 
 class SequenceConverter
 {
@@ -52,7 +52,6 @@ private:
     void createLinksFromAlignment(int groupID, Coords &coords, const SequenceInput &input);
     static int filterAlignmentsOnLength(Coords &coords, double minBases);
     static void sortAlignments(Coords &coords);
-    static bool referencePositionComparator(const MummerCoord &l, const MummerCoord &r);
     
 private:
     DataStore &dataStore;

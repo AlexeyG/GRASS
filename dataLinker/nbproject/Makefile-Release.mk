@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/Configuration.o \
 	${OBJECTDIR}/PairedReadConverter.o \
+	${OBJECTDIR}/_ext/1120235088/SequenceConverter.o \
 	${OBJECTDIR}/linker.o
 
 
@@ -72,6 +73,11 @@ ${OBJECTDIR}/PairedReadConverter.o: PairedReadConverter.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/PairedReadConverter.o PairedReadConverter.cpp
+
+${OBJECTDIR}/_ext/1120235088/SequenceConverter.o: /Users/alexeyg/Documents/src/tud-scaffolding/dataLinker/SequenceConverter.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1120235088
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1120235088/SequenceConverter.o /Users/alexeyg/Documents/src/tud-scaffolding/dataLinker/SequenceConverter.cpp
 
 ${OBJECTDIR}/linker.o: linker.cpp 
 	${MKDIR} -p ${OBJECTDIR}

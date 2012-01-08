@@ -7,6 +7,7 @@
       <itemPath>Configuration.h</itemPath>
       <itemPath>Defines.h</itemPath>
       <itemPath>PairedReadConverter.h</itemPath>
+      <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/dataLinker/SequenceConverter.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -17,6 +18,7 @@
                    projectFiles="true">
       <itemPath>Configuration.cpp</itemPath>
       <itemPath>PairedReadConverter.cpp</itemPath>
+      <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/dataLinker/SequenceConverter.cpp</itemPath>
       <itemPath>linker.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
