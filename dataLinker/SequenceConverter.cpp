@@ -77,12 +77,10 @@ SequenceConverter::SequenceConverterResult SequenceConverter::alignContigs(const
 
 void SequenceConverter::createLinksFromAlignment(int groupID, Coords &tilings, const SequenceInput &input)
 {
-    cout << "Got " << tilings.size() << " alignments!" << endl;
     MummerTiling t;
     auto prev = tilings.begin();
     for (auto cur = prev + 1; cur != tilings.end(); prev++, cur++)
     {
-        cout << prev->ReferenceID << "\t" << prev->ReferencePosition << "\t" << prev->QueryID << "\t" << prev->ReferenceLength << endl;
         if (prev->ReferenceID == cur->ReferenceID && prev->QueryID != cur->QueryID)
         {
             int distance = cur->ReferencePosition - prev->ReferencePosition + cur->QueryLength;
@@ -91,7 +89,7 @@ void SequenceConverter::createLinksFromAlignment(int groupID, Coords &tilings, c
             double weight = input.Weight * cur->Identity * prev->Identity * prev->Coverage * cur->Coverage;
             ContigLink link(prev->QueryID, cur->QueryID, distance, input.Std, equalOrientation, forwardOrder, weight);
             dataStore.AddLink(groupID, link);
-            cout << "   added link between " << prev->QueryID << " and " << cur->QueryID << endl;
+            cout << "   added link between " << prev->QueryID << " and " << cur->QueryID << " of weight " << weight << endl;
         }
     }
 }
