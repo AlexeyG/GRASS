@@ -85,9 +85,9 @@ void SequenceConverter::createLinksFromAlignment(int groupID, Coords &tilings, c
         cout << prev->ReferenceID << "\t" << prev->ReferencePosition << "\t" << prev->QueryID << "\t" << prev->ReferenceLength << endl;
         if (prev->ReferenceID == cur->ReferenceID && prev->QueryID != cur->QueryID)
         {
-            int distance = cur->ReferecePosition - prev->ReferencePosition + cur->QueryLength;
+            int distance = cur->ReferencePosition - prev->ReferencePosition + cur->QueryLength;
             bool equalOrientation = !(prev->IsReverse ^ cur->IsReverse);
-            bool forwardOrder = !prev->IsQueryReverse;
+            bool forwardOrder = !prev->IsReverse;
             double weight = input.Weight * cur->Identity * prev->Identity * prev->Coverage * cur->Coverage;
             ContigLink link(prev->QueryID, cur->QueryID, distance, input.Std, equalOrientation, forwardOrder, weight);
             dataStore.AddLink(groupID, link);
