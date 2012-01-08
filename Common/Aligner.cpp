@@ -163,7 +163,7 @@ bool MummerTiler::Align(const string &outFile)
     if (success)
     {
         OutputFileName = (outFile.length() > 0 ? outFile : Helpers::TempFile(Configuration.TmpPath));
-        sprintf(str, Configuration.ShowTilingCommand.c_str(), prefix.c_str(), OutputFileName.c_str());
+        sprintf(str, Configuration.ShowTilingCommand.c_str(), (prefix + ".delta").c_str(), OutputFileName.c_str());
         cout << "C" << endl;
         cout << "About to execute: " << string(str) << endl;
         if (!Helpers::Execute(str))
