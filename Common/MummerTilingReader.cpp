@@ -61,13 +61,11 @@ bool MummerTilingReader::Read(MummerTiling &tiling)
             return false;
         line[--len] = '\0';
 
-        cout << "Got line: " << string(line) << endl;
         if (line[0] == '>')
         {
             stringstream tmpStream(line + 1);
             string newReference;
             tmpStream >> newReference;
-            cout << "Need to lookup id for (" << newReference << ")" << endl;
             auto it = referenceIds.find(newReference);
             referenceID = (it == referenceIds.end() ? -1 : it->second);
         }
