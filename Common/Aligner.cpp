@@ -156,21 +156,26 @@ bool MummerTiler::Align(const string &outFile)
     string prefix = Helpers::TempFile(Configuration.TmpPath);
     
     sprintf(str, Configuration.NucmerCommand.c_str(), prefix.c_str(), ReferenceFileName.c_str(), QueryFileName.c_str());
+    cout << "A" << endl;
     if (!Helpers::Execute(str))
         success = false;
+    cout << "B" << endl;
     if (success)
     {
         OutputFileName = (outFile.length() > 0 ? outFile : Helpers::TempFile(Configuration.TmpPath));
         sprintf(str, Configuration.ShowTilingCommand.c_str(), prefix.c_str(), OutputFileName.c_str());
+        cout << "C" << endl;
         if (!Helpers::Execute(str))
             success = false;
     }
 
+    cout << "D" << endl;
     Helpers::RemoveFile(prefix + ".delta");
     if (!success)
     {
         Helpers::RemoveFile(OutputFileName);
         OutputFileName.clear();
+        cout << "E" << endl;
     }
 
     return success;
