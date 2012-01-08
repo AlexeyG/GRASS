@@ -46,7 +46,6 @@ SequenceConverter::SequenceConverterResult SequenceConverter::Process(const Conf
     result = alignContigs(input.FileName, config, coords);
     if (result != Success)
         return result;
-    filterAlignmentsOnLength(coords, input.MinAlignmentLength);
     sortAlignments(coords);
     createLinksFromAlignment(addLinkGroup(input), coords, input);
     
@@ -63,7 +62,7 @@ int SequenceConverter::addLinkGroup(const SequenceInput &input)
 
 SequenceConverter::SequenceConverterResult SequenceConverter::alignContigs(const string &sequenceFileName, const Configuration &config, Coords &coords)
 {
-    MummerTiler tiler(sequenceFileName, config.InputFileName, config.MummerConfig);
+    MummerTiler tiler(sequenceFileName, config.InputFileName, config.MummerTilerConfig);
     std::vector<FastASequence> references;
     FastAReader faReader;
     if (!faReader.Open(sequenceFileName) || faReader.Read(references) <= 0)
