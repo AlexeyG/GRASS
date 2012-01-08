@@ -295,7 +295,7 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
 					break;
 				}
 				i++;
-				this->BWAConfig.TmpPath = this->NovoAlignConfig.TmpPath = this->SAMToolsConfig.TmpPath = this->MummerConfig.TmpPath = argv[i];
+				this->BWAConfig.TmpPath = this->NovoAlignConfig.TmpPath = this->SAMToolsConfig.TmpPath = this->MummerTilerConfig.TmpPath = argv[i];
 			}
 			else if (!strcmp("-bwathreads", argv[i]))
 			{

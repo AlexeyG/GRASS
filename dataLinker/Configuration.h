@@ -81,7 +81,7 @@ public:
 	BWAConfiguration BWAConfig;
 	NovoAlignConfiguration NovoAlignConfig;
 	SAMToolsConfiguration SAMToolsConfig;
-        MummerConfiguration MummerConfig;
+        MummerTilerConfiguration MummerTilerConfig;
 	vector<PairedInput> PairedReadInputs;
         vector<SequenceInput> SequenceInputs;
 	string LastError;

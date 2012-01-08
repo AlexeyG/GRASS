@@ -98,19 +98,6 @@ void SequenceConverter::createLinksFromAlignment(int groupID, Coords &coords, co
     }
 }
 
-int SequenceConverter::filterAlignmentsOnLength(Coords &coords, double minBases)
-{
-    int count = 0;
-    Coords newCoords;
-    for (auto it = coords.begin(); it != coords.end(); it++)
-        if (it->ReferenceAlignmentLength > minBases && it->QueryAlignmentLength > minBases)
-            newCoords.push_back(*it);
-        else
-            count++;
-    coords.swap(newCoords);
-    return count;
-}
-
 void SequenceConverter::sortAlignments(Coords &coords)
 {
     sort(coords.begin(), coords.end());

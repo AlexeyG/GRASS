@@ -50,7 +50,6 @@ private:
     SequenceConverterResult alignContigs(const std::string &sequenceFileName, const Configuration &config, Coords &coords);
     int addLinkGroup(const SequenceInput &input);
     void createLinksFromAlignment(int groupID, Coords &coords, const SequenceInput &input);
-    static int filterAlignmentsOnLength(Coords &coords, double minBases);
     static void sortAlignments(Coords &coords);
     
 private:
