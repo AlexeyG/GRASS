@@ -1,6 +1,7 @@
 #include "MummerTilingReader.h"
 #include "Globals.h"
 #include <cstring>
+#include <sstream>
 
 using namespace std;
 
