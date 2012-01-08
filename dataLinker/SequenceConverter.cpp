@@ -85,8 +85,6 @@ void SequenceConverter::createLinksFromAlignment(int groupID, Coords &tilings, c
         cout << prev->ReferenceID << "\t" << prev->ReferencePosition << "\t" << prev->QueryID << "\t" << prev->ReferenceLength << endl;
         if (prev->ReferenceID == cur->ReferenceID && prev->QueryID != cur->QueryID)
         {
-            int prevLength = dataStore[prev->QueryID].Sequence.Nucleotides.length();
-            int curLength = dataStore[cur->QueryID].Sequence.Nucleotides.length();
             int distance = cur->ReferecePosition - prev->ReferencePosition + cur->QueryLength;
             bool equalOrientation = !(prev->IsReverse ^ cur->IsReverse);
             bool forwardOrder = !prev->IsQueryReverse;
