@@ -145,3 +145,33 @@ bool MummerAligner::Align(const string &outFile)
 
     return success;
 }
+
+// Aligns query to reference using MUMMER package and creates a tiling. Returns true if successful.
+bool MummerTiler::Align(const string &outFile)
+{
+    char str[MaxLine];
+    bool success = true;
+    OutputFileName.clear();
+
+    string prefix = Helpers::TempFile(Configuration.TmpPath);
+    
+    sprintf(str, Configuration.NucmerCommand.c_str(), prefix.c_str(), ReferenceFileName.c_str(), QueryFileName.c_str());
+    if (!Helpers::Execute(str))
+        success = false;
+    if (success)
+    {
+        OutputFileName = (outFile.length() > 0 ? outFile : Helpers::TempFile(Configuration.TmpPath));
+        sprintf(str, Configuration.ShowTilingCommand.c_str(), prefix.c_str(), OutputFileName.c_str());
+        if (!Helpers::Execute(str))
+            success = false;
+    }
+
+    Helpers::RemoveFile(prefix + ".delta");
+    if (!success)
+    {
+        Helpers::RemoveFile(OutputFileName);
+        OutputFileName.clear();
+    }
+
+    return success;
+}

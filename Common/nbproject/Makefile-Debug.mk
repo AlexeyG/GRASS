@@ -41,6 +41,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/152718998/Writer.o \
 	${OBJECTDIR}/_ext/152718998/Helpers.o \
 	${OBJECTDIR}/_ext/152718998/ReadCoverageRepeatDetecter.o \
+	${OBJECTDIR}/_ext/152718998/MummerCoordReader.o \
 	${OBJECTDIR}/_ext/152718998/Aligner.o \
 	${OBJECTDIR}/_ext/152718998/Reader.o \
 	${OBJECTDIR}/_ext/152718998/XATag.o \
@@ -110,6 +111,11 @@ ${OBJECTDIR}/_ext/152718998/ReadCoverageRepeatDetecter.o: /Users/alexeyg/Documen
 	${MKDIR} -p ${OBJECTDIR}/_ext/152718998
 	${RM} $@.d
 	$(COMPILE.cc) -g -I/Users/alexeyg/apps/include -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/152718998/ReadCoverageRepeatDetecter.o /Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverageRepeatDetecter.cpp
+
+${OBJECTDIR}/_ext/152718998/MummerCoordReader.o: /Users/alexeyg/Documents/src/tud-scaffolding/Common/MummerCoordReader.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/152718998
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/Users/alexeyg/apps/include -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/152718998/MummerCoordReader.o /Users/alexeyg/Documents/src/tud-scaffolding/Common/MummerCoordReader.cpp
 
 ${OBJECTDIR}/_ext/152718998/Aligner.o: /Users/alexeyg/Documents/src/tud-scaffolding/Common/Aligner.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/152718998

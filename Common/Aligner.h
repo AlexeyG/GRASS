@@ -67,4 +67,17 @@ public:
     MummerConfiguration Configuration;
 };
 
+class MummerTiler : public Aligner
+{
+public:
+    MummerTiler(const string &referenceFile, const string &queryFile, const MummerTilerConfiguration &config)
+            : Aligner(referenceFile, queryFile), Configuration(config) {};
+          
+public:
+    bool Align(const string &outFile = (char *)"");
+        
+public:
+    MummerTilerConfiguration Configuration;
+};
+
 #endif

@@ -36,3 +36,11 @@ MummerConfiguration::MummerConfiguration()
     DeltaFilterCommand = "(delta-filter -q %s > %s) >& /dev/null";
     ShowCoordsCommand = "(show-coords -q -T -d -H %s > %s) >& /dev/null";
 }
+
+// Construction with default configuration parameter settings
+MummerTilerConfiguration::MummerTilerConfiguration()
+{
+    TmpPath = "/tmp";
+    NucmerCommand = "nucmer -p %s %s %s >& /dev/null";
+    ShowTilingCommand = "(show-tiling %s > %s) >& /dev/null";
+}

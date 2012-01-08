@@ -54,5 +54,16 @@ public:
     string ShowCoordsCommand;
 };
 
+class MummerTilerConfiguration
+{
+public:
+    MummerTilerConfiguration();
+    
+public:
+    string TmpPath;
+    string NucmerCommand;
+    string ShowTilingCommand;
+};
+
 #endif
 
