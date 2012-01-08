@@ -64,7 +64,9 @@ bool MummerTilingReader::Read(MummerTiling &tiling)
         cout << "Got line: " << string(line) << endl;
         if (line[0] == '>')
         {
-            string newReference(line + 1);
+            stringstream tmpStream(line + 1);
+            string newReference;
+            tmpStream >> newReference;
             cout << "Need to lookup id for (" << newReference << ")" << endl;
             auto it = referenceIds.find(newReference);
             referenceID = (it == referenceIds.end() ? -1 : it->second);
