@@ -34,7 +34,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/coverage.o
+	${OBJECTDIR}/coverage.o \
+	${OBJECTDIR}/_ext/1249575383/Configuration.o
 
 
 # C Compiler Flags
@@ -65,6 +66,11 @@ ${OBJECTDIR}/coverage.o: coverage.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/coverage.o coverage.cpp
+
+${OBJECTDIR}/_ext/1249575383/Configuration.o: /Users/alexeyg/Documents/src/tud-scaffolding/coverageUtil/Configuration.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1249575383
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1249575383/Configuration.o /Users/alexeyg/Documents/src/tud-scaffolding/coverageUtil/Configuration.cpp
 
 # Subprojects
 .build-subprojects:

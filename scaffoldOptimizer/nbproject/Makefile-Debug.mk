@@ -150,7 +150,7 @@ ${OBJECTDIR}/ScaffoldExtractor.o: ScaffoldExtractor.cpp
 ${OBJECTDIR}/_ext/740233504/NWAligner.o: /Users/alexeyg/Documents/src/tud-scaffolding/scaffoldOptimizer/NWAligner.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/740233504
 	${RM} $@.d
-	$(COMPILE.c) -g -I../Common -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/740233504/NWAligner.o /Users/alexeyg/Documents/src/tud-scaffolding/scaffoldOptimizer/NWAligner.cpp
+	$(COMPILE.cc) -g -I../Common -I/Users/alexeyg/apps/include -I/Users/alexeyg/apps/include/ncbi-tools++ -I/Users/alexeyg/apps/ILOG/cplex/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/740233504/NWAligner.o /Users/alexeyg/Documents/src/tud-scaffolding/scaffoldOptimizer/NWAligner.cpp
 
 ${OBJECTDIR}/ScaffoldComparer.o: ScaffoldComparer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
