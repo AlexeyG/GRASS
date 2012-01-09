@@ -40,7 +40,7 @@ int ContigOverlapper::FindBestOverlap(const std::string &left, const std::string
         // check if overlapLen is too large to align!
         if (overlapLen <= config.MaximumAlignmentLength)
         {
-            double alignmentScore = (double)GetAlignmentScore(leftSequence, rightSequence) / (double)(2 * overlapLen); // [-0.75; 1] alignment score
+            double alignmentScore = (double)GetAlignmentScore(leftSequence, rightSequence) / (double)(2 * overlapLen); // [-1.5; 1] alignment score
             double score = alignmentScore * distanceScore;
             if (score > bestScore)
             {
