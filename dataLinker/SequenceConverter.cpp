@@ -89,7 +89,7 @@ void SequenceConverter::createLinksFromAlignment(int groupID, Coords &tilings, c
             double weight = input.Weight * cur->Identity * prev->Identity * prev->Coverage * cur->Coverage;
             ContigLink link(prev->QueryID, cur->QueryID, distance, input.Std, equalOrientation, forwardOrder, weight);
             dataStore.AddLink(groupID, link);
-            cout << "   added link between " << prev->QueryID << " and " << cur->QueryID << " of weight " << weight << endl;
+            //cout << "   added link between " << prev->QueryID << " and " << cur->QueryID << " of weight " << weight << endl;
         }
     }
 }
