@@ -547,6 +547,7 @@ int main(int argc, char *argv[])
             return -3;
         }
         cerr << "[+] Solved the optimization problem." << endl;
+        fprintf(stderr, "[i] Objective function value: %.6lf\n", solver.GetObjective());
         if (!outputFastaScaffolds(config.OutputFileName, ScaffoldExtractor::Extract(solver), config.OverlapperOptions))
         {
             cerr << "[-] Unable to output scaffolds (FastA)." << endl;
