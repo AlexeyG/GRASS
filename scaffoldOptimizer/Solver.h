@@ -9,8 +9,8 @@ enum SolverStatus {Clean, Formulated, Success, Fail};
 class Solver
 {
 public:
-	Solver();
-	virtual ~Solver();
+	Solver() {};
+	virtual ~Solver() {};
 	virtual bool Formulate(const DataStore &store) = 0;
 	virtual bool Solve() = 0;
 	virtual SolverStatus GetStatus() const = 0;
