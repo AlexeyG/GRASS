@@ -46,7 +46,7 @@ SequenceConverter::SequenceConverterResult SequenceConverter::Process(const Conf
     result = alignContigs(input.FileName, config, coords);
     if (result != Success)
         return result;
-    sortAlignments(coords);
+    //sortAlignments(coords);
     createLinksFromAlignment(addLinkGroup(input), coords, input);
     
     return result;
