@@ -89,6 +89,7 @@ bool MummerTilingReader::Read(MummerTiling &tiling)
     getline(ss, queryName, '\t');
     
     tiling.IsReverse = orientationString == "-";
+    cout << "Orientation: <" << orientationString << "> length = " << tiling.ReferenceLength << endl;
     auto it = scaffoldIds.find(queryName); tiling.QueryID = (it == scaffoldIds.end() ? -1 : it->second);
     
     // Turning to 0-based
