@@ -1,6 +1,6 @@
 /*
- * dataSelector : a support tool used in debugging to create simulated scaffolding
- * problems given a reference sequence and paired reads.
+ * dataSelector : a support tool used in debugging to select a subset of the
+ * data given a reference sequence and paired reads.
  * Copyright (C) 2011  Alexey Gritsenko
  * 
  * This program is free software: you can redistribute it and/or modify
