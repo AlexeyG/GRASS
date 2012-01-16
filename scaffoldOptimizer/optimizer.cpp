@@ -516,10 +516,19 @@ bool outputFastaScaffolds(const string &fileName, const vector<Scaffold> &scaffo
 	return result;
 }
 
+void banner()
+{
+    cerr << "This program comes with ABSOLUTELY NO WARRANTY; see LICENSE for details." << endl;
+    cerr << "This is free software, and you are welcome to redistribute it" << endl;
+    cerr << "under certain conditions; see LICENSE for details." << endl;
+    cerr << endl;
+}
+
 int main(int argc, char *argv[])
 {
     Helpers::ElapsedTimers.AddTimer();
     srand((unsigned int)time(NULL));
+    banner();
     if (config.ProcessCommandLine(argc, argv))
     {
         solver.Options = config.Options;

@@ -70,8 +70,17 @@ bool processPairs(const Configuration &config, const vector<PairedInput> &paired
 	return true;
 }
 
+void banner()
+{
+    cerr << "This program comes with ABSOLUTELY NO WARRANTY; see LICENSE for details." << endl;
+    cerr << "This is free software, and you are welcome to redistribute it" << endl;
+    cerr << "under certain conditions; see LICENSE for details." << endl;
+    cerr << endl;
+}
+
 int main(int argc, char *argv[])
 {
+    banner();
 	srand((unsigned int)time(NULL));
 	if (config.ProcessCommandLine(argc, argv))
 	{
