@@ -1,5 +1,5 @@
 /*
- * dataFilter : a support tool used in debuging to filter paired reads aligning
+ * dataFilter : a support tool used in debugging to filter paired reads aligning
  * to gaps between contigs.
  * Copyright (C) 2011  Alexey Gritsenko
  * 
