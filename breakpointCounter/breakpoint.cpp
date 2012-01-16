@@ -131,15 +131,15 @@ int main(int argc, char* argv[])
         BreakpointCount::Sort(*coords);
         cerr << "[+] Sorted MUMMER alignments." << endl;
         breakpoints.DistanceThreshold = config.DistanceThreshold;
-        cerr << "[+] Aligned scaffolds to reference (" << config.ScaffoldFileName << " -> " << config.ReferenceFileName << ")." << endl;
-        cerr << "[i] Filtered out " << filterAlignments(*coords, config.MinBases) << " alignments." << endl;
-        cerr << "[i] Found a total of " << breakpoints.ProcessAlignments(*coords, *references, *scaffolds) << " breakpoints:" << endl;
-        cerr << "    [i] Joins:\t" << breakpoints.Joins << endl;
-        cerr << "    [i] Order:\t" << breakpoints.Order << endl;
-        cerr << "    [i] Orientation:\t" << breakpoints.Orientation << endl;
-        cerr << "    [i] Distance:\t" << breakpoints.Distance << endl;
-        fprintf(stderr, "[i] Reference coverage:\t%.2lf %%\n", breakpoints.GetReferenceCoverage() * 100);
-        fprintf(stderr, "[i] Scaffold coverage:\t%.2lf %%\n", breakpoints.GetScaffoldCoverage() * 100);
+        cout << "[+] Aligned scaffolds to reference (" << config.ScaffoldFileName << " -> " << config.ReferenceFileName << ")." << endl;
+        cout << "[i] Filtered out " << filterAlignments(*coords, config.MinBases) << " alignments." << endl;
+        cout << "[i] Found a total of " << breakpoints.ProcessAlignments(*coords, *references, *scaffolds) << " breakpoints:" << endl;
+        cout << "    [i] Joins:\t" << breakpoints.Joins << endl;
+        cout << "    [i] Order:\t" << breakpoints.Order << endl;
+        cout << "    [i] Orientation:\t" << breakpoints.Orientation << endl;
+        cout << "    [i] Distance:\t" << breakpoints.Distance << endl;
+        fprintf(stdout, "[i] Reference coverage:\t%.2lf %%\n", breakpoints.GetReferenceCoverage() * 100);
+        fprintf(stdout, "[i] Scaffold coverage:\t%.2lf %%\n", breakpoints.GetScaffoldCoverage() * 100);
         return 0;
     }
     cerr << config.LastError;
