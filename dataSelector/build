@@ -1,2 +1,0 @@
-#!/bin/bash
-g++ -O2 -Wall -I../Common/ -I/data/bio/alexeygritsenk/apps/include/ -L/data/bio/alexeygritsenk/apps/lib/ -lbamtools -o ../bin/dataSelector Configuration.cpp ../Common/Helpers.cpp ../Common/DataStore.cpp ../Common/Timers.cpp ../Common/Reader.cpp ../Common/Writer.cpp ../Common/Sequence.cpp ../Common/XATag.cpp selector.cpp
