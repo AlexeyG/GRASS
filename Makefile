@@ -4,22 +4,41 @@ all : main extra
 
 main : Common breakpointCounter coverageUtil dataLinker scaffoldOptimizer
 
-extra : dataFilter dataLinker dataSelector dataSimulator kmer readCleaner readDiff
+extra : dataFilter dataSelector dataSimulator kmer readCleaner readDiff
 
 Common :
-	$(MAKE) -C Common -f $(CDIR)/Makefile
+	$(MAKE) -C Common
 
 breakpointCounter :
-	$(MAKE) -C breakpointCounter -f $(CDIR)/Makefile
+	$(MAKE) -C breakpointCounter core
 
 coverageUtil :
-	$(MAKE) -C coverageUtil -f $(CDIR)/Makefile
+	$(MAKE) -C coverageUtil core
 
 dataLinker :
-	$(MAKE) -C dataLinker -f $(CDIR)/Makefile
+	$(MAKE) -C dataLinker core
 
 scaffoldOptimizer :
-	$(MAKE) -C breakpointCounter -f $(CDIR)/Makefile
+	$(MAKE) -C scaffoldOptimizer core
+
+dataFilter :
+	$(MAKE) -C dataFilter core
+
+dataSelector :
+	$(MAKE) -C dataSelector core
+
+dataSimulator :
+	$(MAKE) -C dataSimulator core
+
+kmer :
+	$(MAKE) -C kmer core
+
+readCleaner :
+	$(MAKE) -C readCleaner core
+
+readDiff :
+	$(MAKE) -C readDiff core
 
 clean :
-	$(RM) -rf $(ODIR)
+	$(RM) -rf bin
+	$(RM) -rf */obj
