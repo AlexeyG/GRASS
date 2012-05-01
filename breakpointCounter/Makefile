@@ -8,7 +8,6 @@ MAKE = make
 MD = mkdir
 
 CDIR = ../Common
-MDIR = ../breakpointCounter
 ODIR = obj
 BDIR = ../bin
 
