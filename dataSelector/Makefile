@@ -1,19 +1,8 @@
-CCC = g++
-
-CCCFLAGS = -O2 -m64 -std=gnu++0x -Wall
-CCCINC = -I../Common/ -I/data/bio/alexeygritsenk/apps/include/
-CCCLIB = -L/data/bio/alexeygritsenk/apps/lib/ -lbamtools
-
-MAKE = make
-MD = mkdir
-
-CDIR = ../Common
-ODIR = obj
-BDIR = ../bin
-
 BNAME = dataSelector
 OBJ = Configuration.o selector.o
 COBJ = Helpers.o DataStore.o Timers.o Reader.o Writer.o Sequence.o XATag.o
+
+include ../Makefile.config
 
 # Need to setup prefixes
 _OBJ = $(patsubst %,$(ODIR)/%,$(OBJ))

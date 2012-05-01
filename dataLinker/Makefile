@@ -1,19 +1,8 @@
-CCC = g++
-
-CCCFLAGS = -O2 -m64 -std=gnu++0x -Wall
-CCCINC = -I../Common/ -I/data/bio/alexeygritsenk/apps/include/
-CCCLIB = -L/data/bio/alexeygritsenk/apps/lib/ -lbamtools
-
-MAKE = make
-MD = mkdir
-
-CDIR = ../Common
-ODIR = obj
-BDIR = ../bin
-
 BNAME = dataLinker
 OBJ = Configuration.o PairedReadConverter.o SequenceConverter.o linker.o
 COBJ = Helpers.o DataStore.o Timers.o Reader.o Sequence.o XATag.o DataStoreWriter.o AlignmentReader.o Converter.o Aligner.o AlignerConfiguration.o ReadCoverage.o ReadCoverageWriter.o MummerTilingReader.o
+
+include ../Makefile.config
 
 # Need to setup prefixes
 _OBJ = $(patsubst %,$(ODIR)/%,$(OBJ))
