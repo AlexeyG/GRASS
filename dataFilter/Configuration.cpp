@@ -108,7 +108,7 @@ void Configuration::printHelpMessage(stringstream &serr)
 {
 	serr << "[i] Data filter version " << VERSION << " (" << DATE << ")" << endl;
 	serr << "[i] By " << AUTHOR << endl;
-	serr << "[i] Usage: dataFilter [arguments] <�ontigs.fasta>" << endl;
+	serr << "[i] Usage: dataFilter [arguments] <contigs.fasta>" << endl;
 	serr << "[i] -help                                               Print this message and exit." << endl;
 	serr << "[i] -paired <left-file> <right-file> <output-prefix>    Filter paired reads and output them with given prefix." << endl;
 }
