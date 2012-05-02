@@ -8,12 +8,12 @@ _OBJ = $(patsubst %,$(ODIR)/%,$(OBJ))
 
 objects : $(_OBJ)
 
-dirs : $(ODIR)
+dirs : | $(ODIR)
 
 $(ODIR) :
 	$(MD) -p $(ODIR)
 
-$(ODIR)/%.o : %.cpp $(ODIR) 
+$(ODIR)/%.o : %.cpp %.h | $(ODIR) 
 	$(CCC) -c $(CCCFLAGS) $(CCCINC) -o $@ $<
 
 clean :

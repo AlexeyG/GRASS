@@ -8,14 +8,14 @@ include ../Makefile.config
 _OBJ = $(patsubst %,$(ODIR)/%,$(OBJ))
 _COBJ = $(patsubst %,$(CDIR)/$(ODIR)/%,$(COBJ))
 
-.PHONY : main Common objects clean dirs
+.PHONY : main Common clean dirs
 
 main : Common $(BDIR)/$(BNAME)
 
-$(BDIR)/$(BNAME) : objects $(BDIR)
+$(BDIR)/$(BNAME) : $(_OBJ) | $(BDIR)
 	$(CCC) $(CCCFLAGS) $(CCCINC) -o $(BDIR)/$(BNAME) $(_OBJ) $(_COBJ) $(CCCLIB)
 
-dirs : $(ODIR) $(BDIR)
+dirs : | $(ODIR) $(BDIR)
 
 $(ODIR) :
 	$(MD) -p $(ODIR)
@@ -23,12 +23,10 @@ $(ODIR) :
 $(BDIR) :
 	$(MD) -p $(BDIR)
 
-objects : $(_OBJ)
-
 Common :
 	$(MAKE) -C $(CDIR) $(_COBJ)
 
-$(ODIR)/%.o : %.cpp $(ODIR)
+$(ODIR)/%.o : %.cpp | $(ODIR)
 	$(CCC) -c $(CCCFLAGS) $(CCCINC) -o $@ $<
 
 clean :
