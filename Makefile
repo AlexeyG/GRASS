@@ -1,44 +1,47 @@
 include Makefile.config
 
-all : main extra
+.PHONY : main extra all Common breakpointCounter coverageUtil dataLinker scaffoldOptimizer dataFilter dataSelector dataSimulator kmer readCleaner readDiff
 
-main : Common breakpointCounter coverageUtil dataLinker scaffoldOptimizer
+main : Common breakpointCounter coverageUtil dataLinker scaffoldOptimizer	
 
 extra : dataFilter dataSelector dataSimulator kmer readCleaner readDiff
+
+all : main extra
 
 Common :
 	$(MAKE) -C Common
 
-breakpointCounter :
-	$(MAKE) -C breakpointCounter core
+breakpointCounter : Common
+	$(MAKE) -C breakpointCounter
 
-coverageUtil :
-	$(MAKE) -C coverageUtil core
+coverageUtil : Common
+	$(MAKE) -C coverageUtil
 
-dataLinker :
-	$(MAKE) -C dataLinker core
+dataLinker : Common
+	$(MAKE) -C dataLinker
 
-scaffoldOptimizer :
-	$(MAKE) -C scaffoldOptimizer core
+scaffoldOptimizer : Common
+	$(MAKE) -C scaffoldOptimizer
 
-dataFilter :
-	$(MAKE) -C dataFilter core
+dataFilter : Common
+	$(MAKE) -C dataFilter
 
-dataSelector :
-	$(MAKE) -C dataSelector core
+dataSelector : Common
+	$(MAKE) -C dataSelector
 
-dataSimulator :
-	$(MAKE) -C dataSimulator core
+dataSimulator : Common
+	$(MAKE) -C dataSimulator
 
-kmer :
-	$(MAKE) -C kmer core
+kmer : Common
+	$(MAKE) -C kmer
 
-readCleaner :
-	$(MAKE) -C readCleaner core
+readCleaner : Common
+	$(MAKE) -C readCleaner
 
-readDiff :
-	$(MAKE) -C readDiff core
+readDiff : Common
+	$(MAKE) -C readDiff
 
 clean :
 	$(RM) -rf bin
 	$(RM) -rf */obj
+

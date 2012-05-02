@@ -2,15 +2,19 @@ OBJ = Aligner.o AlignmentReader.o DataStore.o DataStoreWriter.o MummerCoordReade
 
 include ../Makefile.config
 
-Common : objects
+_OBJ = $(patsubst %,$(ODIR)/%,$(OBJ))
 
-dirs :
+.PHONY : objects clean dirs
+
+objects : $(_OBJ)
+
+dirs : $(ODIR)
+
+$(ODIR) :
 	$(MD) -p $(ODIR)
 
-objects : $(OBJ)
-
-%.o : %.cpp dirs
-	$(CCC) -c $(CCCFLAGS) $(CCCINC) -o $(ODIR)/$@ $<
+$(ODIR)/%.o : %.cpp dirs
+	$(CCC) -c $(CCCFLAGS) $(CCCINC) -o $@ $<
 
 clean :
 	$(RM) -rf $(ODIR)
