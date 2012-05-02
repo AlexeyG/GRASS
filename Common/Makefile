@@ -13,7 +13,7 @@ dirs : $(ODIR)
 $(ODIR) :
 	$(MD) -p $(ODIR)
 
-$(ODIR)/%.o : %.cpp dirs
+$(ODIR)/%.o : %.cpp $(ODIR) 
 	$(CCC) -c $(CCCFLAGS) $(CCCINC) -o $@ $<
 
 clean :

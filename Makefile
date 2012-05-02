@@ -1,6 +1,6 @@
 include Makefile.config
 
-.PHONY : main extra all Common breakpointCounter coverageUtil dataLinker scaffoldOptimizer dataFilter dataSelector dataSimulator kmer readCleaner readDiff
+.PHONY : main extra all Common breakpointCounter coverageUtil dataLinker scaffoldOptimizer dataFilter dataSelector dataSimulator kmer readCleaner readDiff tar
 
 main : Common breakpointCounter coverageUtil dataLinker scaffoldOptimizer	
 
@@ -44,4 +44,7 @@ readDiff : Common
 clean :
 	$(RM) -rf bin
 	$(RM) -rf */obj
+
+tar :
+	tar -cf grass-src.tar LICENSE Makefile Makefile.config */*.cpp */*.h */Makefile
 

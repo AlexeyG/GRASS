@@ -12,7 +12,7 @@ _COBJ = $(patsubst %,$(CDIR)/$(ODIR)/%,$(COBJ))
 
 main : Common $(BDIR)/$(BNAME)
 
-$(BDIR)/$(BNAME) : objects
+$(BDIR)/$(BNAME) : objects $(BDIR)
 	$(CCC) $(CCCFLAGS) $(CCEFLAGS) $(CCCINC) $(CCEINC) -o $(BDIR)/$(BNAME) $(_OBJ) $(_COBJ) $(CCCLIB) $(CCELIB)
 
 dirs : $(ODIR) $(BDIR)
@@ -28,7 +28,7 @@ objects : $(_OBJ)
 Common :
 	$(MAKE) -C $(CDIR) $(_COBJ)
 
-$(ODIR)/%.o : %.cpp dirs
+$(ODIR)/%.o : %.cpp $(ODIR)
 	$(CCC) -c $(CCCFLAGS) $(CCEFLAGS) $(CCCINC) $(CCEINC) -o $@ $<
 
 clean :
