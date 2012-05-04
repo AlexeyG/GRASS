@@ -32,7 +32,7 @@ SolverConfiguration::SolverConfiguration()
 {
 	UseOpportunisticSearch = true;
 	UseObjectiveHeuristic = true;
-	SuppressOutput = false;
+	SuppressOutput = true;
 	VerboseOutput = 0;
 	Threads = 0;
 	TimeLimit = 0;
@@ -40,5 +40,5 @@ SolverConfiguration::SolverConfiguration()
 	LPTimeLimit = 30;
 	LPAttempts = 5;
 	GATimeLimit = 0;
-	GARestarts = 0;
+	GARestarts = 4;
 }

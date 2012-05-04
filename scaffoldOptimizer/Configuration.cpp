@@ -633,7 +633,7 @@ void Configuration::printHelpMessage(stringstream &serr)
 	serr << "[i] -lp-threads <seconds>                               Number of threads used for solving a single fixed optimization problem. [automatic]" << endl;
 	serr << "[i] -lp-attempts <number>                               Number of attempts to solve a single fixed optimization problem. [3]" << endl;
 	serr << "[i] -ga-limit <seconds>                                 Time in seconds for solving a single GA optimization problem. [unlimited]" << endl;
-	serr << "[i] -ga-restarts <number>                               Number of restarts before exiting GA optimization. [unlimited]" << endl;
+	serr << "[i] -ga-restarts <number>                               Number of restarts before exiting GA optimization. [4]" << endl;
 	serr << "[i] -verbose <yes/no/more>                              Verbose output of solvers? [no]" << endl;
 	serr << "[i] -output <output filename>                           Output filename for final scaffolds. [scaffold.fasta]" << endl;
 	serr << "[i] -solution-output <output filename>                  Output filename for optimzation solution. [not output]" << endl;
