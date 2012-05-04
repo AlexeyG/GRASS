@@ -16,6 +16,8 @@
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/MinMax.h</itemPath>
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/MummerCoord.h</itemPath>
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/MummerCoordReader.h</itemPath>
+      <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/MummerTiling.h</itemPath>
+      <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/MummerTilingReader.h</itemPath>
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverage.h</itemPath>
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverageReader.h</itemPath>
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverageRepeatDetecter.h</itemPath>
@@ -42,6 +44,7 @@
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/DataStoreWriter.cpp</itemPath>
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/Helpers.cpp</itemPath>
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/MummerCoordReader.cpp</itemPath>
+      <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/MummerTilingReader.cpp</itemPath>
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverage.cpp</itemPath>
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverageReader.cpp</itemPath>
       <itemPath>/Users/alexeyg/Documents/src/tud-scaffolding/Common/ReadCoverageRepeatDetecter.cpp</itemPath>

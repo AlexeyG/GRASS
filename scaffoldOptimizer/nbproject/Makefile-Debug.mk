@@ -42,6 +42,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/MIQPSolver.o \
 	${OBJECTDIR}/FixedMIQPSolver.o \
 	${OBJECTDIR}/Configuration.o \
+	${OBJECTDIR}/_ext/740233504/OverlapperConfiguration.o \
 	${OBJECTDIR}/RelaxedFixedMIQPSolver.o \
 	${OBJECTDIR}/GAMatrix.o \
 	${OBJECTDIR}/BranchAndBound.o \
@@ -55,7 +56,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/RandomizedGreedyInitializer.o \
 	${OBJECTDIR}/IterativeSolver.o \
 	${OBJECTDIR}/ScaffoldConverter.o \
-	${OBJECTDIR}/Solver.o
+	${OBJECTDIR}/_ext/740233504/ContigOverlapper.o
 
 
 # C Compiler Flags
@@ -122,6 +123,11 @@ ${OBJECTDIR}/Configuration.o: Configuration.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -I../Common -I/Users/alexeyg/apps/include -I/Users/alexeyg/apps/include/ncbi-tools++ -I/Users/alexeyg/apps/ILOG/cplex/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/Configuration.o Configuration.cpp
 
+${OBJECTDIR}/_ext/740233504/OverlapperConfiguration.o: /Users/alexeyg/Documents/src/tud-scaffolding/scaffoldOptimizer/OverlapperConfiguration.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/740233504
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../Common -I/Users/alexeyg/apps/include -I/Users/alexeyg/apps/include/ncbi-tools++ -I/Users/alexeyg/apps/ILOG/cplex/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/740233504/OverlapperConfiguration.o /Users/alexeyg/Documents/src/tud-scaffolding/scaffoldOptimizer/OverlapperConfiguration.cpp
+
 ${OBJECTDIR}/RelaxedFixedMIQPSolver.o: RelaxedFixedMIQPSolver.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
@@ -187,10 +193,10 @@ ${OBJECTDIR}/ScaffoldConverter.o: ScaffoldConverter.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -I../Common -I/Users/alexeyg/apps/include -I/Users/alexeyg/apps/include/ncbi-tools++ -I/Users/alexeyg/apps/ILOG/cplex/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/ScaffoldConverter.o ScaffoldConverter.cpp
 
-${OBJECTDIR}/Solver.o: Solver.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/_ext/740233504/ContigOverlapper.o: /Users/alexeyg/Documents/src/tud-scaffolding/scaffoldOptimizer/ContigOverlapper.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/740233504
 	${RM} $@.d
-	$(COMPILE.cc) -g -I../Common -I/Users/alexeyg/apps/include -I/Users/alexeyg/apps/include/ncbi-tools++ -I/Users/alexeyg/apps/ILOG/cplex/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/Solver.o Solver.cpp
+	$(COMPILE.cc) -g -I../Common -I/Users/alexeyg/apps/include -I/Users/alexeyg/apps/include/ncbi-tools++ -I/Users/alexeyg/apps/ILOG/cplex/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/740233504/ContigOverlapper.o /Users/alexeyg/Documents/src/tud-scaffolding/scaffoldOptimizer/ContigOverlapper.cpp
 
 # Subprojects
 .build-subprojects:

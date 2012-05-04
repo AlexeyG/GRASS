@@ -39,6 +39,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/152718998/DataStore.o \
 	${OBJECTDIR}/_ext/152718998/ReadCoverageReader.o \
 	${OBJECTDIR}/_ext/152718998/Writer.o \
+	${OBJECTDIR}/_ext/152718998/MummerTilingReader.o \
 	${OBJECTDIR}/_ext/152718998/Helpers.o \
 	${OBJECTDIR}/_ext/152718998/ReadCoverageRepeatDetecter.o \
 	${OBJECTDIR}/_ext/152718998/MummerCoordReader.o \
@@ -101,6 +102,11 @@ ${OBJECTDIR}/_ext/152718998/Writer.o: /Users/alexeyg/Documents/src/tud-scaffoldi
 	${MKDIR} -p ${OBJECTDIR}/_ext/152718998
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/152718998/Writer.o /Users/alexeyg/Documents/src/tud-scaffolding/Common/Writer.cpp
+
+${OBJECTDIR}/_ext/152718998/MummerTilingReader.o: /Users/alexeyg/Documents/src/tud-scaffolding/Common/MummerTilingReader.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/152718998
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/152718998/MummerTilingReader.o /Users/alexeyg/Documents/src/tud-scaffolding/Common/MummerTilingReader.cpp
 
 ${OBJECTDIR}/_ext/152718998/Helpers.o: /Users/alexeyg/Documents/src/tud-scaffolding/Common/Helpers.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/152718998
