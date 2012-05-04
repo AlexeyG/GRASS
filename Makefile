@@ -2,9 +2,9 @@ include Makefile.config
 
 .PHONY : main extra all Common breakpointCounter coverageUtil dataLinker scaffoldOptimizer dataFilter dataSelector dataSimulator kmer readCleaner readDiff tar
 
-main : Common breakpointCounter coverageUtil dataLinker scaffoldOptimizer	
+main : Common breakpointCounter scaffoldOptimizer	
 
-extra : dataFilter dataSelector dataSimulator kmer readCleaner readDiff
+extra : dataFilter dataSelector dataSimulator kmer readCleaner readDiff coverageUtil
 
 all : main extra
 

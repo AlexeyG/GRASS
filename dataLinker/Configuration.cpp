@@ -53,9 +53,9 @@ bool Configuration::ProcessCommandLine(int argc, char *argv[])
 	stringstream serr;
 
 	double weight = 1;
-	int mapQ = 0;
-	int minReadLength = 0;
-	int maxEditDistance = 10000;
+	int mapQ = 36;
+	int minReadLength = 30;
+	int maxEditDistance = 0;
 
 	if (argc == 1)
 	{
@@ -383,10 +383,10 @@ void Configuration::printHelpMessage(stringstream &serr)
 	serr << "[i] Usage: dataLinker [arguments] <sequence.fasta>" << endl;
 	serr << "[i] -help                                               Print this message and exit." << endl;
 	serr << "[i] -weight <weight>                                    Set weight for information sources coming after the switch. [1]" << endl;
-        serr << "[i] -minlength <length>                                 Set minimum length cutoff for information sources coming after the switch. [0]" << endl;
+        serr << "[i] -minlength <length>                                 Set minimum length cutoff for information sources coming after the switch. [30]" << endl;
         serr << endl;
-	serr << "[i] -mapq <score>                                       Set MapQ cutoff for information sources coming after the switch. [0]" << endl;
-	serr << "[i] -maxedit <distance>                                 Set maximum edit distance cutoff for information sources coming after the switch. [10000]" << endl;
+	serr << "[i] -mapq <score>                                       Set MapQ cutoff for information sources coming after the switch. [36]" << endl;
+	serr << "[i] -maxedit <distance>                                 Set maximum edit distance cutoff for information sources coming after the switch. [0]" << endl;
 	serr << "[i] -maxhits <num>                                      Maximum number of allowed link hits. If a link has more hits, it is disregarded. [5]" << endl;
 	serr << "[i] -nooverlapdeviation <num>                           Maximum allowed deviation from mean insert size when no overlaps are allowed. [disabled]" << endl;
 	serr << "[i] -454 <left.fq> <right.fq> <mu> <sigma>              Process 454 paired reads with insert size <mu>+/-<sigma> into linking information." << endl;
