@@ -50,5 +50,5 @@ clean :
 	$(MAKE) -C manual clean
 
 tar :
-	tar -cf grass-src.tar LICENSE Makefile Makefile.config */*.cpp */*.h */Makefile */manual/manual.tex
+	tar -cf grass-src.tar LICENSE Makefile Makefile.config */*.cpp */*.h */Makefile manual/manual.tex
 
