@@ -29,6 +29,7 @@
 #ifndef _READCOVERAGEREADER_H
 #define _READCOVERAGEREADER_H
 
+#include <cstddef>
 #include <string>
 #include <fstream>
 #include "ReadCoverage.h"

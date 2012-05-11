@@ -33,6 +33,7 @@
 #include "GAIndividual.h"
 #include "GAMatrix.h"
 #include <vector>
+#include <cstddef>
 
 class GAIndividual;
 class GASolver : public Solver

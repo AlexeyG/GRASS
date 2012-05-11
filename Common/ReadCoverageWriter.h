@@ -36,6 +36,7 @@
 #ifndef _READCOVERAGEWRITER_H
 #define	_READCOVERAGEWRITER_H
 
+#include <cstddef>
 #include <string>
 #include "ReadCoverage.h"
 

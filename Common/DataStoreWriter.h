@@ -29,6 +29,7 @@
 #ifndef _DATASTOREWRITER_H
 #define _DATASTOREWRITER_H
 
+#include <cstddef>
 #include <string>
 #include "DataStore.h"
 

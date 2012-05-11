@@ -27,6 +27,7 @@
 
 #include <iostream>
 #include <ctime>
+#include <cstddef>
 #include <cstdlib>
 #include <vector>
 #include "Configuration.h"

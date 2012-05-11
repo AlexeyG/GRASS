@@ -28,6 +28,7 @@
 
 #include <iostream>
 #include <ctime>
+#include <cstddef>
 #include <cstdlib>
 #include <cstring>
 #include "Globals.h"

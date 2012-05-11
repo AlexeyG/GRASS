@@ -29,6 +29,7 @@
 #ifndef _NWALIGNER_H
 #define	_NWALIGNER_H
 
+#include <cstddef>
 #include <memory>
 #include <algo/align/nw/mm_aligner.hpp>
 #include "Sequence.h"

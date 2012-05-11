@@ -30,6 +30,7 @@
 #define	_MUMMERTILINGREADER_H
 
 #include <vector>
+#include <cstddef>
 #include <cstdio>
 #include <string>
 #include <map>

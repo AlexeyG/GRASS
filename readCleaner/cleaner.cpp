@@ -29,6 +29,7 @@
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
+#include <cstddef>
 #include <vector>
 #include "Configuration.h"
 #include "PairedReadProcessor.h"

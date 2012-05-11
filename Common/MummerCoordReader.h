@@ -37,6 +37,8 @@
 #define	_MUMMERCOORDREADER_H
 
 #include <vector>
+#include <cstddef>
+#include <cstddef>
 #include <cstdio>
 #include <string>
 #include <map>

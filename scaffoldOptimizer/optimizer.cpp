@@ -29,6 +29,7 @@
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
+#include <cstddef>
 #include "Configuration.h"
 #include "DataStore.h"
 #include "DataStoreReader.h"

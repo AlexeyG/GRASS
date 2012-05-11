@@ -33,6 +33,7 @@
 #ifndef _READER_H
 #define _READER_H
 
+#include <cstddef>
 #include <cstdio>
 #include <string>
 #include <vector>

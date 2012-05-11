@@ -33,6 +33,7 @@
  * Created on December 3, 2011, 1:02 PM
  */
 
+#include <cstddef>
 #include <cstdlib>
 #include <iostream>
 #include <vector>

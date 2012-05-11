@@ -32,6 +32,7 @@
 #include "Solver.h"
 #include "GASolver.h"
 #include "IterativeSolver.h"
+#include <cstddef>
 
 class EMSolver : public Solver
 {
