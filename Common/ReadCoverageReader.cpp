@@ -101,22 +101,26 @@ bool ReadCoverageReader::readContigs(int nContigs, ReadCoverage &coverage)
 
 bool ReadCoverageReader::readContig(ReadCoverage &coverage)
 {
+    int contigID = -1, nPositions = -1;
     string line;
     getline(in, line);
     string contigIdStr = Helpers::NextEntry(line);
     string nPositionsStr = Helpers::NextEntry(line);
-    int contigID = Helpers::GetArgument<int>(contigIdStr);
-    int nPositions = Helpers::GetArgument<int>(nPositionsStr);
+    contigID = Helpers::GetArgument<int>(contigIdStr);
+    nPositions = Helpers::GetArgument<int>(nPositionsStr);
     if (contigID < 0)
         return false;
     if (nPositions < 0)
         return false;
-    getline(in, line);
-    stringstream ss(line);
-    for (int j = 0, pos; j < nPositions; j++)
+    if (nPositions > 0)
     {
-        ss >> pos;
-        coverage.AddLocation(contigID, pos);
+        getline(in, line);
+        stringstream ss(line);
+        for (int j = 0, pos; j < nPositions; j++)
+        {
+            ss >> pos;
+            coverage.AddLocation(contigID, pos);
+        }
     }
     return true;
 }
