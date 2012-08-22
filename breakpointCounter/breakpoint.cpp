@@ -128,10 +128,10 @@ int main(int argc, char* argv[])
         cerr << "[+] Read references (" << config.ReferenceFileName << ")." << endl;
         if (!alignScaffolds(config.ReferenceFileName, config.ScaffoldFileName, *references, *scaffolds, *coords))
             return -4;
-        BreakpointCount::Sort(*coords);
-        cerr << "[+] Sorted MUMMER alignments." << endl;
         breakpoints.DistanceThreshold = config.DistanceThreshold;
         cout << "[+] Aligned scaffolds to reference (" << config.ScaffoldFileName << " -> " << config.ReferenceFileName << ")." << endl;
+        BreakpointCount::Sort(*coords);
+        cerr << "[+] Sorted MUMMER alignments." << endl;
         cout << "[i] Filtered out " << filterAlignments(*coords, config.MinBases) << " alignments." << endl;
         cout << "[i] Found a total of " << breakpoints.ProcessAlignments(*coords, *references, *scaffolds) << " breakpoints:" << endl;
         cout << "    [i] Joins:\t" << breakpoints.Joins << endl;
